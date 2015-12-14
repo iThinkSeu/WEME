@@ -37,14 +37,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         else {
             let navigation = UINavigationController(rootViewController: LoginRegisterVC())
-            navigation.navigationBar.barTintColor = UIColor.blackColor()
+            navigation.navigationBar.barTintColor = THEME_COLOR
             navigation.navigationBar.tintColor = UIColor.whiteColor()
             navigation.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             window?.rootViewController = navigation
             window?.makeKeyAndVisible();
         }
+        
+        MobClick.startWithAppkey("566aacab67e58ec3410021a6", reportPolicy: ReportPolicy.init(1), channelId: "")
+        let infoDict = (NSBundle.mainBundle().infoDictionary)!
+        let currentVersion = infoDict["CFBundleShortVersionString"] as! String
+        MobClick.setAppVersion(currentVersion)
+        
+        WXApi.registerApp("wx3ade9126fbb9e004", withDescription: "牵手")
         return true
+    }
+    
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+       return WXApi.handleOpenURL(url, delegate: WXApiManager.sharedManager())
     }
 
     func applicationWillResignActive(application: UIApplication) {

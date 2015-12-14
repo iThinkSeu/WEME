@@ -15,4 +15,12 @@
 #import <WebImage/WebImage.h>
 #import "STInputBar.h"
 #import "JSQAudioBubble.h"
+#import "KxMenu.h"
+#import "Model.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+#import "MobClick.h"
+#import "WxApi.h"
+#import "WeChat.h"
+#import "utility-objc.h"
+#import "IBActionSheet.h"
 #endif /* seu_Bridging_Header_h */

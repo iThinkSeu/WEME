@@ -273,7 +273,7 @@ class SocialVC:UIViewController {
         // print(_view.contentSize.height)
  
         
-        print(topicCollectionView.collectionViewLayout.collectionViewContentSize().height, topicCollectionView.frame.height)
+        //print(topicCollectionView.collectionViewLayout.collectionViewContentSize().height, topicCollectionView.frame.height)
         if topicCollectionView.collectionViewLayout.collectionViewContentSize().height > topicCollectionView.frame.height {
             topicCollectionView.snp_updateConstraints(closure: { (make) -> Void in
                 make.height.equalTo(topicCollectionView.collectionViewLayout.collectionViewContentSize().height)
@@ -580,7 +580,7 @@ class BoardViewModel {
 
 //MARK: - TopicCollectionView
 
-let TOPIC_CELL_WIDTH:CGFloat = (SCREEN_WIDTH-4*TOPIC_CELL_SPACE) / 3
+let TOPIC_CELL_WIDTH:CGFloat = (SCREEN_WIDTH-4*TOPIC_CELL_SPACE-20) / 3
 let TOPIC_CELL_HEIGHT:CGFloat = TOPIC_CELL_WIDTH * 3/5
 let TOPIC_CELL_SPACE:CGFloat = 10
 

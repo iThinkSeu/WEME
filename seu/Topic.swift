@@ -99,8 +99,12 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "publishPost:", name: ComposePostVC.DID_SEND_POST_NOTIFICATION, object: nil)
+        
+        MobClick.beginLogPageView("Topic-\(topicID)")
 
     }
+    
+    
 
     
     func publishPost(sender:AnyObject) {
@@ -110,6 +114,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         visualView?.removeFromSuperview()
+        MobClick.endLogPageView("Topic-\(topicID)")
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -236,7 +241,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
         initialTransform = CATransform3DTranslate(initialTransform, offset.x, offset.y, 0)
         
         
-        composeAction = FloatingActionView(center: CGPointMake(view.frame.size.width-40, view.frame.size.height-60), radius: 30, color: UIColor.colorFromRGB(0x32CD32), icon: UIImage(named: "edit")!, scrollview:tableView)
+        composeAction = FloatingActionView(center: CGPointMake(view.frame.size.width-40, view.frame.size.height-60), radius: 30, color: THEME_COLOR, icon: UIImage(named: "edit")!, scrollview:tableView)
         composeAction.hideWhileScrolling = true
         composeAction.delegate = self
         view.addSubview(composeAction)
@@ -262,7 +267,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
                         guard json != .null && json["result"] != .null && json["result"]["imageurl"] != .null  else {
                             return
                         }
-                        S.imgBG.sd_setImageWithURL(NSURL(string:json["result"]["imageurl"].stringValue)!, placeholderImage: UIImage(named: "test"))
+                        S.imgBG.sd_setImageWithURL(NSURL(string:json["result"]["imageurl"].stringValue)!, placeholderImage: UIImage(named: "profile_background"))
                         S.sloganLabel.text = json["result"]["slogan"].stringValue
                     }
                 }
@@ -408,7 +413,6 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
         }
         
         if indexPath.row >= posts.count - 5 && !isLoading{
-            print("called load")
             fetchTopicPostsAtPage(currentPage)
         }
     }
@@ -531,10 +535,14 @@ extension TopicVC: TopicTableViewCellDelegate {
     
     func didTapAvatarAtCell(cell: TopicTableViewCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count {
-            let vc = MeVC()
-            let data = posts[indexPath.row]
-            vc.friendID = data.userid
-            navigationController?.pushViewController(vc, animated: true)
+            if let id = myId {
+                let vc = MeInfoVC()
+                let data = posts[indexPath.row]
+                vc.id = data.userid
+                if id != vc.id {
+                    navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         }
     }
 }
@@ -542,10 +550,14 @@ extension TopicVC: TopicTableViewCellDelegate {
 extension TopicVC:TopicTableViewPureTextCellDelegate {
     func didTapAvatarAtPureTextCell(cell: TopicTableViewPureTextCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count {
-            let vc = MeVC()
-            let data = posts[indexPath.row]
-            vc.friendID = data.userid
-            navigationController?.pushViewController(vc, animated: true)
+            if let id = myId {
+                let vc = MeInfoVC()
+                let data = posts[indexPath.row]
+                vc.id = data.userid
+                if id != myId {
+                    navigationController?.pushViewController(vc, animated: true)
+                }
+            }
         }
     }
 }

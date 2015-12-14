@@ -8,6 +8,7 @@
 
 #import "STInputBar.h"
 #import "STEmojiKeyboard.h"
+#import "WE-Swift.h"
 
 #define kSTIBDefaultHeight 44
 #define kSTLeftButtonWidth 44
@@ -15,6 +16,8 @@
 #define kSTRightButtonWidth 55
 #define kSTTextviewDefaultHeight 34
 #define kSTTextviewMaxHeight 80
+
+
 
 @interface STInputBar () <UITextViewDelegate>
 
@@ -67,9 +70,10 @@
 }
 
 - (void)loadUI{
-    self.backgroundColor = [UIColor lightGrayColor];
+    self.backgroundColor = [UIColor colorFromRGB:0xefeff4];//[UIColor whiteColor];
 //[UIColor colorWithWhite:0 alpha:0.7];
-    
+    self.layer.cornerRadius = 4.0;
+    self.layer.masksToBounds = YES;
     _keyboard = [STEmojiKeyboard keyboard];
     _enablePhoto = YES;
     
@@ -77,13 +81,13 @@
     [_keyboardTypeButton addTarget:self action:@selector(keyboardTypeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     _keyboardTypeButton.tag = 0;
     UIImage *keyboard = [[UIImage imageNamed:_switchKeyboardImages[_keyboardTypeButton.tag]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    _keyboardTypeButton.tintColor = [UIColor whiteColor];
+    _keyboardTypeButton.tintColor = [UIColor colorFromRGB:0x3e5d9e];//[UIColor whiteColor];
     [_keyboardTypeButton setImage: keyboard forState:UIControlStateNormal];
     
     self.photoButton = [[UIButton alloc] initWithFrame:CGRectMake(kSTLeftButtonWidth, (kSTIBDefaultHeight-kSTLeftButtonHeight)/2, kSTLeftButtonWidth, kSTLeftButtonHeight)];
     [self.photoButton addTarget:self action:@selector(photoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.photoButton setImage:[[UIImage imageNamed:@"photoButton"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    self.photoButton.tintColor = [UIColor whiteColor];
+    self.photoButton.tintColor = [UIColor colorFromRGB:0x3e5d9e];//[UIColor whiteColor];
     
     self.textView = [[UITextView alloc] initWithFrame:CGRectMake(2*kSTLeftButtonWidth, (kSTIBDefaultHeight-kSTTextviewDefaultHeight)/2, CGRectGetWidth(self.frame)-2*kSTLeftButtonWidth-kSTRightButtonWidth, kSTTextviewDefaultHeight)];
     //self.textView.backgroundColor = [UIColor clearColor];
@@ -92,7 +96,7 @@
     self.textView.font = [UIFont systemFontOfSize:16];
     self.textView.returnKeyType = UIReturnKeyDefault;//UIReturnKeyDone;
     self.textView.delegate = self;
-    self.textView.tintColor = [UIColor darkGrayColor];//[UIColor whiteColor];
+    self.textView.tintColor = [UIColor colorFromRGB:0x3e5d9e];//[UIColor darkGrayColor];//[UIColor whiteColor];
     self.textView.scrollEnabled = NO;
     self.textView.layer.cornerRadius = 6;
     self.textView.showsVerticalScrollIndicator = NO;
@@ -107,8 +111,8 @@
     self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.sendButton.frame = CGRectMake(self.frame.size.width-kSTRightButtonWidth, 0, kSTRightButtonWidth, kSTIBDefaultHeight);
     [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.3] forState:UIControlStateDisabled];
+    [self.sendButton setTitleColor:[UIColor colorFromRGB:0x3e5d9e] forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor colorWithRed:197/255.0 green:197/255.0 blue:218/255.0 alpha:1.0] forState:UIControlStateDisabled];
     [self.sendButton setTitleEdgeInsets:UIEdgeInsetsMake(2.50f, 0.0f, 0.0f, 0.0f)];
     self.sendButton.titleLabel.font = [UIFont systemFontOfSize:19];
     [self.sendButton addTarget:self action:@selector(sendTextCommentTaped:) forControlEvents:UIControlEventTouchUpInside];

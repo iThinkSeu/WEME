@@ -71,7 +71,7 @@ class ComposeMessageVC:UIViewController {
         
         
         let controller = ImagePickerSheetController(mediaType: .Image)
-        controller.view.tintColor = UIColor.redColor()
+        controller.view.tintColor = THEME_COLOR//UIColor.redColor()
         controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
             presentImagePickerController(.Camera)
             }, secondaryHandler: {[weak self]_, numberOfPhotos in
@@ -513,7 +513,7 @@ class MessagePureTextCell:UITableViewCell {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.boldSystemFontOfSize(15)
         //nameLabel.backgroundColor = SECONDAY_COLOR
-        nameLabel.textColor = UIColor.colorFromRGB(0x6A5ACD)
+        nameLabel.textColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)
         contentView.addSubview(nameLabel)
         
         infoLabel = UILabel()
@@ -741,7 +741,7 @@ class MessageSingleImageCell:UITableViewCell {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.boldSystemFontOfSize(15)
         //nameLabel.backgroundColor = SECONDAY_COLOR
-        nameLabel.textColor = UIColor.colorFromRGB(0x6A5ACD)
+        nameLabel.textColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)
         contentView.addSubview(nameLabel)
         
         infoLabel = UILabel()
@@ -1082,7 +1082,7 @@ class MessageMultiImageCell:UITableViewCell {
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.boldSystemFontOfSize(15)
         //nameLabel.backgroundColor = SECONDAY_COLOR
-        nameLabel.textColor = UIColor.colorFromRGB(0x6A5ACD)
+        nameLabel.textColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)
         contentView.addSubview(nameLabel)
         
         infoLabel = UILabel()
@@ -1456,6 +1456,10 @@ extension MessageVC:MessageSingleImageCellDelegate, MessageMultiImageCellDelegat
 }
 
 
+protocol MessageConversationCellDelegate:class {
+    func didTapAvatarAtCell(cell:MessageConversationCell)
+}
+
 class MessageConversationCell : UITableViewCell {
     var avatar :UIImageView!
     var nameLabel:UILabel!
@@ -1464,9 +1468,23 @@ class MessageConversationCell : UITableViewCell {
     var schoolLabel:UILabel!
     var gender:UIImageView!
     var alertInfoView:UIView!
+    var messageIcon:UIImageView!
+    weak var delegate:MessageConversationCellDelegate?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        contentView.backgroundColor = UIColor.whiteColor()
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        contentView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(snp_left).offset(10)
+            make.right.equalTo(snp_right).offset(-10)
+            make.top.equalTo(snp_top)
+            make.bottom.equalTo(snp_bottom)
+            contentView.layer.cornerRadius = 4.0
+            contentView.layer.masksToBounds = true
+        }
         
         avatar = UIImageView()
         //avatar.translatesAutoresizingMaskIntoConstraints = false
@@ -1474,44 +1492,52 @@ class MessageConversationCell : UITableViewCell {
         avatar.layer.cornerRadius = 30
         avatar.layer.masksToBounds = true
         //avatar.userInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: "tapAvatar:")
+        avatar.userInteractionEnabled = true
+        avatar.addGestureRecognizer(tap)
         avatar.bounds.size = CGSizeMake(60, 60)
-        addSubview(avatar)
+        contentView.addSubview(avatar)
         
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-        nameLabel.textColor = UIColor.colorFromRGB(0x6A5ACD)
+        nameLabel.textColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)
         //nameLabel.backgroundColor = SECONDAY_COLOR
-        addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         
         infoLabel = UILabel()
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-       
+        infoLabel.textColor = UIColor.lightGrayColor()
         //infoLabel.textAlignment = .Center
-        addSubview(infoLabel)
+        contentView.addSubview(infoLabel)
         
         timeLabel = UILabel()
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-        timeLabel.textColor = UIColor.lightGrayColor()
+        timeLabel.textColor = THEME_COLOR_BACK
         timeLabel.textAlignment = .Right
-        addSubview(timeLabel)
+        contentView.addSubview(timeLabel)
         
         gender = UIImageView()
         gender.translatesAutoresizingMaskIntoConstraints  = false
-        addSubview(gender)
+        contentView.addSubview(gender)
         
         schoolLabel = UILabel()
         schoolLabel.translatesAutoresizingMaskIntoConstraints = false
         schoolLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         //schoolLabel.backgroundColor = THEME_COLOR
-        schoolLabel.textColor = UIColor.lightGrayColor()
-        addSubview(schoolLabel)
+        schoolLabel.textColor = THEME_COLOR_BACK
+        contentView.addSubview(schoolLabel)
         
         alertInfoView = UIView()
         alertInfoView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(alertInfoView)
+        contentView.addSubview(alertInfoView)
+        
+        messageIcon = UIImageView(image: UIImage(named: "message")?.imageWithRenderingMode(.AlwaysTemplate))
+        messageIcon.tintColor = THEME_COLOR_BACK
+        messageIcon.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(messageIcon)
         
         avatar.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(snp_leftMargin)
@@ -1527,6 +1553,7 @@ class MessageConversationCell : UITableViewCell {
             make.centerY.equalTo(timeLabel.snp_centerY)
             make.top.equalTo(avatar.snp_top)
             make.height.equalTo(rect.height)
+            nameLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
         }
         
         timeLabel.snp_makeConstraints { (make) -> Void in
@@ -1539,26 +1566,35 @@ class MessageConversationCell : UITableViewCell {
         
         schoolLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
-            make.centerY.equalTo(gender.snp_centerY)
+           // make.centerY.equalTo(gender.snp_centerY)
             make.top.equalTo(nameLabel.snp_bottom).offset(5)
             make.height.equalTo(rec.height)
            // make.bottom.equalTo(avatar.snp_bottomMargin)
         }
         
         gender.snp_makeConstraints { (make) -> Void in
-            make.right.equalTo(timeLabel.snp_right)
+            //make.right.equalTo(timeLabel.snp_left)
+            make.centerY.equalTo(nameLabel.snp_centerY)
             make.height.equalTo(18)
             make.width.equalTo(16)
-            make.left.equalTo(schoolLabel.snp_right)
+            make.left.equalTo(nameLabel.snp_right).offset(2)
+        }
+        
+        messageIcon.snp_makeConstraints { (make) -> Void in
+            make.width.height.equalTo(15)
+            make.left.equalTo(nameLabel.snp_left)
+            make.top.equalTo(schoolLabel.snp_bottom).offset(5)
+            make.centerY.equalTo(infoLabel.snp_centerY)
         }
         
         infoLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(nameLabel.snp_left)
-            make.top.equalTo(schoolLabel.snp_bottom).offset(0)
+            make.left.equalTo(messageIcon.snp_right).offset(10)
+            //make.top.equalTo(schoolLabel.snp_bottom).offset(5)
             //make.right.equalTo(snp_rightMargin)
-            make.bottom.equalTo(snp_bottomMargin)
+            //make.bottom.equalTo(snp_bottomMargin)
             make.centerY.equalTo(alertInfoView.snp_centerY)
         }
+        
         alertInfoView.snp_makeConstraints { (make) -> Void in
             make.right.equalTo(snp_rightMargin)
             make.left.equalTo(infoLabel.snp_right)
@@ -1568,6 +1604,10 @@ class MessageConversationCell : UITableViewCell {
         
         
         
+    }
+    
+    func tapAvatar(sender:AnyObject?) {
+        delegate?.didTapAvatarAtCell(self)
     }
     
     override func prepareForReuse() {
@@ -1601,9 +1641,14 @@ class MessageConversationVC:UITableViewController {
         
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = true
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
     }
     
     func pullRefresh(sender:AnyObject) {
@@ -1619,7 +1664,7 @@ class MessageConversationVC:UITableViewController {
     func loadConversation() {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(TOKEN) {
             request(.POST, GET_MESSGE_USER_LIST, parameters: ["token":token], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
-               // debugPrint(response)
+               //debugPrint(response)
                 if let d = response.result.value {
                     let json = JSON(d)
                     if json["state"] == "successful" {
@@ -1640,11 +1685,11 @@ class MessageConversationVC:UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return conversations.count
     }
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessageConversationCell), forIndexPath: indexPath) as! MessageConversationCell
-        let data = conversations[indexPath.row]
+        let data = conversations[indexPath.section]
         let id = data["SendId"].stringValue
         let url = thumbnailAvatarURLForID(id)
         //cell.avatar.setImageWithURL(url, placeholder:nil, animated: false)
@@ -1672,52 +1717,35 @@ class MessageConversationVC:UITableViewController {
         if let date = dateFormat.dateFromString(lasttime) {
             cell.timeLabel.text = date.hunmanReadableString()
         }
-//        cell.nameLabel.text = "小历同学"
-//        cell.timeLabel.text = "1小时前"
-//        cell.avatar.image = UIImage(named: "dev_liuli")
-//        cell.schoolLabel.text = "东南大学"
-//        cell.infoLabel.text = "write the code, change the world. music never sleeps, coding never ends"
-//        cell.gender.image = UIImage(named: "male")
-//        let badge = CustomBadge(string: "2")
-//        cell.alertInfoView.addSubview(badge)
+        
+        cell.delegate = self
+
+        cell.selectionStyle = .None
+        cell.backgroundColor = tableView.backgroundColor
         return cell
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversations.count
+        return 1
     }
     
-  /*  override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        
-        return true
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
     }
     
-    
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .Normal, title: "删除会话") { (action, indexPath) -> Void in
-            
-        }
-        delete.backgroundColor = THEME_COLOR
-        return [delete]
+    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRectMake(0, 0,tableView.frame.size.width, 10))
+        v.backgroundColor = tableView.backgroundColor
+        return v
     }
-    */
+ 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let data = conversations[indexPath.row]
+        let data = conversations[indexPath.section]
         let id = data["SendId"].stringValue
         let msgVC = MessageVC()
         let nav = UINavigationController(rootViewController: msgVC)
         nav.navigationBar.barStyle = .Black
         msgVC.sendID = id
-//        presentViewController(nav, animated: true) { () -> Void in
-//            let cell = tableView.cellForRowAtIndexPath(indexPath) as! MessageConversationCell
-//            if cell.alertInfoView.subviews.count > 0 &&  cell.alertInfoView.subviews[0] is CustomBadge {
-//                print("here")
-//                cell.alertInfoView.subviews[0].removeFromSuperview()
-//            }
-//        }
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! MessageConversationCell
         if cell.alertInfoView.subviews.count > 0 &&  cell.alertInfoView.subviews[0] is CustomBadge {
             cell.alertInfoView.subviews[0].removeFromSuperview()
@@ -1726,5 +1754,18 @@ class MessageConversationVC:UITableViewController {
         navigationController?.pushViewController(msgVC, animated: true)
     }
     
+    
+}
+
+extension MessageConversationVC:MessageConversationCellDelegate {
+    func didTapAvatarAtCell(cell: MessageConversationCell) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            let data = conversations[indexPath.section]
+            let id = data["SendId"].stringValue
+            let vc = MeInfoVC()
+            vc.id = id
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
 }
 

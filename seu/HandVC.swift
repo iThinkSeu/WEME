@@ -100,7 +100,7 @@ class AcitivityTableViewCell:UITableViewCell {
         constraint = NSLayoutConstraint(item: peopleLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: locationLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 5)
         back.addConstraint(constraint)
 
-        registerButton.backgroundColor = UIColor.redColor()
+        registerButton.backgroundColor = THEME_COLOR//UIColor.redColor()
         registerButton.titleLabel?.textColor = UIColor.whiteColor()
         registerButton.layer.cornerRadius = 5.0
 //        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-40-[register(300@50)]-40-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
@@ -181,7 +181,7 @@ class HandVC:UITableViewController, ActivityTableViewCellDelegate, UINavigationC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "牵手"
+        title = "活动"
         setNeedsStatusBarAppearanceUpdate()
         navigationController?.navigationBar.barStyle = UIBarStyle.Black
         navigationController?.navigationBar.translucent = false
@@ -383,11 +383,11 @@ class ActivityRegisterVC:UIViewController {
         navigationController?.navigationBar.barStyle = .Black
        // tabBarController?.tabBar.hidden = true
         
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         _view = UIScrollView()
         // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
         
-        _view.backgroundColor = backColor
+        _view.backgroundColor = BACK_COLOR//backColor
         view.addSubview(_view)
         _view.translatesAutoresizingMaskIntoConstraints = false
         var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[_view]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["_view":_view])
@@ -397,7 +397,7 @@ class ActivityRegisterVC:UIViewController {
         constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         view.addConstraint(constraint)
         contentView = UIView()
-        contentView.backgroundColor = backColor
+        contentView.backgroundColor = BACK_COLOR//backColor
         _view.addSubview(contentView)
         //contentView.backgroundColor = UIColor.yellowColor()
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -509,7 +509,7 @@ class ActivityRegisterVC:UIViewController {
     }
     
     func loadUI() {
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+       // let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         
         var constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
         view.addConstraint(constraint)
@@ -550,7 +550,7 @@ class ActivityRegisterVC:UIViewController {
         
         
         contentView.addSubview(back)
-        back.backgroundColor = backColor
+        back.backgroundColor = BACK_COLOR//backColor
         back.translatesAutoresizingMaskIntoConstraints = false
         var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
         contentView.addConstraints(constraints)
@@ -567,7 +567,8 @@ class ActivityRegisterVC:UIViewController {
         back.addSubview(personalInfoLabel)
 
         editPersonalInfo.translatesAutoresizingMaskIntoConstraints = false
-        editPersonalInfo.image = UIImage(named: "edit")
+        editPersonalInfo.image = UIImage(named: "edit")?.imageWithRenderingMode(.AlwaysTemplate)
+        editPersonalInfo.tintColor = THEME_COLOR
         editPersonalInfo.userInteractionEnabled = true
         let tapEditPersonalInfo = UITapGestureRecognizer(target: self, action: "editPersonalInfo:")
         editPersonalInfo.addGestureRecognizer(tapEditPersonalInfo)
@@ -623,7 +624,7 @@ class ActivityRegisterVC:UIViewController {
         
         
         contactInfoLabel.translatesAutoresizingMaskIntoConstraints = false
-        contactInfoLabel.backgroundColor = backColor
+        contactInfoLabel.backgroundColor = BACK_COLOR//backColor
         contentView.addSubview(contactInfoLabel)
         contactInfoLabel.text = "联系方式"
         contactInfoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
@@ -761,7 +762,7 @@ class ActivityRegisterVC:UIViewController {
         
         
         contentView.addSubview(back2)
-        back2.backgroundColor = backColor
+        back2.backgroundColor = BACK_COLOR//backColor
         back2.translatesAutoresizingMaskIntoConstraints = false
         constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back2]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
         contentView.addConstraints(constraints)
@@ -778,7 +779,8 @@ class ActivityRegisterVC:UIViewController {
         back2.addSubview(schoolInfoLabel)
         
         editSchoolInfo.translatesAutoresizingMaskIntoConstraints = false
-        editSchoolInfo.image = UIImage(named: "edit")
+        editSchoolInfo.image = UIImage(named: "edit")?.imageWithRenderingMode(.AlwaysTemplate)
+        editSchoolInfo.tintColor = THEME_COLOR
         editSchoolInfo.userInteractionEnabled = true
         let tapEditSchoolInfo = UITapGestureRecognizer(target: self, action: "editSchoolInfo:")
         editSchoolInfo.addGestureRecognizer(tapEditSchoolInfo)
@@ -819,7 +821,7 @@ class ActivityRegisterVC:UIViewController {
    
         
         contentView.addSubview(back4)
-        back4.backgroundColor = backColor
+        back4.backgroundColor = BACK_COLOR//backColor
         back4.translatesAutoresizingMaskIntoConstraints = false
         constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back4]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
         contentView.addConstraints(constraints)
@@ -836,7 +838,8 @@ class ActivityRegisterVC:UIViewController {
         back4.addSubview(editMoreInfoLabel)
         
         editMoreInfo.translatesAutoresizingMaskIntoConstraints = false
-        editMoreInfo.image = UIImage(named: "edit")
+        editMoreInfo.image = UIImage(named: "edit")?.imageWithRenderingMode(.AlwaysTemplate)
+        editMoreInfo.tintColor = THEME_COLOR
         editMoreInfo.userInteractionEnabled = true
         let tapEditMoreInfo = UITapGestureRecognizer(target: self, action: "editMoreInfo:")
         editMoreInfo.addGestureRecognizer(tapEditMoreInfo)
@@ -911,7 +914,7 @@ class ActivityRegisterVC:UIViewController {
         
         seperator = UILabel()
         seperator.translatesAutoresizingMaskIntoConstraints = false
-        seperator.backgroundColor = UIColor.blackColor()
+        seperator.backgroundColor = THEME_COLOR_BACK//UIColor.blackColor()
         contentView.addSubview(seperator)
         constraint = NSLayoutConstraint(item: seperator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 2)
         contentView.addConstraint(constraint)
@@ -943,7 +946,7 @@ class ActivityRegisterVC:UIViewController {
         
         
         
-        confirmButton.backgroundColor = UIColor.redColor()
+        confirmButton.backgroundColor = THEME_COLOR//UIColor.redColor()
         confirmButton.setTitle("下一步", forState: UIControlState.Normal)
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.layer.cornerRadius = 4.0
@@ -1132,7 +1135,7 @@ class UpLoadImageVC:UIViewController {
         
         
         let controller = ImagePickerSheetController(mediaType: .Image)
-        controller.view.tintColor = UIColor.redColor()
+        controller.view.tintColor = THEME_COLOR//UIColor.redColor()
         controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
             presentImagePickerController(.Camera)
             }, secondaryHandler: {[weak self]_, numberOfPhotos in
@@ -1210,14 +1213,14 @@ class UpLoadImageVC:UIViewController {
         view.addConstraint(constraint)
         
         title = "报名申请"
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        view.backgroundColor = backColor
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        view.backgroundColor = BACK_COLOR//backColor
         
         view.addSubview(spinner)
         
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.backgroundColor = backColor
+        titleLabel.backgroundColor = BACK_COLOR//backColor
         titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         titleLabel.text = "上传生活照(最多2张)"
         titleLabel.textAlignment = .Center
@@ -1246,7 +1249,7 @@ class UpLoadImageVC:UIViewController {
         
         let seperator = UILabel()
         seperator.translatesAutoresizingMaskIntoConstraints = false
-        seperator.backgroundColor = UIColor.blackColor()
+        seperator.backgroundColor = THEME_COLOR_BACK//UIColor.blackColor()
         view.addSubview(seperator)
         constraint = NSLayoutConstraint(item: seperator, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 2)
         view.addConstraint(constraint)
@@ -1279,7 +1282,7 @@ class UpLoadImageVC:UIViewController {
         let confirmButton = UIButton()
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.setTitle("确认报名", forState: UIControlState.Normal)
-        confirmButton.backgroundColor = UIColor.redColor()
+        confirmButton.backgroundColor = THEME_COLOR//UIColor.redColor()
         confirmButton.addTarget(self, action: "confirm:", forControlEvents: UIControlEvents.TouchUpInside)
         confirmButton.layer.cornerRadius = 5
         contentView.addSubview(confirmButton)

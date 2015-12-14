@@ -98,7 +98,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = UIColor.whiteColor()
         tableView.separatorStyle = .None
-        tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0)
+        tableView.contentInset = UIEdgeInsetsMake(-1, 0, 20, 0)
         tableView.backgroundColor = BACK_COLOR
         //tableView.allowsSelection = false
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "didReplyPost:", name: ReplyPostVC.DID_REPLY_POST_NOTIFICATION, object: nil)
@@ -107,7 +107,52 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         refreshCont.tintColor = UIColor.clearColor()
         refreshCont.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshCont)
+        
+        //if WXApi.isWXAppInstalled() {
+            let share = UIBarButtonItem(image: UIImage(named: "share")?.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "share:")
+            share.tintColor = THEME_COLOR
+            navigationItem.rightBarButtonItem = share
+        //}
+        
+        WXApiManager.sharedManager().delegate = self
+        
         configUI()
+    }
+
+    func shareToWeChat(scene: UInt32) {
+        var image:UIImage?
+        if self.post.imageurl.count > 0 {
+            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) as! PostArticleTableViewCell
+            let imgCell =  cell.imageCollectionView.cellForItemAtIndexPath(NSIndexPath(forItem: 0, inSection: 0)) as! TopicImageCollectionViewCell
+            image = Utility.imageWithImage(imgCell.imgView.image, scaledToSize: CGSizeMake(100, 100))//
+            
+        }
+        let title = self.post.title.characters.count < 500 ? self.post.title : self.post.title.substringWithRange(Range<String.Index>(start: self.post.title.startIndex, end: self.post.title.startIndex.advancedBy(500)))
+        let body = self.post.body.characters.count < 1000 ? self.post.body : self.post.body.substringWithRange(Range<String.Index>(start: self.post.body.startIndex, end: self.post.body.startIndex.advancedBy(1000)))
+        WXApiRequestHandler.sendAppContentData(nil, extInfo: "", extURL: "liewliseu://", title: title, description: body, messageExt: "", messageAction: "", thumbImage: image, inScene: WXScene.init(rawValue: scene))
+    }
+    
+    func share(sender:AnyObject) {
+//        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+//        actionSheet.addAction(UIAlertAction(title: "分享到微信会话", style: .Default, handler: { (action) -> Void in
+//            //WXApiRequestHandler.sendText(self.post.body, inScene: WXScene.init(rawValue: 0))
+//           self.shareToWeChat(0)
+//        }))
+//        actionSheet.addAction(UIAlertAction(title: "分享到微信朋友圈", style: .Default, handler: { (action) -> Void in
+//           self.shareToWeChat(1)
+//        }))
+//        actionSheet.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: { (action) -> Void in
+//            self.dismissViewControllerAnimated(true, completion: nil)
+//        }))
+//        actionSheet.view.tintColor = THEME_COLOR//UIColor.redColor()
+//     
+//        self.presentViewController(actionSheet, animated: true,completion: nil)
+       
+        let sheet = IBActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享到微信会话", "分享到微信朋友圈"])
+        sheet.showInView((UIApplication.sharedApplication().delegate?.window)!)
+        sheet.setButtonTextColor(THEME_COLOR)
+        //sheet.blurBackground = true
+
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -120,7 +165,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             let row = CGFloat((post.imageurl.count+2)/3)
             let imgHeight = row*PostImageManager.SIZE+5*(row+1)
-            return 80 + titleHeight + bodyHeight + imgHeight + 60
+            return 80 + titleHeight + bodyHeight + imgHeight + 70
             
         }
         else {
@@ -154,6 +199,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     deinit {
+        WXApiManager.sharedManager().delegate = nil
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -176,7 +222,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.tintColor = UIColor.colorFromRGB(0x32CD32)
+        navigationController?.navigationBar.tintColor = THEME_COLOR//UIColor.colorFromRGB(0x32CD32)
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.barStyle = .Default
     }
@@ -258,10 +304,10 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(PostCommmentTableViewCell), forIndexPath: indexPath) as! PostCommmentTableViewCell
                 
                 let data = comments[indexPath.section-1].reply[indexPath.row-1]
-                let attributedText = NSMutableAttributedString(string: "⎥\(data.name) 回复 \(data.destname) \(data.body)")
-                attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.colorFromRGB(0x32CD32), range: NSMakeRange(0, data.name.characters.count+1))
+                let attributedText = NSMutableAttributedString(string: "⎥\(data.name) 回复 \(data.destname)：\(data.body)")
+                attributedText.addAttribute(NSForegroundColorAttributeName, value: THEME_COLOR, range: NSMakeRange(0, data.name.characters.count+1))
                 attributedText.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(13), range: NSMakeRange(0, data.name.characters.count+1))
-                attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.colorFromRGB(0x32CD32), range: NSMakeRange(data.name.characters.count+5, data.destname.characters.count))
+                attributedText.addAttribute(NSForegroundColorAttributeName, value: THEME_COLOR, range: NSMakeRange(data.name.characters.count+5, data.destname.characters.count))
                 attributedText.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(13), range: NSMakeRange(data.name.characters.count+5, data.destname.characters.count))
                 cell.commentLabel.attributedText = attributedText
                 return cell
@@ -351,7 +397,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     S.post = PostDetail(postid:result["postid"].stringValue, userid: result["userid"].stringValue, name: result["name"].stringValue, school: result["school"].stringValue, gender: result["gender"].stringValue, timestamp: result["timestamp"].stringValue, title: result["title"].stringValue, body: result["body"].stringValue, flag: result["flag"].stringValue,likenumber: result["likenumber"].stringValue, commentnumber: result["commentnumber"].stringValue, imageurl: (result["imageurl"].arrayObject as! [String]), likeusers: like)
                     //dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
                     //})
                 
                 }
@@ -427,7 +473,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                                 //S.tableView.contentOffset = offset
                            // })
                             S.tableView.beginUpdates()
-                            S.tableView.insertSections(indexSets, withRowAnimation: .None)
+                            S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
                             S.tableView.endUpdates()
 
                         //}
@@ -469,7 +515,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func reloadComments() {
-        print(__FUNCTION__)
+       // print(__FUNCTION__)
         alldone = false
         fetchPostDetail()
         comments.removeAll()
@@ -587,7 +633,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                            // let offset = S.tableView.contentOffset
                             //
                           //  S.tableView.reloadData()
-                            //S.tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: .Automatic)
+                            //S.tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: .Fade)
                           //  S.tableView.contentOffset = offset
                             //S.tableView.endUpdates()
                         //})
@@ -598,7 +644,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                             //let offset = S.tableView.contentOffset
                             //
                            //S.tableView.reloadData()
-                            S.tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: .Automatic)
+                            S.tableView.reloadSections(NSIndexSet(index: section), withRowAnimation: .Fade)
                             //S.tableView.contentOffset = offset
                             S.tableView.endUpdates()
                         //})
@@ -607,6 +653,47 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                 }
             })
         }
+    }
+}
+
+//MARK: -ActionSheet
+extension PostVC:IBActionSheetDelegate {
+    func actionSheet(actionSheet: IBActionSheet!, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex == 0 {
+            self.shareToWeChat(0)
+        }
+        else if buttonIndex == 1 {
+            self.shareToWeChat(1)
+        }
+    }
+}
+
+//MARK: - WeChat
+extension PostVC :WXApiManagerDelegate {
+
+    
+    func managerDidRecvAddCardResponse(response: AddCardToWXCardPackageResp!) {
+        
+    }
+    
+    func managerDidRecvGetMessageReq(request: GetMessageFromWXReq!) {
+        
+    }
+    
+    func managerDidRecvAuthResponse(response: SendAuthResp!) {
+        
+    }
+    
+    func managerDidRecvLaunchFromWXReq(request: LaunchFromWXReq!) {
+        
+    }
+    
+    func managerDidRecvMessageResponse(response: SendMessageToWXResp!) {
+        print(response.errCode)
+    }
+    
+    func managerDidRecvShowMessageReq(request: ShowMessageFromWXReq!) {
+        print("\(__FUNCTION__)")
     }
 }
 
@@ -622,9 +709,11 @@ extension PostVC : PostArticleTableViewCellDelegate {
     
     
     func showProfileFor(id:String) {
-        let vc = MeVC()
-        vc.friendID = id
-        navigationController?.pushViewController(vc, animated: true)
+        if let Id = myId where Id != id{
+            let vc = MeInfoVC()
+            vc.id = id
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func didTapAvatar() {
@@ -655,6 +744,19 @@ extension PostVC : PostArticleTableViewCellDelegate {
             vc.postID = post.postid
             navigationController?.pushViewController(vc, animated: true)
         }
+    }
+    
+    func didTapMore() {
+        //MARK: -tapMore
+        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            if index == 0 {
+                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.showInView(self.navigationController!.view)
+            }
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
+        sheet.setButtonTextColor(THEME_COLOR)
+        sheet.showInView(navigationController!.view)
+        
     }
 }
 
@@ -716,6 +818,19 @@ extension PostVC:CommentFooterViewDelegate {
                 }
             })
         }
+    }
+    
+    func didTapMoreAtFooterView(footer: CommentFooterView) {
+        //MARK: -tapMoreAtFooter
+        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            if index == 0 {
+                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.showInView(self.navigationController!.view)
+            }
+
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
+        sheet.setButtonTextColor(THEME_COLOR)
+        sheet.showInView(navigationController!.view)
     }
 }
 
@@ -858,6 +973,7 @@ protocol PostArticleTableViewCellDelegate:class {
     func didTapAvatar()
     func didTapImageCollectionAt(startIndexPath:NSIndexPath)
     func didTapLikeImageAtIndex(index:Int, isMore:Bool)
+    func didTapMore()
 }
 
 class PostArticleTableViewCell:UITableViewCell{
@@ -868,6 +984,7 @@ class PostArticleTableViewCell:UITableViewCell{
     var seperator:UIView!
     var titleLabel:UILabel!
     var bodyLabel:UILabel!
+    var moreAction:UIImageView!
     
     weak var delegate:PostArticleTableViewCellDelegate?
     
@@ -994,7 +1111,9 @@ class PostArticleTableViewCell:UITableViewCell{
         
         like = UIView()
         like.translatesAutoresizingMaskIntoConstraints = false
-        like.backgroundColor = UIColor.colorFromRGB(0xF0F0F0)
+        like.layer.cornerRadius = 2.0
+        like.layer.masksToBounds = true
+        like.backgroundColor = UIColor.clearColor()//BACK_COLOR//UIColor.colorFromRGB(0xF0F0F0)
         let likeTap = UITapGestureRecognizer(target: self, action: "tapLike:")
         like.addGestureRecognizer(likeTap)
         contentView.addSubview(like)
@@ -1015,7 +1134,9 @@ class PostArticleTableViewCell:UITableViewCell{
         
         comment = UIView()
         comment.translatesAutoresizingMaskIntoConstraints = false
-        comment.backgroundColor = UIColor.colorFromRGB(0xF0F0F0)
+        comment.layer.cornerRadius = 2.0
+        comment.layer.masksToBounds = true
+        comment.backgroundColor = UIColor.clearColor()//BACK_COLOR//UIColor.colorFromRGB(0xF0F0F0)
         let commentTap = UITapGestureRecognizer(target: self, action: "tapComment:")
         comment.addGestureRecognizer(commentTap)
         contentView.addSubview(comment)
@@ -1035,6 +1156,15 @@ class PostArticleTableViewCell:UITableViewCell{
         
         likeCollectionView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(likeCollectionView)
+        
+        
+        moreAction = UIImageView(image: UIImage(named: "more"))
+        moreAction.translatesAutoresizingMaskIntoConstraints = true
+        moreAction.layer.cornerRadius = 15
+        moreAction.userInteractionEnabled = true
+        let tapMore = UITapGestureRecognizer(target: self, action: "tapMore:")
+        moreAction.addGestureRecognizer(tapMore)
+        contentView.addSubview(moreAction)
         
         avatar.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(contentView.snp_topMargin)
@@ -1092,6 +1222,12 @@ class PostArticleTableViewCell:UITableViewCell{
             make.right.equalTo(contentView.snp_rightMargin)
         }
         
+        moreAction.snp_makeConstraints { (make) -> Void in
+            make.height.width.equalTo(30)
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.centerY.equalTo(comment.snp_centerY)
+        }
+        
        comment.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(imageCollectionView.snp_bottom).offset(5)
             make.right.equalTo(snp_rightMargin)
@@ -1142,17 +1278,19 @@ class PostArticleTableViewCell:UITableViewCell{
     }
     
     func tapLike(sender:AnyObject) {
-        print("cell like")
         delegate?.didTapLike()
     }
     
     func tapComment(sender:AnyObject) {
-        print("cell comment")
         delegate?.didTapComment()
     }
     
     func tapAvatar(sender:AnyObject) {
         delegate?.didTapAvatar()
+    }
+    
+    func tapMore(sender:AnyObject) {
+        delegate?.didTapMore()
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -1488,6 +1626,7 @@ class CommentHeaderView:UITableViewHeaderFooterView {
 protocol CommentFooterViewDelegate:class {
     func didTapCommentAtFooterView(footer:CommentFooterView)
     func didTapLikeAtFooterView(footer:CommentFooterView)
+    func didTapMoreAtFooterView(footer:CommentFooterView)
 }
 
 class CommentFooterView:UITableViewHeaderFooterView {
@@ -1498,6 +1637,7 @@ class CommentFooterView:UITableViewHeaderFooterView {
     var commentLabel:UILabel!
     var likeLabel:UILabel!
     var seperator:UIView!
+    var moreAction:UIImageView!
     
     weak var delegate:CommentFooterViewDelegate?
     
@@ -1514,7 +1654,7 @@ class CommentFooterView:UITableViewHeaderFooterView {
         
         like = UIView()
         like.translatesAutoresizingMaskIntoConstraints = false
-        like.backgroundColor = UIColor.whiteColor()
+        like.backgroundColor = UIColor.clearColor()
         let likeTap = UITapGestureRecognizer(target: self, action: "tapLike:")
         like.addGestureRecognizer(likeTap)
         contentView.addSubview(like)
@@ -1533,7 +1673,7 @@ class CommentFooterView:UITableViewHeaderFooterView {
         
         comment = UIView()
         comment.translatesAutoresizingMaskIntoConstraints = false
-        comment.backgroundColor = UIColor.whiteColor()
+        comment.backgroundColor = UIColor.clearColor()
         let commentTap = UITapGestureRecognizer(target: self, action: "tapComment:")
         comment.addGestureRecognizer(commentTap)
         contentView.addSubview(comment)
@@ -1555,6 +1695,15 @@ class CommentFooterView:UITableViewHeaderFooterView {
         contentView.addSubview(seperator)
         seperator.backgroundColor = UIColor.colorFromRGB(0xF1F1F1)
         
+        moreAction = UIImageView(image: UIImage(named: "more"))
+        moreAction.translatesAutoresizingMaskIntoConstraints = true
+        moreAction.layer.cornerRadius = 15
+        moreAction.userInteractionEnabled = true
+        let tapMore = UITapGestureRecognizer(target: self, action: "tapMore:")
+        moreAction.addGestureRecognizer(tapMore)
+        contentView.addSubview(moreAction)
+        
+
 
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -1564,6 +1713,13 @@ class CommentFooterView:UITableViewHeaderFooterView {
             make.top.equalTo(snp_top)
             make.bottom.equalTo(snp_bottom)
         }
+        
+        moreAction.snp_makeConstraints { (make) -> Void in
+            make.height.width.equalTo(30)
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.centerY.equalTo(comment.snp_centerY)
+        }
+
         
         comment.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(contentView.snp_top).offset(5)
@@ -1627,12 +1783,14 @@ class CommentFooterView:UITableViewHeaderFooterView {
     }
     
     func tapLike(sender:AnyObject) {
-        print("cell like")
         delegate?.didTapLikeAtFooterView(self)
     }
     
     func tapComment(sender:AnyObject) {
-        print("cell comment")
         delegate?.didTapCommentAtFooterView(self)
+    }
+    
+    func tapMore(sender:AnyObject) {
+        delegate?.didTapMoreAtFooterView(self)
     }
 }

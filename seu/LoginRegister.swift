@@ -177,7 +177,7 @@ class LoginRegisterVC: UIViewController {
             view.addGestureRecognizer(tap)
             
             
-            let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+            //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
             _view = UIScrollView()
             // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
             
@@ -255,7 +255,7 @@ class LoginRegisterVC: UIViewController {
             let viewDict = ["account":accountTextField!, "codeText":codeTextField!, "codeButton":codeButton!, "password":passwordTextField!,"passwordRetype":passwordRetypeTextField! ,"next" : nextButton!, "back":back, "back1":back1, "back2":back2,"back3":back3, "accountLabel":accountLabel, "codeLabel":codeLabel, "passwordLabel":passwordLabel, "passwordRetypeLabel":passwordRetypeLabel]
            
             
-            back.backgroundColor = backColor
+            back.backgroundColor = BACK_COLOR//backColor
             back.translatesAutoresizingMaskIntoConstraints = false
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 5)
@@ -310,7 +310,7 @@ class LoginRegisterVC: UIViewController {
 //            
             
             
-            back2.backgroundColor = backColor
+            back2.backgroundColor = BACK_COLOR//backColor
             back2.translatesAutoresizingMaskIntoConstraints = false
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back2]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             constraint = NSLayoutConstraint(item: back2, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: back, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 5)
@@ -340,7 +340,7 @@ class LoginRegisterVC: UIViewController {
             
           
             
-            back3.backgroundColor = backColor
+            back3.backgroundColor = BACK_COLOR//backColor
             back3.translatesAutoresizingMaskIntoConstraints = false
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back3]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             constraint = NSLayoutConstraint(item: back3, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: back2, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 5)
@@ -377,7 +377,7 @@ class LoginRegisterVC: UIViewController {
             nextButton!.addTarget(self, action: "next:", forControlEvents: UIControlEvents.TouchUpInside)
             nextButton?.setTitle("注册", forState: UIControlState.Normal)
             nextButton?.translatesAutoresizingMaskIntoConstraints = false
-            nextButton?.backgroundColor = UIColor.redColor()
+            nextButton?.backgroundColor = THEME_COLOR//UIColor.redColor()
             nextButton?.layer.cornerRadius = 4.0
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[next]-20-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             
@@ -541,7 +541,7 @@ class LoginRegisterVC: UIViewController {
             let back = UIView()
             let back1 = UIView()
             let back2 = UIView()
-            let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+            //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
             
             contentView.addSubview(back)
             contentView.addSubview(back1)
@@ -557,7 +557,7 @@ class LoginRegisterVC: UIViewController {
             
             let viewDict = ["account":accountTextField!,  "password":passwordTextField!, "login" : loginButton!, "back":back, "back1":back1, "back2":back2, "accountLabel":accountLabel,  "passwordLabel":passwordLabel, "forgetPasswordLabel":forgetpasswordLabel]
             
-            back.backgroundColor = backColor
+            back.backgroundColor = BACK_COLOR//backColor
             back.translatesAutoresizingMaskIntoConstraints = false
             var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             var constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
@@ -580,7 +580,7 @@ class LoginRegisterVC: UIViewController {
             back.addConstraint(constraint)
             
             
-            back1.backgroundColor = backColor
+            back1.backgroundColor = BACK_COLOR//backColor
             back1.translatesAutoresizingMaskIntoConstraints = false
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back1]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             constraint = NSLayoutConstraint(item: back1, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: back, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 5)
@@ -629,7 +629,7 @@ class LoginRegisterVC: UIViewController {
             loginButton?.addTarget(self, action: "login:", forControlEvents: UIControlEvents.TouchUpInside)
             loginButton?.setTitle("登录", forState: UIControlState.Normal)
             loginButton?.translatesAutoresizingMaskIntoConstraints = false
-            loginButton?.backgroundColor = UIColor.redColor()
+            loginButton?.backgroundColor = THEME_COLOR//UIColor.redColor()
             loginButton?.layer.cornerRadius = 4.0
             constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[login]-20-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             
@@ -683,8 +683,18 @@ class LoginRegisterVC: UIViewController {
                         NSUserDefaults.standardUserDefaults().setValue(myId, forKey: ID)
                         NSUserDefaults.standardUserDefaults().synchronize()
                         
-                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
-                        appDelegate?.window?.rootViewController = HomeVC()
+                        let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                        hud.labelText = "登陆成功"
+                        hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                        hud.mode = .CustomView
+                
+                        let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+                        dispatch_after(delay, dispatch_get_main_queue(), { () -> Void in
+                            hud.hide(true)
+                            let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+                            appDelegate?.window?.rootViewController = HomeVC()
+                        })
+                     
                     }
                     else {
                         let alert = UIAlertController(title: "提示", message: json["reason"].stringValue, preferredStyle: .Alert)
@@ -859,7 +869,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         view.addGestureRecognizer(tap)
 
         
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         _view = UIScrollView()
         //_view.delegate = self
         // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
@@ -927,7 +937,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         sexPicker = UIPickerView()
         sexPicker.dataSource = self
         sexPicker.delegate = self
-        sexPicker.backgroundColor = backColor
+        sexPicker.backgroundColor = BACK_COLOR//backColor
         
         sexTextField.inputView = sexPicker
         
@@ -942,7 +952,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         let titleButton = UIBarButtonItem(customView: sexPickerTitleLabel)
         let flexibleRight = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: "")
         let cancelButton = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "sexPickerCancel:")
-        toolbar.tintColor = UIColor.redColor()
+        toolbar.tintColor = THEME_COLOR//UIColor.redColor()
         
         toolbar.setItems([cancelButton, flexibleLeft, titleButton, flexibleRight, doneButton], animated: false)
         
@@ -952,7 +962,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         datePicker = UIDatePicker()
         datePicker.datePickerMode = UIDatePickerMode.Date
         datePicker .addTarget(self, action: "updateBirthDate:", forControlEvents: UIControlEvents.ValueChanged)
-        datePicker.backgroundColor = backColor
+        datePicker.backgroundColor = BACK_COLOR//backColor
         birthDayTextField.inputView = datePicker
         
         let toolbar1 = UIToolbar(frame: CGRectMake(0, 0, view.frame.size.width, 44))
@@ -965,7 +975,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         let titleButton1 = UIBarButtonItem(customView: birthPickerTitleLabel)
         let flexibleRight1 = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: "")
         let cancelButton1 = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "birthPickerCancel:")
-        toolbar1.tintColor = UIColor.redColor()
+        toolbar1.tintColor = THEME_COLOR//UIColor.redColor()
         
         toolbar1.setItems([cancelButton1, flexibleLeft1, titleButton1, flexibleRight1, doneButton1], animated: false)
         
@@ -986,7 +996,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         avatarLabel.text = "头像:"
         
         
-        back.backgroundColor = backColor
+        back.backgroundColor = BACK_COLOR//backColor
         back.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(back)
@@ -1031,7 +1041,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         back.addConstraint(constraint)
         
         
-        back1.backgroundColor = backColor
+        back1.backgroundColor = BACK_COLOR//backColor
         back1.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(back1)
         
@@ -1056,7 +1066,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         
         
         
-        back2.backgroundColor = backColor
+        back2.backgroundColor = BACK_COLOR//backColor
         back2.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(back2)
         
@@ -1080,7 +1090,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         back2.addConstraint(constraint)
         
         
-        back3.backgroundColor = backColor
+        back3.backgroundColor = BACK_COLOR//backColor
         back3.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(back3)
         
@@ -1104,7 +1114,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         back3.addConstraint(constraint)
         
         contentView.addSubview(back4)
-        back4.backgroundColor = backColor
+        back4.backgroundColor = BACK_COLOR//backColor
         back4.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -1421,11 +1431,11 @@ class RegisterMoreInfoVC:UIViewController, UITextViewDelegate {
         navigationItem.rightBarButtonItem = rightButton
         
         
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         _view = UIScrollView()
         // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
         
-        _view.backgroundColor = backColor
+        _view.backgroundColor = BACK_COLOR//backColor
         view.addSubview(_view)
         _view.translatesAutoresizingMaskIntoConstraints = false
         var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[_view]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["_view":_view])
@@ -1435,7 +1445,7 @@ class RegisterMoreInfoVC:UIViewController, UITextViewDelegate {
         constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         view.addConstraint(constraint)
         contentView = UIView()
-        contentView.backgroundColor = backColor
+        contentView.backgroundColor = BACK_COLOR//backColor
         _view.addSubview(contentView)
         // contentView.backgroundColor = UIColor.yellowColor()
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -1531,11 +1541,11 @@ class RegisterMoreInfoVC:UIViewController, UITextViewDelegate {
         
         let back = UIView()
         let back1 = UIView()
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+       // let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         let viewDict = ["back":back, "back1":back1, "interestLabel":interestLabel, "interest":interestView, "requirementLabel":requirementLabel,  "requirement":requirementView]
         view.backgroundColor = UIColor.whiteColor()
         
-        back.backgroundColor = backColor
+        back.backgroundColor = BACK_COLOR//backColor
         back.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(back)
@@ -1573,7 +1583,7 @@ class RegisterMoreInfoVC:UIViewController, UITextViewDelegate {
         back.addConstraint(constraint)
         
         
-        back1.backgroundColor = backColor
+        back1.backgroundColor = BACK_COLOR//backColor
         back1.translatesAutoresizingMaskIntoConstraints = false
         
         contentView.addSubview(back1)
@@ -1746,7 +1756,7 @@ class RegisterSchoolInfoVC : UIViewController, UIPickerViewDataSource, UIPickerV
        // view.addGestureRecognizer(tap)
         
         
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         _view = UIScrollView()
         // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
         
@@ -1794,7 +1804,7 @@ class RegisterSchoolInfoVC : UIViewController, UIPickerViewDataSource, UIPickerV
         degreePicker = UIPickerView()
         degreePicker.delegate = self
         degreePicker.dataSource = self
-        degreePicker.backgroundColor = backColor
+        degreePicker.backgroundColor = BACK_COLOR//backColor
         
         
         degreePicker.showsSelectionIndicator = true
@@ -1810,7 +1820,7 @@ class RegisterSchoolInfoVC : UIViewController, UIPickerViewDataSource, UIPickerV
         let titleButton = UIBarButtonItem(customView: degreePickerTitleLabel)
         let flexibleRight = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: "")
         let cancelButton = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Plain, target: self, action: "degreePickerCancel:")
-        toolbar.tintColor = UIColor.redColor()
+        toolbar.tintColor = THEME_COLOR//UIColor.redColor()
         
         toolbar.setItems([cancelButton, flexibleLeft, titleButton, flexibleRight, doneButton], animated: false)
         
@@ -1845,7 +1855,7 @@ class RegisterSchoolInfoVC : UIViewController, UIPickerViewDataSource, UIPickerV
             back.addSubview(textField)
             
             let viewDict = ["back" : back, "label":label, "textField":textField]
-            back.backgroundColor = backColor
+            back.backgroundColor = BACK_COLOR//backColor
             back.translatesAutoresizingMaskIntoConstraints = false
             var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
             var constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: ((k==0) ? contentView : backViewArr[k-1]), attribute: (k==0 ? NSLayoutAttribute.Top:NSLayoutAttribute.Bottom), multiplier: 1.0, constant: ((k==0) ? 0:5))

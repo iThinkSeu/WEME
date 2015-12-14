@@ -272,12 +272,18 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         
         self.view.addSubview(menuScrollView)
         
-        let menuScrollView_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[menuScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let menuScrollView_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:[menuScrollView(\(menuHeight))]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        
-        self.view.addConstraints(menuScrollView_constraint_H)
-        self.view.addConstraints(menuScrollView_constraint_V)
-        
+//        let menuScrollView_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[menuScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+//        let menuScrollView_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:[menuScrollView(\(menuHeight))]", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+//        
+//        self.view.addConstraints(menuScrollView_constraint_H)
+//        self.view.addConstraints(menuScrollView_constraint_V)
+//        
+        menuScrollView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(view.snp_top)
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+            make.height.equalTo(menuHeight)
+        }
         // Add hairline to menu scroll view
         if addBottomMenuHairline {
             let menuBottomHairline : UIView = UIView()

@@ -42,12 +42,13 @@ class ConversationTableCell:UITableViewCell {
         
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+        nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        nameLabel.textColor = THEME_COLOR
         addSubview(nameLabel)
         
         infoLabel = UILabel()
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         infoLabel.textColor = UIColor.lightGrayColor()
         addSubview(infoLabel)
         
@@ -88,13 +89,15 @@ class ConversationTableCell:UITableViewCell {
         constraint = NSLayoutConstraint(item: infoLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: nameLabel, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0)
         addConstraint(constraint)
         
-        
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[nameLabel]-[gender]-5-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: viewDict)
-        addConstraints(constraints)
+//        
+//        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[nameLabel]-5-[gender]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: viewDict)
+//        addConstraints(constraints)
 //        constraint = NSLayoutConstraint(item: gender, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 16, constant: 0)
 //        addConstraint(constraint)
         
         gender.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(nameLabel.snp_right).offset(5)
+            make.centerY.equalTo(nameLabel.snp_centerY)
             make.height.equalTo(18)
             make.width.equalTo(16)
         }
@@ -131,12 +134,12 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         
         let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         
-        tableView.backgroundColor = backColor
+        tableView.backgroundColor = BACK_COLOR//backColor
         tableView.tableFooterView = UIView()
         
         tableView.registerClass(ConversationTableCell.self, forCellReuseIdentifier: "ConversationTableCell")
         
-        UITableViewHeaderFooterView.appearance().tintColor = backColor
+        UITableViewHeaderFooterView.appearance().tintColor = BACK_COLOR//backColor
 
     }
     
@@ -188,6 +191,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         }
         cell.selectedBackgroundView = UIView()
         cell.delegate = self
+        cell.selectionStyle = .None
         return cell
 
     }
@@ -235,7 +239,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
             }
             //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-        follow.backgroundColor = UIColor.redColor()
+        follow.backgroundColor = THEME_COLOR//UIColor.redColor()
         
         return [follow]
     }
@@ -267,15 +271,15 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
         title = "朋友"
         setNeedsStatusBarAppearanceUpdate()
         tableView.tableFooterView = UIView()
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = BACK_COLOR//UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
 
         searchController = UISearchController(searchResultsController: SearchResultsVC())
         searchController?.searchResultsUpdater = self
         searchController?.searchBar.placeholder = "输入姓名或ID快速查找"
         searchController?.searchBar.sizeToFit()
-        searchController?.searchBar.tintColor = UIColor.redColor()
-        searchController?.searchBar.barTintColor = backColor
-        searchController?.searchBar.backgroundColor = backColor
+        searchController?.searchBar.tintColor = THEME_COLOR//UIColor.redColor()
+        searchController?.searchBar.barTintColor = BACK_COLOR//backColor
+        searchController?.searchBar.backgroundColor = BACK_COLOR//backColor
        // searchController?.hidesNavigationBarDuringPresentation = false
        // definesPresentationContext = false
         //searchController?.searchBar.setValue("取消", forKey: "_cancelButtonText")
@@ -286,16 +290,16 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
         
         
         
-        tableView.backgroundColor = backColor
+        tableView.backgroundColor = BACK_COLOR//backColor
         //view.backgroundColor = backColor
         //searchBar.barTintColor = backColor
         
         tableView.registerClass(ConversationTableCell.self, forCellReuseIdentifier: "ConversationTableCell")
         
-        UITableViewHeaderFooterView.appearance().tintColor = backColor
+        UITableViewHeaderFooterView.appearance().tintColor = BACK_COLOR//backColor
         
         refreshCont = UIRefreshControl()
-        refreshCont.backgroundColor = backColor
+        refreshCont.backgroundColor = BACK_COLOR//backColor
         refreshCont.addTarget(self, action: "pullRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         
         view.addSubview(refreshCont)
@@ -314,7 +318,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        tabBarController?.tabBar.hidden = false
+        tabBarController?.tabBar.hidden = true
     }
     
     
@@ -432,7 +436,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
             });
         }
         message.backgroundColor =  UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
-        unfollow.backgroundColor = UIColor.redColor()
+        unfollow.backgroundColor = THEME_COLOR//UIColor.redColor()
         
         return indexPath.section == 1 ? [unfollow, message] : nil
     }
@@ -474,6 +478,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
                 cell.gender.image = UIImage(named: "female")
             }
             cell.selectionStyle = .None
+            cell.accessoryType = .DisclosureIndicator
             return cell
         }
         
@@ -482,7 +487,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section <= 0 {
-            return 2
+            return 1
         }
         else {
             return friendsData.count
@@ -520,8 +525,8 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
             }
         }
         else {
-            let vc = MeVC()
-            vc.friendID = friendsData[indexPath.row]["id"].stringValue
+            let vc = MeInfoVC()
+            vc.id = friendsData[indexPath.row]["id"].stringValue
             navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -589,13 +594,13 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
         setNeedsStatusBarAppearanceUpdate()
         navigationController?.navigationBar.barStyle = UIBarStyle.Black
         tableView.tableFooterView = UIView()
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
+        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         
-        tableView.backgroundColor = backColor
+        tableView.backgroundColor = BACK_COLOR//backColor
         
         tableView.registerClass(ConversationTableCell.self, forCellReuseIdentifier: "ConversationTableCell")
         
-        UITableViewHeaderFooterView.appearance().tintColor = backColor
+        UITableViewHeaderFooterView.appearance().tintColor = BACK_COLOR//backColor
         
         tableView.allowsSelection = false
         
@@ -733,7 +738,7 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
             }
             //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-        follow.backgroundColor = UIColor.redColor()
+        follow.backgroundColor = THEME_COLOR//UIColor.redColor()
         
         return [follow]
     }

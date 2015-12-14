@@ -7,6 +7,7 @@
 //
 
 #import "STEmojiCollectionView.h"
+//#import "牵手-Swift.h"
 
 #define kSTEmojiSize 33
 
@@ -115,6 +116,7 @@
     [super setDelegate:self];
     _sectionViews = [NSMutableArray new];
     _sectionTitleViews = [NSMutableArray new];
+    self.backgroundColor = [UIColor whiteColor];
     [self prepareForLayout];
 }
 
@@ -149,15 +151,17 @@
     for (int section = 0; section < [_emojiDelegate countOfEmojiPageSection]; section++){
         
         UILabel *titleView = [UILabel new];
-        titleView.textColor = [UIColor colorWithWhite:0.4 alpha:0.5];
+        titleView.textColor = [UIColor colorWithRed:197/255.0 green:197/255.0 blue:218/255.0 alpha:1.0];//[UIColor colorWithWhite:0.4 alpha:0.5];
         titleView.font = [UIFont boldSystemFontOfSize:15];
         titleView.text = [_emojiDelegate titleForSection:section];
         [titleView sizeToFit];
         titleView.frame = CGRectMake(sectionLeft+_horizontalPadding, 0, CGRectGetWidth(titleView.frame), kSTEPTitleHeight);
+        titleView.backgroundColor = [UIColor whiteColor];
         [_sectionTitleViews addObject:titleView];
         [self addSubview:titleView];
         
         UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(sectionLeft, 0, 0, CGRectGetHeight(self.bounds))];
+        sectionView.backgroundColor = [UIColor whiteColor];
         //        sectionView.layer.borderWidth = 1;
         //        sectionView.layer.borderColor = [UIColor yellowColor].CGColor;
         sectionView.userInteractionEnabled = NO;

@@ -9,6 +9,7 @@
 #import "STEmojiKeyboard.h"
 #import "STEmoji.h"
 #import "STEmojiCollectionView.h"
+#import "WE-Swift.h"
 
 #define kSTEmojiKeyboardFrame CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 262)
 #define kSTEmojiToolBarHeight 30
@@ -47,7 +48,7 @@
         UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
         button.tag = tag;
         button.adjustsImageWhenHighlighted = NO;
-        button.tintColor = [UIColor colorWithRed:132/255.0 green:120/255.0 blue:158/255.0 alpha:0.8];
+        button.tintColor = [UIColor colorFromRGB:0x3e5d9e];//[UIColor colorWithRed:132/255.0 green:120/255.0 blue:158/255.0 alpha:0.8];
         button.frame = frame;
         [button setTitle:title forState:UIControlStateNormal];
         button.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -70,7 +71,8 @@
     deleteButton.frame = CGRectMake(left, 0, w, h);
     deleteButton.tag = 100;
     deleteButton.tintColor = [UIColor whiteColor];
-    [deleteButton setImage:[[UIImage imageNamed:@"keyboard_btn_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]  forState:UIControlStateNormal];
+    [deleteButton setImage:[[UIImage imageNamed:@"keyboard_btn_delete"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]  forState:UIControlStateNormal];
+    deleteButton.tintColor = [UIColor colorFromRGB:0x3e5d9e];
     [deleteButton addTarget:self action:@selector(deleteButtonTouchDown) forControlEvents:UIControlEventTouchDown];
     [deleteButton addTarget:self action:@selector(deleteCancel) forControlEvents:UIControlEventTouchUpInside];
     [deleteButton addTarget:self action:@selector(deleteCancel) forControlEvents:UIControlEventTouchDragOutside];

@@ -77,7 +77,7 @@ class ReplyPostVC:UIViewController {
         
         
         let controller = ImagePickerSheetController(mediaType: .Image)
-        controller.view.tintColor = UIColor.redColor()
+        controller.view.tintColor = THEME_COLOR//UIColor.redColor()
         controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
             presentImagePickerController(.Camera)
             }, secondaryHandler: {[weak self]_, numberOfPhotos in

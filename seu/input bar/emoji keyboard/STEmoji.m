@@ -49,7 +49,7 @@
 
 + (instancetype)vehicleEmoji{
     STEmoji *emoji = [STEmoji new];
-    emoji.title = @"建筑与交通";
+    emoji.title = @"旅行";
     emoji.emojis = [self emojis][@"vehicle"];
     emoji.type = STEmojiTypeVehicle;
     return emoji;
