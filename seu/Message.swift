@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 import GMPhotoPicker
-import Haneke
+
 
 
 import WebImage
@@ -105,18 +105,16 @@ class ComposeMessageVC:UIViewController {
     
     private(set) var images = [AnyObject]()
     
- 
-    
-//    func resizeImageColletionView() {
-//        let newHeight = CGFloat((images.count+4)/4) * COMPOSE_MESSAGE_IMAGE_SIZE + CGFloat((images.count+4)/4 + 1) * COMPOSE_MESSAGE_IMAGE_SPACE
-//        //let oldHeight = imageCollectionView.bounds.size.height
-//        imageCollectionViewHeightConstraint.constant = newHeight
-//        //bottomConstraint.constant = min(bottomConstraint.constant + newHeight-oldHeight,0)
-//        view.layoutIfNeeded()
-//    }
-    
 
-    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1
+    }
 
     
     override func viewDidLoad() {
@@ -894,20 +892,7 @@ extension MessageMultiImageController:UICollectionViewDataSource {
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(MessageMultiImageCollectionViewCell), forIndexPath: indexPath) as! MessageMultiImageCollectionViewCell
-//        cell.imageView.load(imageURLs[indexPath.item], placeholder: nil) { (url, image, errorType, cacheType) -> Void in
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { [weak cell]() -> Void in
-//                if let img = image,
-//                let cell = cell{
-//                    let scaledImg = img.scaleImage(CGSizeMake(MessageMultiImageCell.IMAGE_SIZE, MessageMultiImageCell.IMAGE_SIZE))
-//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        //print(scaledImg.size.width, scaledImg.size.height)
-//                        cell.imageView.image = scaledImg
-//                        cell.setNeedsDisplay()
-//                    })
-//                }
-//            })
-//        }
-        cell.imageView.hnk_setImageFromURL(NSURL(string:imageURLs[indexPath.item])!, placeholder: nil)
+        cell.imageView.sd_setImageWithURL(NSURL(string:imageURLs[indexPath.item]), placeholderImage: nil)
         return cell
         
     }
@@ -1293,10 +1278,8 @@ class MessageVC :UITableViewController {
         if data["image"].array?.count == 1 {
            // let cell = MessageSingleImageCell(style: UITableViewCellStyle.Default, reuseIdentifier:nil)
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessageSingleImageCell), forIndexPath: indexPath) as! MessageSingleImageCell
-            cell.avatar.hnk_setImageFromURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholder: UIImage(named: "avatar"))
-//            cell.avatar.load(thumbnailAvatarURLForID(data["SendID"].stringValue), placeholder: UIImage(named: "avatar"), completionHandler: { (url, image, error, cacheType) -> Void in
-//                cell.avatar.image = image
-//            })
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholderImage: UIImage(named: "avatar"))
+
 
             cell.infoLabel.text = data["school"].string ?? " "
             cell.timeLabel.text = " "
@@ -1359,7 +1342,8 @@ class MessageVC :UITableViewController {
      
             cell.msgController.imageURLs = data["image"].arrayObject as! [String]
            
-            cell.avatar.hnk_setImageFromURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholder: UIImage(named: "avatar"))
+   
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholderImage: UIImage(named: "avatar"))
             /*cell.avatar.load(thumbnailAvatarURLForID(data["SendID"].stringValue), placeholder: UIImage(named: "avatar"), completionHandler: { (url, image, error, cacheType) -> Void in
                 cell.avatar.image = image
                 //cell.avatar.setNeedsDisplay()
@@ -1387,11 +1371,7 @@ class MessageVC :UITableViewController {
         
         else {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessagePureTextCell)) as! MessagePureTextCell
-            //let cell = MessagePureTextCell(style: .Default, reuseIdentifier: nil)
-            cell.avatar.hnk_setImageFromURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholder: UIImage(named: "avatar"))
-//            cell.avatar.load(thumbnailAvatarURLForID(data["SendID"].stringValue), placeholder: UIImage(named: "avatar"), completionHandler: { (url, image, error, cacheType) -> Void in
-//                cell.avatar.image = image
-//            })
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholderImage: UIImage(named: "avatar"))
 
             cell.nameLabel.text = data["name"].string ?? " "
             cell.infoLabel.text = data["school"].string ?? " "
@@ -1694,8 +1674,7 @@ class MessageConversationVC:UITableViewController {
         let url = thumbnailAvatarURLForID(id)
         //cell.avatar.setImageWithURL(url, placeholder:nil, animated: false)
         //cell.avatar.load(url, placeholder: UIImage(named: "avatar"), completionHandler: nil)//.hnk_setImageFromURL(url, placeholder: UIImage(named: "avatar"))
-        cell.avatar.hnk_setImageFromURL(url, placeholder: UIImage(named: "avatar"))
-        
+        cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
         cell.nameLabel.text = data["name"].string ?? " "
         cell.infoLabel.text = data["text"].string ?? " "
         if data["gender"].stringValue == "男" {

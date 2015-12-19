@@ -177,9 +177,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         let data = friendsData[indexPath.row]
         let id = data["id"].stringValue
         let url = thumbnailAvatarURLForID(id)
-        //cell.avatar.setImageWithURL(url, placeholder:nil, animated: false)
-        cell.avatar.hnk_setImageFromURL(url, placeholder: UIImage(named: "avatar"))
-        
+        cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
         cell.nameLabel.text = data["name"].string ?? " "
         cell.infoLabel.text = data["school"].string ?? " "
         
@@ -465,9 +463,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
                 let data = friendsData[indexPath.row]
                 let id = data["id"].stringValue
                 let url = thumbnailAvatarURLForID(id)
-                //cell.avatar.setImageWithURL(url, placeholder:nil, animated: false)
-                cell.avatar.hnk_setImageFromURL(url, placeholder: UIImage(named: "avatar"))
-            
+                cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
                 cell.nameLabel.text = data["name"].string ?? " "
                 cell.infoLabel.text = data["school"].string ?? " "
             
@@ -668,8 +664,7 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
         let data = friendsData[indexPath.row]
         let id = data["id"].stringValue
         let url = thumbnailAvatarURLForID(id)
-       // cell.avatar.setImageWithURL(url, placeholder:nil, animated: false)
-        cell.avatar.hnk_setImageFromURL(url, placeholder: UIImage(named: "avatar"))
+        cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
         cell.nameLabel.text = data["name"].string ?? " "
         cell.infoLabel.text = data["school"].string ?? " "
         

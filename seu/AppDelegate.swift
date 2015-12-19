@@ -21,14 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window  = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.tintAdjustmentMode = .Normal
-        
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
         let defaults = NSUserDefaults.standardUserDefaults();
         if let t = defaults.stringForKey(TOKEN),
            let Id = defaults.stringForKey(ID){
             //print("Already logined")
-            //print(token)
+           
             token = t
             myId = Id
+            print(token)
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             let vc = HomeVC()
             window?.rootViewController = vc
@@ -36,21 +37,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         else {
-            let navigation = UINavigationController(rootViewController: LoginRegisterVC())
-            navigation.navigationBar.barTintColor = THEME_COLOR
-            navigation.navigationBar.tintColor = UIColor.whiteColor()
-            navigation.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+            //let navigation = UINavigationController(rootViewController: LoginRegisterVC())
+            //navigation.navigationBar.barTintColor = THEME_COLOR
+           // navigation.navigationBar.tintColor = UIColor.whiteColor()
+           // navigation.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+           // UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
-            window?.rootViewController = navigation
+            window?.rootViewController = LoginRegisterVC()
             window?.makeKeyAndVisible();
         }
+        
+     
         
         MobClick.startWithAppkey("566aacab67e58ec3410021a6", reportPolicy: ReportPolicy.init(1), channelId: "")
         let infoDict = (NSBundle.mainBundle().infoDictionary)!
         let currentVersion = infoDict["CFBundleShortVersionString"] as! String
         MobClick.setAppVersion(currentVersion)
         
-        WXApi.registerApp("wx3ade9126fbb9e004", withDescription: "牵手")
+        WXApi.registerApp("wx04e7630d122580c1", withDescription: "WeMe")
         return true
     }
     

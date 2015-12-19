@@ -87,12 +87,17 @@ let GET_ACTIVITY_INFO_URL = BASE_URL + "getactivityinformation"
 
 let SIGNUP_ACTIVITY_URL = BASE_URL + "signup"
 
+
+let GET_USER_TIMELINE = BASE_URL + "getusertimeline"
+let GET_USER_TIMELINE_IMAGES = BASE_URL + "getuserimages"
+
 let PROFILE = "PROFILE_KEY"
 
 
 
 let ID = "ID"
 let TOKEN = "TOKEN"
+let APP = "WE"
 
 let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
 let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
@@ -100,9 +105,12 @@ let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
 //MARK - iTunes App Store
 let APP_INFO_URL = "http://itunes.apple.com/cn/lookup?id=1052455890"
 
+func sharePostURLStringForPostID(id:String) -> String{
+    return BASE_URL + "post_share/\(id)"
+}
 
 func thumbnailAvatarURL() -> NSURL? {
-    if let id = NSUserDefaults.standardUserDefaults().stringForKey(ID) {
+    if let id = myId {
         let url = GET_AVATAR + "\(id)_thumbnail.jpg"
         return NSURL(string: url)
     }
@@ -112,7 +120,7 @@ func thumbnailAvatarURL() -> NSURL? {
 }
 
 func avatarURL() -> NSURL? {
-    if let id = NSUserDefaults.standardUserDefaults().stringForKey(ID) {
+    if let id = myId {
         let url = GET_AVATAR + "\(id)"
         return NSURL(string: url)
     }
@@ -135,7 +143,7 @@ func avatarURLForID(id:String) -> NSURL {
 }
 
 func profileBackgroundURL() -> NSURL? {
-    if let id = NSUserDefaults.standardUserDefaults().stringForKey(ID) {
+    if let id = myId {
         let url = GET_PROFILE_BACKGROUND + "\(id)"
         return NSURL(string: url)
     }

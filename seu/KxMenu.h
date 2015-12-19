@@ -64,4 +64,7 @@
 + (UIFont *) titleFont;
 + (void) setTitleFont: (UIFont *) titleFont;
 
++ (UIColor *)menuIconTintColor;
++ (void)setMenuIconTintColor:(UIColor *)tintColor;
+
 @end

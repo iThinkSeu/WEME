@@ -12,8 +12,8 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items = ["好友", "时间轴", "私信"]
-    let imgs = ["follow", "activity", "message"]
+    let items = ["好友", "私信"]
+    let imgs = ["follow", "message"]
     var more = ["设置"]
     
     var name:String?
@@ -48,6 +48,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barStyle = .Black
         navigationController?.navigationBar.alpha = 1.0
+        
+        tableView.reloadData()
     }
     
     
@@ -106,7 +108,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             return  1
         }
         else if section == 1{
-            return 3
+            return 2
         }
         else {
             return 1
@@ -133,8 +135,9 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0  {
-            if let _ = myId {
-                let vc = MeVC()
+            if let id = myId {
+                let vc = MeInfoVC()
+                vc.id = id
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
@@ -144,7 +147,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else if indexPath.section == 1 && indexPath.row == 0 {
             navigationController?.pushViewController(ContactsVC(), animated: true)
         }
-        else if indexPath.section == 1 && indexPath.row == 2 {
+        else if indexPath.section == 1 && indexPath.row == 1 {
             navigationController?.pushViewController(MessageConversationVC(), animated: true)
         }
     }
@@ -153,6 +156,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         tabBarController?.tabBar.hidden = false
     }
 }
+
+
 
 class MeTableViewCell:UITableViewCell {
     var avatar:UIImageView!

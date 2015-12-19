@@ -292,18 +292,25 @@ extension Agrume: UICollectionViewDataSource {
         if let images = self.images {
             cell.image = images[indexPath.row]
         } else if let imageURLs = self.imageURLs {
+            let url = imageURLs[indexPath.row]
             spinner.alpha = 1
-            let completion: DownloadCompletion = {
-                [weak self] image in
-                cell.image = image
-                self?.spinner.alpha = 0
-            }
-
-            if let download = download {
-                download(url: imageURLs[indexPath.row], completion: completion)
-            } else {
-                downloadImage(imageURLs[indexPath.row], completion: completion)
-            }
+            cell.imageView.sd_setImageWithURL(url, completed: { [weak self](image, error, cacheType, url) -> Void in
+                if let S = self {
+                    S.spinner.alpha = 0
+                }
+            })
+//            spinner.alpha = 1
+//            let completion: DownloadCompletion = {
+//                [weak self] image in
+//                cell.image = image
+//                self?.spinner.alpha = 0
+//            }
+//
+//            if let download = download {
+//                download(url: imageURLs[indexPath.row], completion: completion)
+//            } else {
+//                downloadImage(imageURLs[indexPath.row], completion: completion)
+//            }
         }
         // Only allow panning if horizontal swiping fails. Horizontal swiping is only active for zoomed in images
         collectionView.panGestureRecognizer.requireGestureRecognizerToFail(cell.swipeGesture)

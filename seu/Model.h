@@ -11,5 +11,6 @@
 
 #import "ActivityModel.h"
 #import "PersonModel.h"
-
+#import "TimelineModel.h"
+#import "UserImageModel.h"
 #endif /* Model_h */

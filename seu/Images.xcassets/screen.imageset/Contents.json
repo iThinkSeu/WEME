@@ -6,13 +6,12 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "登录背景-1.jpg"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "登录背景.jpg"
+      "filename" : "screen.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

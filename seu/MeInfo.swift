@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import RSKImageCropper
 
-class MeInfoVC:UIViewController {
+class MeInfoVC:UIViewController, UINavigationControllerDelegate {
     
     var id:String!
 
@@ -42,6 +43,10 @@ class MeInfoVC:UIViewController {
         statusBarView = UIView(frame: CGRectMake(0, -20, SCREEN_WIDTH, 20))
         statusBarView?.backgroundColor = UIColor.clearColor()
         navigationController?.navigationBar.addSubview(statusBarView!)
+        
+        self.scrollViewDidScroll(self._view)
+        
+        configUI()
     }
     
     
@@ -50,6 +55,12 @@ class MeInfoVC:UIViewController {
         if statusBarView != nil {
             statusBarView?.removeFromSuperview()
         }
+        navigationController?.navigationBar.translucent = true
+        navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
+        //statusBarView?.alpha = 0
+        navigationController?.navigationBar.alpha = 1.0
+        statusBarView?.backgroundColor = UIColor.clearColor()
+
     }
   
 
@@ -57,25 +68,41 @@ class MeInfoVC:UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
-        //if id != myId {
-            let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
-            action.tintColor = UIColor.whiteColor()
-            navigationItem.rightBarButtonItem = action
-       // }
-        setUI()
-        configUI()
+       
+        let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
+        action.tintColor = UIColor.whiteColor()
+        navigationItem.rightBarButtonItem = action
         
+        setUI()
     }
     
+    
+    
     func action(sender:AnyObject) {
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
-            if index == 0 {
-                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
-                alertText.showInView(self.navigationController!.view)
-            }
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        if let ID = myId where ID != id {
+            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+                if index == 0 {
+                    let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                    alertText.showInView(self.navigationController!.view)
+                }
+                else if index == 1 {
+                    let vc = ComposeMessageVC()
+                    vc.recvID = self.id
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报", "私信"])
+            sheet.setButtonTextColor(THEME_COLOR)
+            sheet.showInView(navigationController!.view)
+        }
+        else {
+            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+                if index == 0 {
+                    self.navigationController?.pushViewController(ChangeInfoVC(), animated: true)
+                }
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["修改个人信息"])
+            sheet.setButtonTextColor(THEME_COLOR)
+            sheet.showInView(navigationController!.view)
+        }
 
     }
     
@@ -112,12 +139,14 @@ class MeInfoVC:UIViewController {
         vc1.id = id
         vc1.title = "资料"
         vc1.view.backgroundColor = UIColor.whiteColor()
-        let vc2 = UIViewController()
+        let vc2 = TimelineVC()
+        vc2.userid = id
         vc2.title = "时间轴"
-        vc2.view.backgroundColor = THEME_COLOR_BACK
-        let vc3 = UIViewController()
+        vc2.view.backgroundColor = BACK_COLOR
+        let vc3 = UserImageVC()
+        vc3.userid = id
         vc3.title = "图集"
-        vc3.view.backgroundColor = THEME_COLOR
+        vc3.view.backgroundColor = BACK_COLOR
         let parameters: [CAPSPageMenuOption] = [
             .ScrollMenuBackgroundColor(UIColor.whiteColor()),
             .SelectedMenuItemLabelColor(THEME_COLOR),
@@ -132,10 +161,30 @@ class MeInfoVC:UIViewController {
         addChildViewController(pageMenuController)
     }
     
+    func tapCover(sender:AnyObject) {
+        if let Id = myId where Id == id {
+            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+                if index == 0 {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.navigationBar.barStyle = .Black
+                    imagePicker.sourceType = .PhotoLibrary
+                    imagePicker.delegate = self
+                    self.presentViewController(imagePicker, animated: true, completion: nil)
+                }
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["改变封面"])
+            sheet.setButtonTextColor(THEME_COLOR)
+            sheet.showInView(navigationController!.view)
+
+        }
+    }
+    
     func setUI() {
         setupScrollView()
         cover = UIImageView()
         cover.translatesAutoresizingMaskIntoConstraints = false
+        cover.userInteractionEnabled = true
+        let tapCover = UITapGestureRecognizer(target: self, action: "tapCover:")
+        cover.addGestureRecognizer(tapCover)
         contentView.addSubview(cover)
         
         avatar = UIImageView()
@@ -238,6 +287,95 @@ class MeInfoVC:UIViewController {
     }
 }
 
+
+extension MeInfoVC:UIImagePickerControllerDelegate {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+        let cropper = RSKImageCropViewController(image: image, cropMode:.Custom)
+        cropper.delegate = self
+        cropper.dataSource = self
+        presentViewController(cropper, animated: true, completion: nil)
+        
+    }
+}
+
+extension MeInfoVC:RSKImageCropViewControllerDelegate, RSKImageCropViewControllerDataSource{
+    func imageCropViewController(controller: RSKImageCropViewController!, didCropImage croppedImage: UIImage!, usingCropRect cropRect: CGRect) {
+        dismissViewControllerAnimated(true, completion: nil)
+        self.cover.image = croppedImage
+        
+        if let t = token,
+            let id =  myId{
+                upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
+                    let dd = "{\"token\":\"\(t)\", \"type\":\"-1\", \"number\":\"1\"}"
+                    let jsonData = dd.dataUsingEncoding(NSUTF8StringEncoding)
+                    let data = UIImageJPEGRepresentation(croppedImage, 0.75)
+                    multipartFormData.appendBodyPart(data:jsonData!, name:"json")
+                    multipartFormData.appendBodyPart(data:data!, name:"avatar", fileName:"avatar.jpg", mimeType:"image/jpeg")
+               
+                    }, encodingCompletion: { encodingResult in
+                        switch encodingResult {
+                        case .Success(let upload, _ , _):
+                            upload.responseJSON { response in
+                                //debugPrint(response)
+                                if let d = response.result.value {
+                                    let j = JSON(d)
+                                    if j != .null && j["state"].stringValue  == "successful" {
+                                        SDImageCache.sharedImageCache().storeImage(self.cover.image, forKey:profileBackgroundURLForID(id).absoluteString, toDisk:true)
+                                    }
+                                    else {
+                                        let alert = UIAlertController(title: "提示", message: j["reason"].stringValue, preferredStyle: .Alert)
+                                        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                                        self.presentViewController(alert, animated: true, completion: nil)
+                                        return
+                                        
+                                        //self.navigationController?.popViewControllerAnimated(true)
+                                        
+                                    }
+                                }
+                                else if let error = response.result.error {
+                                    let alert = UIAlertController(title: "提示", message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .Alert)
+                                    alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                    return
+                                    //self.navigationController?.popViewControllerAnimated(true)
+                                    
+                                    
+                                }
+                            }
+                            
+                        case .Failure:
+                            //print(encodingError)
+                            let alert = UIAlertController(title: "提示", message: "上载图片失败" , preferredStyle: .Alert)
+                            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            return
+                            //self.navigationController?.popViewControllerAnimated(true)
+                            
+                            
+                        }
+                    }
+                    
+                )
+                
+                
+                
+        }
+    }
+    
+    func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController!) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func imageCropViewControllerCustomMaskRect(controller: RSKImageCropViewController!) -> CGRect {
+        return CGRectMake(view.center.x - cover.bounds.size.width/2, view.center.y-cover.bounds.size.height/2, cover.bounds.size.width, cover.bounds.size.height)
+    }
+    
+    func imageCropViewControllerCustomMaskPath(controller: RSKImageCropViewController!) -> UIBezierPath! {
+        return UIBezierPath(rect: CGRectMake(view.center.x - cover.bounds.size.width/2, view.center.y-cover.bounds.size.height/2, cover.bounds.size.width, cover.bounds.size.height))
+    }
+}
+
 extension MeInfoVC:UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
@@ -256,7 +394,9 @@ extension MeInfoVC:UIScrollViewDelegate {
             navigationController?.navigationBar.alpha = (yOffset-10)/((SCREEN_WIDTH*3/4 - 10.0))
         }
         else {
-          navigationController?.navigationBar.alpha = 1
+            navigationController?.navigationBar.backgroundColor = THEME_COLOR
+            statusBarView?.backgroundColor = THEME_COLOR
+            navigationController?.navigationBar.alpha = 1
         }
     
     }
@@ -284,6 +424,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         tableView.registerClass(PersonalInfoVCTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(PersonalInfoVCTableViewCell))
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
         view.addSubview(tableView)
+        
         setupUI()
         configUI()
     }
@@ -330,7 +471,12 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return infomationSections.count
+        if let ID = myId where ID != id {
+            return infomationSections.count
+        }
+        else {
+            return infomationSections.count - 1
+        }
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -345,7 +491,8 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if indexPath.section != infomationSections.count - 1 {
+        let title = infomationSections[indexPath.section]
+        if title != "加为好友"{
             let  cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(PersonalInfoVCTableViewCell), forIndexPath: indexPath) as! PersonalInfoVCTableViewCell
             if indexPath.section == 0 {
                 if indexPath.row == 0 {
@@ -384,7 +531,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             return cell
         }
         else {
-            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
             let addFriendButton = UIButton()
             addFriendButton.translatesAutoresizingMaskIntoConstraints = false
             cell.contentView.addSubview(addFriendButton)

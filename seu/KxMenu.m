@@ -41,6 +41,10 @@
 
 const CGFloat kArrowSize = 12.f;
 
+static KxMenu *gMenu;
+static UIColor *gTintColor;
+static UIFont *gTitleFont;
+static UIColor *gMenuIconTintColor;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -432,7 +436,7 @@ typedef enum {
     maxItemWidth  = MAX(maxItemWidth, kMinMenuItemWidth);
     maxItemHeight = MAX(maxItemHeight, kMinMenuItemHeight);
 
-    const CGFloat titleX = kMarginX * 2 + kMarginX + maxImageWidth;
+    const CGFloat titleX = kMarginX + kMarginX + maxImageWidth;
     const CGFloat titleWidth = maxItemWidth - titleX - kMarginX * 2;
     
     UIImage *selectedImage = [KxMenuView selectedImage:(CGSize){maxItemWidth, maxItemHeight + 2}];
@@ -514,6 +518,7 @@ typedef enum {
             
             const CGRect imageFrame = {kMarginX * 2, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
+            imageView.tintColor = gMenuIconTintColor;
             imageView.image = menuItem.image;
             imageView.clipsToBounds = YES;
             imageView.contentMode = UIViewContentModeCenter;
@@ -524,7 +529,7 @@ typedef enum {
         if (itemNum < _menuItems.count - 1) {
             
             UIImageView  *gradientView = [[UIImageView alloc] initWithImage:gradientLine];
-            gradientView.frame = (CGRect){kMarginX * 2, maxItemHeight + 1, gradientLine.size};
+            gradientView.frame = (CGRect){kMarginX*2, maxItemHeight + 1, gradientLine.size};
             gradientView.contentMode = UIViewContentModeLeft;
             [itemView addSubview:gradientView];
             
@@ -779,10 +784,6 @@ typedef enum {
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-static KxMenu *gMenu;
-static UIColor *gTintColor;
-static UIFont *gTitleFont;
-
 @implementation KxMenu {
     
     KxMenuView *_menuView;
@@ -897,6 +898,16 @@ static UIFont *gTitleFont;
 {
     if (titleFont != gTitleFont) {
         gTitleFont = titleFont;
+    }
+}
+
++ (UIColor *)menuIconTintColor {
+    return gMenuIconTintColor;
+}
+
++ (void)setMenuIconTintColor:(UIColor *)tintColor {
+    if (tintColor != gMenuIconTintColor) {
+        gMenuIconTintColor = tintColor;
     }
 }
 

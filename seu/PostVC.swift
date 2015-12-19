@@ -85,7 +85,6 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         input.hidden = true
         view.addSubview(input)
         
-        print(view.frame)
         
         tableView.registerClass(CommentHeaderView.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(CommentHeaderView))
         tableView.registerClass(CommentFooterView.self, forHeaderFooterViewReuseIdentifier: NSStringFromClass(CommentFooterView))
@@ -108,13 +107,15 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         refreshCont.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshCont)
         
-        //if WXApi.isWXAppInstalled() {
+        if WXApi.isWXAppInstalled() {
             let share = UIBarButtonItem(image: UIImage(named: "share")?.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "share:")
             share.tintColor = THEME_COLOR
             navigationItem.rightBarButtonItem = share
-        //}
+        }
         
         WXApiManager.sharedManager().delegate = self
+        
+        //print(WXApi.isWXAppInstalled())
         
         configUI()
     }
@@ -129,29 +130,14 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         let title = self.post.title.characters.count < 500 ? self.post.title : self.post.title.substringWithRange(Range<String.Index>(start: self.post.title.startIndex, end: self.post.title.startIndex.advancedBy(500)))
         let body = self.post.body.characters.count < 1000 ? self.post.body : self.post.body.substringWithRange(Range<String.Index>(start: self.post.body.startIndex, end: self.post.body.startIndex.advancedBy(1000)))
-        WXApiRequestHandler.sendAppContentData(nil, extInfo: "", extURL: "liewliseu://", title: title, description: body, messageExt: "", messageAction: "", thumbImage: image, inScene: WXScene.init(rawValue: scene))
+       // WXApiRequestHandler.sendAppContentData(nil, extInfo: "", extURL: sharePostURLStringForPostID(self.post.postid), title: title, description: body, messageExt: "", messageAction: "", thumbImage: image, inScene: WXScene.init(rawValue: scene))
+        WXApiRequestHandler.sendLinkURL(sharePostURLStringForPostID(self.post.postid), tagName: "WeMe", title: title, description: body, thumbImage: image, inScene: WXScene.init(rawValue:scene))
     }
     
     func share(sender:AnyObject) {
-//        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-//        actionSheet.addAction(UIAlertAction(title: "分享到微信会话", style: .Default, handler: { (action) -> Void in
-//            //WXApiRequestHandler.sendText(self.post.body, inScene: WXScene.init(rawValue: 0))
-//           self.shareToWeChat(0)
-//        }))
-//        actionSheet.addAction(UIAlertAction(title: "分享到微信朋友圈", style: .Default, handler: { (action) -> Void in
-//           self.shareToWeChat(1)
-//        }))
-//        actionSheet.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: { (action) -> Void in
-//            self.dismissViewControllerAnimated(true, completion: nil)
-//        }))
-//        actionSheet.view.tintColor = THEME_COLOR//UIColor.redColor()
-//     
-//        self.presentViewController(actionSheet, animated: true,completion: nil)
-       
         let sheet = IBActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享到微信会话", "分享到微信朋友圈"])
         sheet.showInView((UIApplication.sharedApplication().delegate?.window)!)
         sheet.setButtonTextColor(THEME_COLOR)
-        //sheet.blurBackground = true
 
     }
     
@@ -219,12 +205,13 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        navigationController?.navigationBar.barTintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.tintColor = THEME_COLOR//UIColor.colorFromRGB(0x32CD32)
+       // navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+       // navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()//UIColor.colorFromRGB(0x32CD32)
         navigationController?.navigationBar.translucent = false
-        navigationController?.navigationBar.barStyle = .Default
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1
     }
     
     

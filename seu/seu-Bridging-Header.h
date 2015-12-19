@@ -23,4 +23,5 @@
 #import "WeChat.h"
 #import "utility-objc.h"
 #import "IBActionSheet.h"
+#import "MWPhotoBrowser.h"
 #endif /* seu_Bridging_Header_h */

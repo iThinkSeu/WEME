@@ -21,7 +21,7 @@ final class AgrumeCell: UICollectionViewCell {
         scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: self.contentView.bounds)
         imageView.contentMode = .ScaleAspectFit
         imageView.userInteractionEnabled = true

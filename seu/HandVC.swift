@@ -452,6 +452,11 @@ class ActivityRegisterVC:UIViewController {
         super.viewWillAppear(animated)
        // print("viewwillappear")
         tabBarController?.tabBar.hidden = true
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
         refresh()
     }
     
@@ -956,7 +961,7 @@ class ActivityRegisterVC:UIViewController {
 //        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[confirmButton(280@700)]-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
 //        contentView.addConstraints(constraints)
         confirmButton.snp_makeConstraints { (make) -> Void in
-            make.width.equalTo(view.snp_width).multipliedBy(2/3.0)
+            make.width.equalTo(view.snp_width).multipliedBy(4/5.0)
         }
         constraint = NSLayoutConstraint(item: confirmButton, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0)
         contentView.addConstraint(constraint)
@@ -1296,7 +1301,7 @@ class UpLoadImageVC:UIViewController {
 //         constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-30-[confirmButton]-30-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["confirmButton":confirmButton])
 //        view.addConstraints(constraints)
         confirmButton.snp_makeConstraints { (make) -> Void in
-            make.width.equalTo(view.snp_width).multipliedBy(2/3.0)
+            make.width.equalTo(view.snp_width).multipliedBy(4/5.0)
         }
         
         contentView.snp_makeConstraints { (make) -> Void in
@@ -1716,9 +1721,9 @@ class ModifyPersonalInfoVC: RegisterPersonalInfoVC{
             return
         }
         
-        if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN") {
+        if let t = token, id = myId {
             spinner.alpha = 1.0
-            request(.POST, EDIT_PERSONAL_INFO_URL, parameters: ["token":token, "name":nameTextField.text!, "gender":sexTextField.text!, "birthday":birthDayTextField.text!, "phone":phoneNumberTextField.text!, "wechat":wechatTextField.text!, "qq":qqTextField.text!, "hometown":hometownTextField.text!], encoding: .JSON).responseJSON{ (response) -> Void in
+            request(.POST, EDIT_PERSONAL_INFO_URL, parameters: ["token":t, "name":nameTextField.text!, "gender":sexTextField.text!, "birthday":birthDayTextField.text!, "phone":phoneNumberTextField.text!, "wechat":wechatTextField.text!, "qq":qqTextField.text!, "hometown":hometownTextField.text!], encoding: .JSON).responseJSON{ (response) -> Void in
                 //debugprint(response)
                 self.spinner.alpha = 0
                 if let d = response.result.value {
@@ -1727,19 +1732,11 @@ class ModifyPersonalInfoVC: RegisterPersonalInfoVC{
                     if json["state"].stringValue == "successful" || json["state"].stringValue == "sucessful" {
                         
                         upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
-                            
-                            //let dd = ["token":token]
-                            //do {
-                                //let jsonData = try NSJSONSerialization.dataWithJSONObject(dd, options: NSJSONWritingOptions.Prettyprinted)
-                                let dd = "{\"token\":\"\(token)\", \"type\":\"0\", \"number\":\"0\"}"
+                                let dd = "{\"token\":\"\(t)\", \"type\":\"0\", \"number\":\"0\"}"
                                 let jsonData = dd.dataUsingEncoding(NSUTF8StringEncoding)
                                 let data = UIImageJPEGRepresentation(self.avatar.image!, 0.5)
                                 multipartFormData.appendBodyPart(data:jsonData!, name:"json")
                                 multipartFormData.appendBodyPart(data:data!, name:"avatar", fileName:"avatar.jpg", mimeType:"image/jpeg")
-                           // }
-                           //catch  {
-                                
-                          // }
                             
                             }, encodingCompletion: { encodingResult in
                                 switch encodingResult {
@@ -1749,6 +1746,9 @@ class ModifyPersonalInfoVC: RegisterPersonalInfoVC{
                                         if let d = response.result.value {
                                             let j = JSON(d)
                                             if j["state"].stringValue  == "successful" {
+                                                SDImageCache.sharedImageCache().storeImage(self.avatar.image, forKey:avatarURLForID(id).absoluteString, toDisk:true)
+                                                SDImageCache.sharedImageCache().removeImageForKey(thumbnailAvatarURLForID(id).absoluteString, fromDisk:true)
+
                                                 self.navigationController?.popViewControllerAnimated(true)
                                             }
                                             else {

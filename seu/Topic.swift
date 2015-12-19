@@ -122,15 +122,15 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts.count
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let data = posts[indexPath.row]
+        let data = posts[indexPath.section]
         if data.imageurl.count > 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(TopicTableViewCell), forIndexPath: indexPath) as! TopicTableViewCell
             let url = thumbnailAvatarURLForID(data.userid)
@@ -189,7 +189,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let vc = PostVC()
-        let data = posts[indexPath.row]
+        let data = posts[indexPath.section]
         vc.postID = data.postid
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -203,6 +203,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
         tableView.dataSource = self
         view.backgroundColor = UIColor.whiteColor()
         view.addSubview(tableView)
+        tableView.tableFooterView = UIView()
         
         
         //navigationController?.navigationBar.tintColor = UIColor.clearColor()
@@ -290,23 +291,26 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
                         
                         var post_arr = [Post]()
                         var k = S.posts.count
-                        var indexPaths = [NSIndexPath]()
+                        //var indexPaths = [NSIndexPath]()
+                        let indexSets = NSMutableIndexSet()
                         for a in arr  {
                             guard a["postid"] != .null && a["userid"] != .null else {
                                 continue
                             }
                             
                             post_arr.append(Post(postid: a["postid"].stringValue, userid: a["userid"].stringValue, name: a["name"].stringValue, school: a["school"].stringValue, gender: a["gender"].stringValue, timestamp: a["timestamp"].stringValue, title: a["title"].stringValue, body: a["body"].stringValue, likenumber: a["likenumber"].stringValue, commentnumber: a["commentnumber"].stringValue, imageurl: (a["imageurl"].arrayObject as! [String]),thumbnail:(a["thumbnail"].arrayObject as! [String])))
-                            indexPaths.append(NSIndexPath(forRow: k++, inSection: 0))
+                            //indexPaths.append(NSIndexPath(forRow: 0, inSection: k++))
+                            indexSets.addIndex(k++)
                         }
                         
-                        if post_arr.count > 0 && post_arr.count == indexPaths.count{
+                        if post_arr.count > 0 && post_arr.count == indexSets.count{
                             print("load \(post_arr.count) rows")
                             S.currentPage++
                             S.posts.appendContentsOf(post_arr)
                             S.tableView.beginUpdates()
                             //let offset = S.tableView.contentOffset
-                            S.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                           // S.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                            S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
                             //S.tableView.contentOffset = offset
                             S.tableView.endUpdates()
                         }
@@ -412,13 +416,13 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
             
         }
         
-        if indexPath.row >= posts.count - 5 && !isLoading{
+        if indexPath.section >= posts.count - 5 && !isLoading{
             fetchTopicPostsAtPage(currentPage)
         }
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let data = posts[indexPath.row]
+        let data = posts[indexPath.section]
         if data.imageurl.count == 0 {
             return 160
         }
@@ -504,9 +508,9 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
 extension TopicVC: TopicTableViewCellDelegate {
     
     func didTapImageCollectionViewAtCell(cell: TopicTableViewCell, startIndex: Int) {
-        if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count  {
+        if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count  {
             let vc = PostVC()
-            let data = posts[indexPath.row]
+            let data = posts[indexPath.section]
             vc.postID = data.postid
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -524,9 +528,9 @@ extension TopicVC: TopicTableViewCellDelegate {
     }
     
     func didTapCollectionViewAtCell(cell: TopicTableViewCell) {
-        if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count {
+        if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
             let vc = PostVC()
-            let data = posts[indexPath.row]
+            let data = posts[indexPath.section]
             vc.postID = data.postid
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -534,10 +538,10 @@ extension TopicVC: TopicTableViewCellDelegate {
     }
     
     func didTapAvatarAtCell(cell: TopicTableViewCell) {
-        if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count {
+        if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
             if let id = myId {
                 let vc = MeInfoVC()
-                let data = posts[indexPath.row]
+                let data = posts[indexPath.section]
                 vc.id = data.userid
                 if id != vc.id {
                     navigationController?.pushViewController(vc, animated: true)
@@ -549,18 +553,19 @@ extension TopicVC: TopicTableViewCellDelegate {
 
 extension TopicVC:TopicTableViewPureTextCellDelegate {
     func didTapAvatarAtPureTextCell(cell: TopicTableViewPureTextCell) {
-        if let indexPath = tableView.indexPathForCell(cell) where indexPath.row < posts.count {
+        if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
             if let id = myId {
                 let vc = MeInfoVC()
-                let data = posts[indexPath.row]
+                let data = posts[indexPath.section]
                 vc.id = data.userid
-                if id != myId {
+                if id != vc.id {
                     navigationController?.pushViewController(vc, animated: true)
                 }
             }
         }
     }
 }
+
 
 extension TopicVC : UIViewControllerTransitioningDelegate {
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
@@ -874,7 +879,6 @@ class TopicTableViewCell:UITableViewCell {
             make.right.equalTo(contentView.snp_rightMargin)
         }
         
-        
         infoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
             make.bottom.equalTo(avatar.snp_bottom)
@@ -887,6 +891,7 @@ class TopicTableViewCell:UITableViewCell {
         timeLabel.snp_makeConstraints { (make) -> Void in
             make.right.equalTo(contentView.snp_rightMargin)
             make.centerY.equalTo(infoLabel.snp_centerY)
+            make.bottom.equalTo(avatar.snp_bottom)
             //timeLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: UILayoutConstraintAxis.Horizontal)
             
         }

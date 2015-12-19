@@ -52,7 +52,7 @@ class ActivityCell:UITableViewCell {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
-        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
         titleLabel.textColor = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)//UIColor.colorFromRGB(0x6A5ACD)
         
         infoLabel = UILabel()
@@ -422,15 +422,18 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     func more(sender:AnyObject) {
-        let searchItem = KxMenuItem("搜索",image: UIImage(named: "search")!, target:self, action:"search:")
-        searchItem.foreColor = THEME_COLOR
-        let publishItem = KxMenuItem("发布活动",image: UIImage(named: "activity_more")!, target:self, action:"search:")
-        publishItem.foreColor = THEME_COLOR
+        let search = UIImage(named: "search")?.imageWithRenderingMode(.AlwaysTemplate)
+        let searchItem = KxMenuItem("搜索活动",image: search, target:self, action:"search:")
+        searchItem.foreColor = UIColor.whiteColor()
+        let more = UIImage(named: "activity_more")?.imageWithRenderingMode(.AlwaysTemplate)
+        let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"search:")
+        publishItem.foreColor = UIColor.whiteColor()
         let v = moreButton.valueForKey("view") as! UIView
-        let window = view.window!
-        let rect = (navigationController?.navigationBar.convertRect(v.frame, toView: window))!
-        KxMenu.setTintColor(UIColor.whiteColor())
-        KxMenu.showMenuInView(window, fromRect: rect , menuItems: [searchItem, publishItem])
+        let vv = navigationController!.view
+        let rect = (navigationController?.navigationBar.convertRect(v.frame, toView: vv))!
+        KxMenu.setTintColor(THEME_COLOR)
+        KxMenu.setMenuIconTintColor(UIColor.whiteColor())
+        KxMenu.showMenuInView(vv, fromRect: rect , menuItems: [searchItem, publishItem])
         
     }
     

@@ -90,205 +90,10 @@ class HomeVC: UITabBarController {
 
 
 
-class DiscoveryVC:UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "遇见"
-        setNeedsStatusBarAppearanceUpdate()
-        navigationController?.navigationBar.barStyle = UIBarStyle.Black
-        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        view.backgroundColor = BACK_COLOR//backColor
-        
-        
-        let board = UILabel()
-        board.backgroundColor = UIColor.whiteColor()
-        board.translatesAutoresizingMaskIntoConstraints = false
-        board.numberOfLines = 0
-        board.font = UIFont.systemFontOfSize(20)
-        board.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        board.layer.cornerRadius = 4.0
-        board.layer.borderColor = UIColor.blackColor().CGColor
-        board.layer.borderWidth = 1.0
-        view.addSubview(board)
-        
-        board.text = "遇见模块正在紧急的赶工之中，下个版本就能和大家见面，请大家及时更新，灰常感谢～～～"
-        let constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-2-[board]-2-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["board":board])
-        view.addConstraints(constraints)
-        var constraint = NSLayoutConstraint(item: board, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 10)
-        view.addConstraint(constraint)
-        
-        let rect = (board.text! as NSString).boundingRectWithSize(CGSizeMake(view.frame.size.width-20, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName:board.font], context: nil)
-        //print(rect)
-        constraint = NSLayoutConstraint(item: board, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: rect.size.height + 20)
-       view.addConstraint(constraint)
-        
-
-    }
-}
-
-
-
-func saveProfileBackgroundImage(image:UIImage, scale:CGFloat = 1.0) {
-    let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-    let path = documents.stringByAppendingString("/profile_background.jpg")
-    if NSFileManager.defaultManager().fileExistsAtPath(path) {
-        do {
-            try NSFileManager.defaultManager().removeItemAtPath(path)
-        }
-        catch {
-            
-        }
-    }
-    
-    if let _ =  UIImageJPEGRepresentation(image, scale)?.writeToFile(path, atomically: true) {
-        print("save profile succeed")
-    }
-    else {
-        print("save profile failed")
-    }
-}
-
-func saveAvatarImage(image:UIImage, scale:CGFloat = 1.0) {
-    let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-    let avatar_path = documents.stringByAppendingString("/avatar.jpg")
-    if NSFileManager.defaultManager().fileExistsAtPath(avatar_path) {
-        
-        do {
-            try NSFileManager.defaultManager().removeItemAtPath(avatar_path)
-        }
-        catch {
-            
-        }
-    }
-    
-
-    if let _ = UIImageJPEGRepresentation(image, scale)?.writeToFile(avatar_path, atomically: true) {
-        print("save avatar succeed")
-    }
-    else {
-        print("save avatar failed")
-    }
-}
-
-extension MeVC:UIImagePickerControllerDelegate {
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-            self.dismissViewControllerAnimated(true, completion: nil)
-            let cropper = RSKImageCropViewController(image: image, cropMode:.Custom)
-            cropper.delegate = self
-            cropper.dataSource = self
-            presentViewController(cropper, animated: true, completion: nil)
-        
-    }
-}
-
-extension MeVC:RSKImageCropViewControllerDelegate, RSKImageCropViewControllerDataSource{
-    func imageCropViewController(controller: RSKImageCropViewController!, didCropImage croppedImage: UIImage!, usingCropRect cropRect: CGRect) {
-        dismissViewControllerAnimated(true, completion: nil)
-        self.back.image = croppedImage
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            saveProfileBackgroundImage(croppedImage, scale:1.0)
-        }
-        
-        if let token = NSUserDefaults.standardUserDefaults().stringForKey(TOKEN),
-            let id =  NSUserDefaults.standardUserDefaults().stringForKey(ID){
-                spinner.alpha = 1.0
-                upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
-                    
-                    //let dd = ["token":token]
-                    //do {
-                    //let jsonData = try NSJSONSerialization.dataWithJSONObject(dd, options: NSJSONWritingOptions.Prettyprinted)
-                    let dd = "{\"token\":\"\(token)\", \"type\":\"-1\", \"number\":\"1\"}"
-                    let jsonData = dd.dataUsingEncoding(NSUTF8StringEncoding)
-                    let data = UIImageJPEGRepresentation(croppedImage, 0.75)
-                    multipartFormData.appendBodyPart(data:jsonData!, name:"json")
-                    multipartFormData.appendBodyPart(data:data!, name:"avatar", fileName:"avatar.jpg", mimeType:"image/jpeg")
-                    // }
-                    //catch  {
-                    
-                    // }
-                    
-                    }, encodingCompletion: { encodingResult in
-                        switch encodingResult {
-                        case .Success(let upload, _ , _):
-                            upload.responseJSON { response in
-                                //debugPrint(response)
-                                if let d = response.result.value {
-                                    let j = JSON(d)
-                                    if j["state"].stringValue  == "successful" {
-                                        self.spinner.alpha = 0
-                                        //self.navigationController?.popViewControllerAnimated(true)
-                                        self.back.setImageWithURL(profileBackgroundURLForID(id), placeholder: nil, animated: false, isAvatar: false, completion:{
-                                            (image, flag) in
-                                            if let img = image {
-                                                //print("write fetched image")
-                                                if (flag) {
-                                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-                                                        saveProfileBackgroundImage(img, scale:1.0)
-                                                    }
-                                                }
-                                            }
-                                        })
-                                        //self.back.hnk_setImageFromURL(profileBackgroundURLForID(id))
-                                    }
-                                    else {
-                                        self.spinner.alpha = 0
-                                        let alert = UIAlertController(title: "提示", message: j["reason"].stringValue, preferredStyle: .Alert)
-                                        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
-                                        self.presentViewController(alert, animated: true, completion: nil)
-                                        return
-                                        
-                                        //self.navigationController?.popViewControllerAnimated(true)
-                                        
-                                    }
-                                }
-                                else if let error = response.result.error {
-                                    self.spinner.alpha = 0
-                                    let alert = UIAlertController(title: "提示", message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .Alert)
-                                    alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
-                                    self.presentViewController(alert, animated: true, completion: nil)
-                                    return
-                                    //self.navigationController?.popViewControllerAnimated(true)
-                                    
-                                    
-                                }
-                            }
-                            
-                        case .Failure:
-                            //print(encodingError)
-                            self.spinner.alpha = 0
-                            let alert = UIAlertController(title: "提示", message: "上载图片失败" , preferredStyle: .Alert)
-                            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
-                            return
-                            //self.navigationController?.popViewControllerAnimated(true)
-                            
-                            
-                        }
-                    }
-                    
-                )
-                
-                
-                
-        }
-    }
-    
-    func imageCropViewControllerDidCancelCrop(controller: RSKImageCropViewController!) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func imageCropViewControllerCustomMaskRect(controller: RSKImageCropViewController!) -> CGRect {
-        return CGRectMake(view.center.x - back.bounds.size.width/2, view.center.y-back.bounds.size.height/2, back.bounds.size.width, back.bounds.size.height)
-    }
-    
-    func imageCropViewControllerCustomMaskPath(controller: RSKImageCropViewController!) -> UIBezierPath! {
-        return UIBezierPath(rect: CGRectMake(view.center.x - back.bounds.size.width/2, view.center.y-back.bounds.size.height/2, back.bounds.size.width, back.bounds.size.height))
-    }
-}
 
 
 class SettingVC :UITableViewController {
-    private let setting = ["修改个人信息",  "清除缓存", "关于牵手"]
+    private let setting = ["清除缓存", "关于\(APP)"]
     override func viewDidLoad() {
         super.viewDidLoad()
         //tableView.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -327,30 +132,30 @@ class SettingVC :UITableViewController {
     
     func logout(sender : AnyObject) {
         //print("logout")
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(TOKEN)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(ID)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-        let path = documents.stringByAppendingString("/profile_background.jpg")
-        let avatar_path = documents.stringByAppendingString("/avatar.jpg")
-        if NSFileManager.defaultManager().fileExistsAtPath(path) {
-            do {
-                try NSFileManager.defaultManager().removeItemAtPath(path)
-            }
-            catch {
-                print("cannot delete profile")
-            }
-        }
-        
-        if NSFileManager.defaultManager().fileExistsAtPath(avatar_path) {
-            
-            do {
-                try NSFileManager.defaultManager().removeItemAtPath(avatar_path)
-            }
-            catch {
-                print("cannot delete avatar")
-            }
-        }
+//        NSUserDefaults.standardUserDefaults().removeObjectForKey(TOKEN)
+//        NSUserDefaults.standardUserDefaults().removeObjectForKey(ID)
+//        NSUserDefaults.standardUserDefaults().synchronize()
+//        let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+//        let path = documents.stringByAppendingString("/profile_background.jpg")
+//        let avatar_path = documents.stringByAppendingString("/avatar.jpg")
+//        if NSFileManager.defaultManager().fileExistsAtPath(path) {
+//            do {
+//                try NSFileManager.defaultManager().removeItemAtPath(path)
+//            }
+//            catch {
+//                print("cannot delete profile")
+//            }
+//        }
+//        
+//        if NSFileManager.defaultManager().fileExistsAtPath(avatar_path) {
+//            
+//            do {
+//                try NSFileManager.defaultManager().removeItemAtPath(avatar_path)
+//            }
+//            catch {
+//                print("cannot delete avatar")
+//            }
+//        }
 
         let cacheManager = SDImageCache.sharedImageCache()
         cacheManager.clearMemory()
@@ -358,7 +163,7 @@ class SettingVC :UITableViewController {
         
         
         let appDelegate = UIApplication.sharedApplication().delegate
-        appDelegate?.window??.rootViewController = UINavigationController(rootViewController: LoginRegisterVC())
+        appDelegate?.window??.rootViewController = LoginRegisterVC()
 
     }
     
@@ -375,7 +180,8 @@ class SettingVC :UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("CELL", forIndexPath: indexPath)
 
         cell.textLabel?.text = setting[indexPath.row]
-        if indexPath.row != 1 {
+        cell.textLabel?.textColor = UIColor.colorFromRGB(0x636363)
+        if indexPath.row != 0 {
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         }
         else {
@@ -386,17 +192,13 @@ class SettingVC :UITableViewController {
             label.text = "\(Double(SDImageCache.sharedImageCache().getSize()/10000)/100.0)M"
             cell.accessoryView = label
         }
-     
+        cell.selectionStyle = .None
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+       
         if indexPath.item == 0 {
-            navigationController?.pushViewController(ChangeInfoVC(), animated: true)
-            //let nav = UINavigationController(rootViewController: ChangeInfoVC())
-            //presentViewController(nav, animated: true, completion: nil)
-        }
-        else if indexPath.item == 1 {
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
             hud.mode = .Indeterminate
             hud.labelText = "正在清除..."
@@ -406,7 +208,7 @@ class SettingVC :UITableViewController {
                 imgcache.clearDisk()
                 let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
                 dispatch_after(delay, dispatch_get_main_queue(), { () -> Void in
-                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forItem: 1, inSection: 0)], withRowAnimation: .None)
+                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forItem: 0, inSection: 0)], withRowAnimation: .None)
                     let hudFinished = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
                     hudFinished.mode = .CustomView
                     hudFinished.labelText = "清除成功"
@@ -415,7 +217,7 @@ class SettingVC :UITableViewController {
                 })
                })
         }
-        else if indexPath.item == 2{
+        else if indexPath.item == 1{
             navigationController?.pushViewController(AboutVC(), animated: true)
             //let nav = UINavigationController(rootViewController: AboutVC())
             //presentViewController(nav, animated: true, completion: nil)
@@ -613,7 +415,7 @@ class AboutVC:UIViewController {
 
         //
 
-        title = "关于牵手"
+        title = "关于\(APP)"
         //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
         view.backgroundColor = BACK_COLOR//backColor
         automaticallyAdjustsScrollViewInsets = false

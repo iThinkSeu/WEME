@@ -26,7 +26,23 @@ private func md5(string string: String) -> String {
 }
 
 class LoginRegisterVC: UIViewController {
+    
+    private var _view:UIScrollView!
+    private var contentView:UIView!
     private var overlay:UIView!
+    
+    private var accountIcon:UIImageView!
+    private var passwordIcon:UIImageView!
+    private var accountBack:UIView!
+    private var passwordBack:UIView!
+    private var accountTextField:UITextField!
+    private var passwordTextField:UITextField!
+    
+    private var loginButton:UIButton!
+    private var registerButton:UIButton!
+    
+    var inputing = false
+
     
     private func applyBlurEffect(image: UIImage?) -> UIImage! {
         let imageToBlur = CIImage(image:image!)
@@ -38,75 +54,313 @@ class LoginRegisterVC: UIViewController {
         return blurredImage
     }
     
+    func setupScrollView() {
+        //view.backgroundColor =UIColor.colorFromRGB(0x1874CD)//UIColor.blackColor()
+        _view = UIScrollView()
+        _view.backgroundColor = UIColor.whiteColor()
+        view.addSubview(_view)
+        _view.translatesAutoresizingMaskIntoConstraints = false
+        var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[_view]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["_view":_view])
+        view.addConstraints(constraints)
+        var constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
+        view.addConstraint(constraint)
+        constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
+        view.addConstraint(constraint)
+        contentView = UIView()
+        //contentView.backgroundColor = BACK_COLOR
+        _view.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[contentView]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["contentView":contentView])
+        _view.addConstraints(constraints)
+        
+        constraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[contentView]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["contentView":contentView])
+        _view.addConstraints(constraints)
+        
+        constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0)
+        view.addConstraint(constraint)
+        constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 0)
+        view.addConstraint(constraint)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if _view.contentSize.height < view.frame.height {
+            contentView.snp_makeConstraints { (make) -> Void in
+                make.height.greaterThanOrEqualTo(view.snp_height).priorityHigh()
+                
+            }
+           _view.layoutIfNeeded()
+        }
+       
+        var maskPath = UIBezierPath(roundedRect: accountBack.bounds, byRoundingCorners: [UIRectCorner.TopLeft,UIRectCorner.TopRight], cornerRadii: CGSizeMake(3, 3))
+        var shape = CAShapeLayer()
+        shape.frame = accountBack.bounds
+        shape.path = maskPath.CGPath
+        accountBack.layer.mask = shape
+        
+        maskPath = UIBezierPath(roundedRect: accountBack.bounds, byRoundingCorners: [UIRectCorner.BottomLeft,UIRectCorner.BottomRight], cornerRadii: CGSizeMake(3, 3))
+        shape = CAShapeLayer()
+        shape.frame = accountBack.bounds
+        shape.path = maskPath.CGPath
+        passwordBack.layer.mask = shape
+    }
+
+    
+    func setupUI() {
+        setupScrollView()
+        _view.backgroundColor = UIColor.colorFromRGB(0x3460b5)
+       
+        let background = UIImageView(image: UIImage(named: "screen"))
+        background.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(background)
+        background.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_left)
+            make.right.equalTo(contentView.snp_right)
+            make.top.equalTo(contentView.snp_top)
+            make.height.equalTo(view.snp_height)
+        }
+        
+        
+        background.userInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: "tap:")
+        background.addGestureRecognizer(tap)
+        
+        
+       
+        
+        accountBack = UIView()
+        accountBack.translatesAutoresizingMaskIntoConstraints = false
+        accountBack.backgroundColor = UIColor.whiteColor()
+        //accountBack.layer.cornerRadius = 4.0
+        accountBack.layer.masksToBounds = true
+        contentView.addSubview(accountBack)
+        
+        passwordBack = UIView()
+        passwordBack.translatesAutoresizingMaskIntoConstraints = false
+        passwordBack.backgroundColor = UIColor.whiteColor()
+        //passwordBack.layer.cornerRadius = 4.0
+        passwordBack.layer.masksToBounds = true
+        contentView.addSubview(passwordBack)
+        
+        accountIcon = UIImageView(image: UIImage(named: "account"))
+        accountIcon.translatesAutoresizingMaskIntoConstraints = false
+        accountBack.addSubview(accountIcon)
+        
+        passwordIcon = UIImageView(image: UIImage(named: "password"))
+        passwordIcon.translatesAutoresizingMaskIntoConstraints = false
+        passwordBack.addSubview(passwordIcon)
+        
+        accountTextField = UITextField()
+        accountTextField.translatesAutoresizingMaskIntoConstraints = false
+        accountTextField.keyboardType = .Alphabet
+        accountTextField.tintColor = THEME_COLOR
+        accountTextField.textColor = THEME_COLOR
+        accountBack.addSubview(accountTextField)
+        
+        passwordTextField = UITextField()
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.secureTextEntry = true
+        passwordTextField.keyboardType = .Alphabet
+        passwordTextField.tintColor = THEME_COLOR
+        passwordTextField.textColor = THEME_COLOR
+        passwordBack.addSubview(passwordTextField)
+        
+        loginButton = UIButton()
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.backgroundColor = UIColor.colorFromRGB(0x5278c3)
+        loginButton.setTitle("登录", forState: .Normal)
+        loginButton.addTarget(self, action: "login:", forControlEvents: .TouchUpInside)
+        loginButton.layer.cornerRadius = 4.0
+        loginButton.layer.masksToBounds = true
+        contentView.addSubview(loginButton)
+        
+        registerButton = UIButton()
+        registerButton.translatesAutoresizingMaskIntoConstraints = false
+        registerButton.backgroundColor = UIColor.clearColor()
+        registerButton.setTitle("注册 WeMe 用户", forState: .Normal)
+        registerButton.addTarget(self, action: "register:", forControlEvents: .TouchUpInside)
+        registerButton.setTitleColor( UIColor.colorFromRGB(0x8da7e1), forState: .Normal)
+        registerButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        contentView.addSubview(registerButton)
+        
+        accountBack.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(contentView.snp_centerY)
+            make.centerX.equalTo(contentView.snp_centerX)
+            make.height.equalTo(44)
+            make.width.equalTo(contentView.snp_width).multipliedBy(2/3.0)
+        }
+        
+        passwordBack.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(contentView.snp_centerY).offset(1)
+            make.centerX.equalTo(contentView.snp_centerX)
+            make.height.equalTo(accountBack.snp_height)
+            make.width.equalTo(accountBack.snp_width)
+        }
+        
+        accountIcon.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(accountBack.snp_leftMargin)
+            make.centerY.equalTo(accountBack.snp_centerY)
+            make.width.height.equalTo(20)
+        }
+        
+        accountTextField.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(accountIcon.snp_right).offset(10)
+            make.right.equalTo(accountBack.snp_right)
+            make.centerY.equalTo(accountBack.snp_centerY)
+        }
+        
+        passwordIcon.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(passwordBack.snp_leftMargin)
+            make.centerY.equalTo(passwordBack.snp_centerY)
+            make.width.height.equalTo(20)
+        }
+        
+        passwordTextField.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(passwordIcon.snp_right).offset(10)
+            make.right.equalTo(passwordBack.snp_right)
+            make.centerY.equalTo(passwordBack.snp_centerY)
+        }
+        
+        loginButton.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(passwordBack.snp_bottom).offset(20)
+            make.centerX.equalTo(contentView.snp_centerX)
+            make.width.equalTo(accountBack.snp_width)
+            make.height.equalTo(passwordBack.snp_height)
+        }
+        
+        registerButton.snp_makeConstraints { (make) -> Void in
+            make.centerX.equalTo(contentView.snp_centerX)
+            //make.top.equalTo(loginButton.snp_bottom).offset(60)
+        }
+        
+        contentView.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(registerButton.snp_bottom).offset(view.frame.size.height/8).priorityLow()
+        }
+        
+        
+        
+    }
+    
+
+    
+    func login(sender:AnyObject) {
+        //let navigation = UINavigationController(rootViewController: HomeVC())
+        if accountTextField?.text?.characters.count == 0 || passwordTextField?.text?.characters.count == 0 {
+            let alert = UIAlertController(title: "提示", message: "帐号和密码不能为空", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            return
+            
+        }
+        
+        let pwdmd5 = md5(string: (passwordTextField?.text)!)
+        
+        request(.POST, LOGIN_URL, parameters: ["username":(accountTextField?.text)!, "password":pwdmd5], encoding: .JSON).responseJSON { (response) -> Void in
+            //debugprint(response)
+            if let d = response.result.value {
+                let json  = JSON(d)
+                if json["state"].stringValue == "successful" {
+                    
+                    token = json["token"].stringValue
+                    myId = json["id"].stringValue
+                    NSUserDefaults.standardUserDefaults().setValue(token, forKey: TOKEN)
+                    NSUserDefaults.standardUserDefaults().setValue(myId, forKey: ID)
+                    NSUserDefaults.standardUserDefaults().synchronize()
+                    
+                    let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                    hud.labelText = "登陆成功"
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.mode = .CustomView
+                    
+                    let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+                    dispatch_after(delay, dispatch_get_main_queue(), { () -> Void in
+                        hud.hide(true)
+                        let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+                        appDelegate?.window?.rootViewController = HomeVC()
+                    })
+                    
+                }
+                else {
+                    let alert = UIAlertController(title: "提示", message: json["reason"].stringValue, preferredStyle: .Alert)
+                    alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    return
+                    
+                }
+            }
+            else if let error = response.result.error {
+                let alert = UIAlertController(title: "提示", message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .Alert)
+                alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+                return
+                
+            }
+        }
+        
+        
+    }
+    
+    func register(sender:AnyObject?) {
+        
+        let navigation = UINavigationController(rootViewController: RegisterVC())
+        navigation.view.backgroundColor = UIColor.whiteColor()
+        navigation.navigationBar.barTintColor = THEME_COLOR
+        navigation.navigationBar.tintColor = UIColor.whiteColor()
+        navigation.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+        UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
+        UIView.transitionWithView(view, duration: 1, options: UIViewAnimationOptions.TransitionFlipFromRight, animations: { () -> Void in
+                self._view.removeFromSuperview()
+                self.view.addSubview(navigation.view)
+                self.addChildViewController(navigation)
+
+            }) { (finished) -> Void in
+            }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-       // let background = UIImageView(image: applyBlurEffect(UIImage(named: "screen")))
-        let background = UIImageView(image: UIImage(named: "screen"))
+        setupUI()
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func keyboardWillShow(notification:NSNotification) {
+        if inputing == false {
+            inputing = true
+            var info = notification.userInfo!
+            let keyFrame = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+            _view.setContentOffset(CGPointMake(_view.contentOffset.x, 80), animated: true)
+        }
+    }
+    
+    func keyboardWillHide(sender:AnyObject?) {
+        inputing = false
+        _view.setContentOffset(CGPointMake(_view.contentOffset.x, 0), animated: true)
 
-        background.frame = view.frame
-        view.addSubview(background)
-        overlay = UIView(frame: view.frame)
-        view.addSubview(overlay)
-        loadUI()
+    }
+    
+    func tap(sender:AnyObject) {
+        if accountTextField.isFirstResponder() {
+            accountTextField.resignFirstResponder()
+        }
+        else if passwordTextField.isFirstResponder() {
+            passwordTextField.resignFirstResponder()
+        }
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.hidden = true
+        
     }
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
-    private func loadUI() {
-        let login = UIButton();
-        login.setTitle("登录", forState: UIControlState.Normal)
-        login.layer.borderWidth = 2.0
-        login.layer.borderColor = UIColor.whiteColor().CGColor
-        login.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        login.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        login.addTarget(self, action: "login:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        let register = UIButton()
-        register.setTitle("注册", forState: UIControlState.Normal)
-        register.layer.borderWidth = 2.0
-        register.layer.borderColor = UIColor.whiteColor().CGColor
-        register.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
-        register.titleLabel?.font = UIFont.boldSystemFontOfSize(20)
-        register.addTarget(self, action: "register:", forControlEvents: UIControlEvents.TouchUpInside)
-        
-        let viewsDict = ["login": login, "register":register]
-        login.translatesAutoresizingMaskIntoConstraints = false
-        register.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(login)
-        view.addSubview(register)
-        
-        let constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-20-[register(<=20@500)]-80-[login(==register)]-20-|", options:NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewsDict);
-        view.addConstraints(constraints)
-        let constraint = NSLayoutConstraint(item: login, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: -UIScreen.mainScreen().bounds.height/10)
-        view.addConstraint(constraint)
-        
-    }
+ 
     
-    func login(sender:UIButton!) {
-        //print("login")
-        let vc = LoginVC()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func register(sender:UIButton!) {
-        //print("register")
-        let vc = RegisterVC()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    class RegisterVC: UIViewController, UITextFieldDelegate {
+    class RegisterVC: UIViewController, UITextFieldDelegate , UIScrollViewDelegate{
         
         private var _view :UIScrollView!
         private var contentView :UIView!
@@ -121,45 +375,69 @@ class LoginRegisterVC: UIViewController {
         
         
         private var  rightButton:UIBarButtonItem!
+
+        override func prefersStatusBarHidden() -> Bool {
+            return false
+        }
         
         override func viewDidLoad() {
             super.viewDidLoad()
+            automaticallyAdjustsScrollViewInsets = false
+            UIApplication.sharedApplication().statusBarHidden = false
             setNeedsStatusBarAppearanceUpdate()
             title = "注册"
             self.view.backgroundColor = UIColor.whiteColor()
             navigationController?.navigationBar.barStyle = UIBarStyle.Black
-            //navigationItem.backBarButtonItem = UIBarButtonItem(title: "hh", style: UIBarButtonItemStyle.Plain, target: nil, action: nil)
-            //UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-80, 0), forBarMetrics: UIBarMetrics.Default)
             rightButton = UIBarButtonItem(title: "跳过", style: UIBarButtonItemStyle.Plain, target: self, action: "skip:")
             navigationItem.rightBarButtonItem = rightButton
             rightButton.enabled = false
             rightButton.title = ""
+            
+            let back = UIBarButtonItem(image: UIImage(named: "activity_more"), style: .Plain, target: self, action: "back:")
+            navigationItem.leftBarButtonItem = back
 
             loadUI()
         }
         
-        func textFieldDidBeginEditing(textField: UITextField) {
-            let frame = textField.convertRect(textField.frame, toView: _view)
-            var p = frame.origin
-            p.x = 0
-            p.y -= 100
-            _view.setContentOffset(p, animated: true)
+        func back(sender:AnyObject) {
+            let vc = LoginRegisterVC()
+            let nav = self.navigationController!
+            UIView.transitionWithView(nav.parentViewController!.view, duration: 1, options: .TransitionFlipFromLeft, animations: { () -> Void in
+                    nav.parentViewController!.view.addSubview(vc.view)
+                    nav.parentViewController?.addChildViewController(vc)
+                }) { (finished) -> Void in
+                    self.navigationController!.view.removeFromSuperview()
+                    self.navigationController!.removeFromParentViewController()
+            }
         }
-
+        
+        func textFieldDidBeginEditing(textField: UITextField) {
+//            let frame = textField.convertRect(textField.frame, toView: _view)
+//            var p = frame.origin
+//            let offset = _view.contentOffset.y
+//            print(offset)
+//            print(p)
+//            p.x = 0
+//            p.y += max(p.y-offset-10, 0)
+//            _view.setContentOffset(p, animated: true)
+        }
+        
+        func scrollViewDidScroll(scrollView: UIScrollView) {
+            dismissKeyboard(nil)
+        }
         
         override func viewWillAppear(animated: Bool) {
             super.viewWillAppear(animated)
-            
             navigationController?.navigationBar.hidden = false
-            view.setNeedsLayout()
         }
+        
         
         func skip(sender:AnyObject) {
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.window?.rootViewController = HomeVC()
         }
         
-        func dismissKeyboard(sender:AnyObject) {
+        func dismissKeyboard(sender:AnyObject?) {
             if (accountTextField?.isFirstResponder())! {
                 accountTextField?.resignFirstResponder()
             }
@@ -179,6 +457,7 @@ class LoginRegisterVC: UIViewController {
             
             //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
             _view = UIScrollView()
+            _view.delegate = self
             // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
             
             _view.backgroundColor = UIColor.whiteColor()
@@ -186,7 +465,7 @@ class LoginRegisterVC: UIViewController {
             _view.translatesAutoresizingMaskIntoConstraints = false
             var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[_view]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["_view":_view])
             view.addConstraints(constraints)
-            var constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
+            var constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
             view.addConstraint(constraint)
             constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
             view.addConstraint(constraint)
@@ -205,9 +484,9 @@ class LoginRegisterVC: UIViewController {
             //_view.contentSize = CGSizeMake(view.frame.width, view.frame.height)
             // _view.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 80, right: 10)
             
-            constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
+            constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0)
             view.addConstraint(constraint)
-            constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
+            constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Right, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 0)
             view.addConstraint(constraint)
 
             
@@ -324,7 +603,7 @@ class LoginRegisterVC: UIViewController {
             
 
 
-            passwordTextField?.placeholder = "请输入至少八位密码"
+            passwordTextField?.placeholder = "请输入至少6位密码"
             passwordTextField?.translatesAutoresizingMaskIntoConstraints = false
             passwordTextField?.secureTextEntry = true
             passwordLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -365,14 +644,9 @@ class LoginRegisterVC: UIViewController {
             back3.addConstraints(constraints)
             back3.addConstraint(constraint)
             
-           
-            
-            
-         
-
             
 
-            view.addSubview(nextButton!)
+            contentView.addSubview(nextButton!)
             nextButton!.tag = 0
             nextButton!.addTarget(self, action: "next:", forControlEvents: UIControlEvents.TouchUpInside)
             nextButton?.setTitle("注册", forState: UIControlState.Normal)
@@ -386,11 +660,27 @@ class LoginRegisterVC: UIViewController {
             view.addConstraints(constraints)
             view.addConstraint(constraint)
             
-            constraint = NSLayoutConstraint(item: nextButton!, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: -600)
-            view.addConstraint(constraint)
+            
+            contentView.snp_makeConstraints { (make) -> Void in
+                make.bottom.equalTo(nextButton!.snp_bottom).priorityLow()
+            }
             
             
         }
+        
+   
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            if _view.contentSize.height < view.frame.height {
+                contentView.snp_makeConstraints { (make) -> Void in
+                    make.height.greaterThanOrEqualTo(view.snp_height).offset(5).priorityHigh()
+                    _view.layoutIfNeeded()
+                }
+                
+            }
+        }
+
+        
         
         func next(sender:UIButton!) {
             if sender.tag == 0 {
@@ -403,8 +693,8 @@ class LoginRegisterVC: UIViewController {
                     return
                 }
                 
-                if (passwordRetypeTextField?.text?.characters.count < 8) {
-                    let alert = UIAlertController(title: "提示", message: "请输入至少8位密码", preferredStyle: .Alert)
+                if (passwordRetypeTextField?.text?.characters.count < 6) {
+                    let alert = UIAlertController(title: "提示", message: "请输入至少6位密码", preferredStyle: .Alert)
                     alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
                     self.presentViewController(alert, animated: true, completion: nil)
                     return
@@ -560,7 +850,7 @@ class LoginRegisterVC: UIViewController {
             back.backgroundColor = BACK_COLOR//backColor
             back.translatesAutoresizingMaskIntoConstraints = false
             var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[back]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
-            var constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 0)
+            var constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 5)
             contentView.addConstraints(constraints)
             contentView.addConstraint(constraint)
             constraint = NSLayoutConstraint(item: back, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 44)
@@ -1294,15 +1584,15 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
             return
         }
         
-        if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN") {
+        if let t = token, id = myId{
             spinner.alpha = 1.0
-            request(.POST, EDIT_PERSONAL_INFO_URL, parameters: ["token":token, "name":nameTextField.text!, "gender":sexTextField.text!, "birthday":birthDayTextField.text!, "phone":phoneNumberTextField.text!, "wechat":wechatTextField.text!, "qq":qqTextField.text!, "hometown":hometownTextField.text!], encoding: .JSON).responseJSON{ (response) -> Void in
+            request(.POST, EDIT_PERSONAL_INFO_URL, parameters: ["token":t, "name":nameTextField.text!, "gender":sexTextField.text!, "birthday":birthDayTextField.text!, "phone":phoneNumberTextField.text!, "wechat":wechatTextField.text!, "qq":qqTextField.text!, "hometown":hometownTextField.text!], encoding: .JSON).responseJSON{ (response) -> Void in
                // debugPrint(response)
                 self.spinner.alpha = 0
                 if let d = response.result.value {
                     let json = JSON(d)
                     
-                    if json["state"].stringValue == "successful" || json["state"].stringValue == "sucessful" {
+                    if json["state"].stringValue == "successful" {
                         
                         upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
                             
@@ -1321,7 +1611,8 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
                                         if let d = response.result.value {
                                             let j = JSON(d)
                                             if j["state"].stringValue  == "successful" {
-                                                
+                                                SDImageCache.sharedImageCache().storeImage(self.avatar.image, forKey:avatarURLForID(id).absoluteString, toDisk:true)
+                                                SDImageCache.sharedImageCache().removeImageForKey(thumbnailAvatarURLForID(id).absoluteString, fromDisk:true)
                                                 self.navigationController?.pushViewController(RegisterSchoolInfoVC(), animated: true)
                                             }
                                             else {
