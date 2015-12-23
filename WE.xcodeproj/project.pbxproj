@@ -55,6 +55,8 @@
 		B105CA3E1C23DB1600E946D8 /* UIImage+MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = B105CA121C23DB1600E946D8 /* UIImage+MWPhotoBrowser.m */; };
 		B105CA441C23DC1900E946D8 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B105CA411C23DC1900E946D8 /* DACircularProgressView.m */; };
 		B105CA451C23DC1900E946D8 /* DALabeledCircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = B105CA431C23DC1900E946D8 /* DALabeledCircularProgressView.m */; };
+		B105CA471C27A1F300E946D8 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105CA461C27A1F300E946D8 /* Card.swift */; };
+		B105CA491C2A4FE900E946D8 /* About.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105CA481C2A4FE900E946D8 /* About.swift */; };
 		B107599E1BEB1D5700FEC0A0 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = B107599D1BEB1D5700FEC0A0 /* Message.swift */; };
 		B10759A31BEB7ECE00FEC0A0 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10759A21BEB7ECE00FEC0A0 /* CAPSPageMenu.swift */; };
 		B10759B41BEC518C00FEC0A0 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10759A51BEC518C00FEC0A0 /* Constraint.swift */; };
@@ -282,6 +284,8 @@
 		B105CA411C23DC1900E946D8 /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		B105CA421C23DC1900E946D8 /* DALabeledCircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DALabeledCircularProgressView.h; sourceTree = "<group>"; };
 		B105CA431C23DC1900E946D8 /* DALabeledCircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DALabeledCircularProgressView.m; sourceTree = "<group>"; };
+		B105CA461C27A1F300E946D8 /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		B105CA481C2A4FE900E946D8 /* About.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = About.swift; sourceTree = "<group>"; };
 		B107599D1BEB1D5700FEC0A0 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B10759A21BEB7ECE00FEC0A0 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		B10759A51BEC518C00FEC0A0 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
@@ -704,6 +708,7 @@
 				B125DBCA1C098347002E0F5C /* TopicVoice.swift */,
 				B105C9CE1C22F7DA00E946D8 /* Timeline.swift */,
 				B105C9D31C23C87800E946D8 /* UserImages.swift */,
+				B105CA461C27A1F300E946D8 /* Card.swift */,
 			);
 			name = social;
 			sourceTree = "<group>";
@@ -1018,6 +1023,7 @@
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
+				B105CA481C2A4FE900E946D8 /* About.swift */,
 				B19F9A361BD8FC9C0008CA12 /* Contacts.swift */,
 				B14F5FD31BCFA37B0026C80F /* HandVC.swift */,
 				B1DBF4121C0E91F0000A6178 /* Hand.swift */,
@@ -1264,6 +1270,7 @@
 				B105CA451C23DC1900E946D8 /* DALabeledCircularProgressView.m in Sources */,
 				B17CF8A61C05E94C0074FF3F /* STEmojiCollectionView.m in Sources */,
 				B1AE746C1BD514EC0014BE12 /* SheetCollectionViewLayout.swift in Sources */,
+				B105CA491C2A4FE900E946D8 /* About.swift in Sources */,
 				B12FB2BF1C009D1C00566266 /* FloatingActionView.swift in Sources */,
 				B1D03C351BCE59D100DF0B44 /* Response.swift in Sources */,
 				B10759C01BEC518C00FEC0A0 /* View+SnapKit.swift in Sources */,
@@ -1299,6 +1306,7 @@
 				B10759BB1BEC518C00FEC0A0 /* EdgeInsets.swift in Sources */,
 				B17CF8A51C05E94C0074FF3F /* STEmoji.m in Sources */,
 				B1AE74621BD514EC0014BE12 /* ImagePickerAction.swift in Sources */,
+				B105CA471C27A1F300E946D8 /* Card.swift in Sources */,
 				B105C9D21C22FB4A00E946D8 /* TimelineModel.m in Sources */,
 				B12FB2B81BFA14C800566266 /* Social.swift in Sources */,
 				B1D03C361BCE59D100DF0B44 /* ResponseSerialization.swift in Sources */,
@@ -1413,7 +1421,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Distribution;
 		};
@@ -1548,7 +1556,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1584,7 +1592,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

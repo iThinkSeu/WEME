@@ -10,6 +10,10 @@
 #define utility_objc_h
 #import <UIKit/UIKit.h>
 
+@interface UIImage (MASK)
+- (UIImage *) maskWithColor:(UIColor *)color;
+@end
+
 @interface Utility : NSObject
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 @end

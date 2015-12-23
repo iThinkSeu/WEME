@@ -8,15 +8,6 @@
 
 import UIKit
 
-struct Activity {
-    let title:String
-    let time:String
-    let location:String
-    let peopleCapacity:String
-    let state:String
-    let id:String
-}
-
 class ActivityCell:UITableViewCell {
     var titleLabel:UILabel!
     var timeLabel:UILabel!
@@ -25,6 +16,8 @@ class ActivityCell:UITableViewCell {
     var hostIcon:UIImageView!
     var locationIcon:UIImageView!
     var timeIcon:UIImageView!
+    var remarkIcon:UIImageView!
+    var remarkLabel:UILabel!
 
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -96,6 +89,18 @@ class ActivityCell:UITableViewCell {
         locationIcon.tintColor = THEME_COLOR_BACK
         contentView.addSubview(locationIcon)
         
+        remarkIcon = UIImageView(image: UIImage(named: "remark")?.imageWithRenderingMode(.AlwaysTemplate))
+        remarkIcon.translatesAutoresizingMaskIntoConstraints = false
+        remarkIcon.tintColor = THEME_COLOR_BACK
+        contentView.addSubview(remarkIcon)
+
+        
+        remarkLabel = UILabel()
+        remarkLabel.translatesAutoresizingMaskIntoConstraints = false
+        remarkLabel.textColor = UIColor.lightGrayColor()
+        remarkLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        contentView.addSubview(remarkLabel)
+        
         titleLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
             make.top.equalTo(contentView.snp_topMargin)
@@ -123,6 +128,18 @@ class ActivityCell:UITableViewCell {
             make.left.equalTo(locationIcon.snp_right).offset(10)
             make.right.equalTo(contentView.snp_rightMargin)
             make.top.equalTo(timeLabel.snp_bottom).offset(10)
+        }
+        
+        remarkIcon.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(hostIcon.snp_right).offset(10)
+            make.centerY.equalTo(remarkLabel.snp_centerY)
+            make.width.height.equalTo(20)
+        }
+        
+        remarkLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(remarkIcon.snp_right).offset(10)
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.top.equalTo(locationLabel.snp_bottom).offset(10)
         }
 
         
@@ -462,7 +479,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
 //        locationText.addAttributes([NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName:UIColor.darkGrayColor()], range: NSMakeRange(0, 2))
         cell.locationLabel.text = data.location
         if data.capacity.characters.count <= 3 {
-            cell.infoLabel.text = "\(data.capacity)"
+            cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
         }
         else {
             cell.infoLabel.text = data.capacity.substringWithRange(Range(start: data.capacity.startIndex, end: data.capacity.startIndex.advancedBy(3)))
@@ -470,6 +487,8 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         
         
         cell.hostIcon.image = UIImage(named: "seu")
+        
+        cell.remarkLabel.text = data.remark.characters.count == 0 ? "(无备注信息)" : data.remark
         
         cell.selectionStyle = .None
         
@@ -499,7 +518,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 100
+        return 120
     }
     
     

@@ -94,10 +94,14 @@ let GET_USER_TIMELINE_IMAGES = BASE_URL + "getuserimages"
 let PROFILE = "PROFILE_KEY"
 
 
+//MARK - Cache File
+
+let PROFILE_CACHE_FILE = "profile"
+
 
 let ID = "ID"
 let TOKEN = "TOKEN"
-let APP = "WE"
+let APP = "WEME"
 
 let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
 let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
@@ -168,7 +172,7 @@ let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0,
 
 extension UIImage {
     func crop(rect:CGRect) -> UIImage{
-        let rect = CGRectMake(rect.origin.x*self.scale, rect.origin.x*self.scale, rect.size.width*self.scale, rect.size.height*self.scale)
+        let rect = CGRectMake(rect.origin.x*self.scale, rect.origin.y*self.scale, rect.size.width*self.scale, rect.size.height*self.scale)
         
         let imageRef = CGImageCreateWithImageInRect(self.CGImage, rect)
         let result = UIImage(CGImage: imageRef!, scale: self.scale, orientation: self.imageOrientation)

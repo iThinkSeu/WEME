@@ -157,7 +157,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else {
             let data = self.comments[indexPath.section-1]
             if indexPath.row == 0 {
-                let bodyRect = (data.body as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-60, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
+                let bodyRect = (data.body as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-80, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
                 if data.image.count > 0 {
                     return bodyRect.height + PostCommentImageController.SIZE + 20 + 10
                 }
@@ -167,7 +167,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
             else {
                 let reply = data.reply[indexPath.row-1]
-                let bodyRect = (reply.body as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-60, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
+                let bodyRect = ("xxxxxxxxxxxxx" + reply.body as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-80, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
                 return bodyRect.height + 10
             }
         }

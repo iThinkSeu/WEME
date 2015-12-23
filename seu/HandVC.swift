@@ -431,7 +431,7 @@ class ActivityRegisterVC:UIViewController {
                 //debugPrint(response)
                 if let d = response.result.value {
                     let json = JSON(d)
-                    if json["state"] == "successful" || json["state"] == "sucessful" {
+                    if json["state"] == "successful"{
                         //self.profile = json
                         NSUserDefaults.standardUserDefaults().setValue(d, forKey: PROFILE)
                         NSUserDefaults.standardUserDefaults().synchronize()

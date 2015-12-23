@@ -18,6 +18,8 @@
              @"location":@"location",
              @"capacity":@"number",
              @"state":@"state",
+             @"signnumber":@"signnumber",
+             @"remark":@"remark"
              };
 }
 

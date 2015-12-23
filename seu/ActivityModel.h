@@ -19,5 +19,7 @@
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *capacity;
 @property (nonatomic, copy)NSString *state;
+@property (nonatomic, copy)NSString * signnumber;
+@property (nonatomic, copy)NSString *remark;
 
 @end

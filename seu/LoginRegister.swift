@@ -1139,6 +1139,7 @@ class RegisterPersonalInfoVC: UIViewController, UIPickerViewDataSource, UIPicker
         var p = frame.origin
         p.x = 0
         p.y -= 100
+        p.y = max(0, p.y)
         _view.setContentOffset(p, animated: true)
     }
     
@@ -1806,6 +1807,7 @@ class RegisterMoreInfoVC:UIViewController, UITextViewDelegate {
         var p = frame.origin
         p.x = 0
         p.y -= 100
+        p.y = max(0, p.y)
         _view.setContentOffset(p, animated: true)
     }
     
@@ -2024,6 +2026,7 @@ class RegisterSchoolInfoVC : UIViewController, UIPickerViewDataSource, UIPickerV
         var p = frame.origin
         p.x = 0
         p.y -= 100
+        p.y = max(0, p.y)
         _view.setContentOffset(p, animated: true)
     }
     

@@ -16,7 +16,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     let imgs = ["follow", "message"]
     var more = ["设置"]
     
-    var name:String?
+    var personInfo:PersonModel?
  
     
     override func viewDidLoad() {
@@ -39,10 +39,10 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if name == nil {
+        if personInfo == nil {
             fetchNameInfo()
         }
-        tabBarController?.tabBar.hidden = false
+        tabBarController?.tabBar.hidden = true
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.barTintColor = THEME_COLOR
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
@@ -50,6 +50,14 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.alpha = 1.0
         
         tableView.reloadData()
+    }
+    
+    func loadNameInfoFromFile() {
+        let cacheDir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
+        let profileFile = cacheDir.stringByAppendingString("/\(PROFILE_CACHE_FILE)")
+        if NSFileManager.defaultManager().fileExistsAtPath(profileFile) {
+            
+        }
     }
     
     
@@ -61,10 +69,14 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     guard json["state"] == "successful" && json["name"] != .null else{
                         return
                     }
-                    
-                    S.name = json["name"].stringValue
-                    let cell = S.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0)) as! MeTableViewCell
-                    cell.nameLabel.text = S.name
+                    do {
+                        S.personInfo = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject) as? PersonModel
+                        S.tableView.reloadData()
+                    }
+                    catch {
+                        print(error)
+                    }
+                   
                 }
             }
 
@@ -79,7 +91,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeTableViewCell), forIndexPath: indexPath) as! MeTableViewCell
             cell.avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
-            cell.nameLabel.text = name ?? ""
+            cell.nameLabel.text = personInfo?.name ?? " "
           
             cell.accessoryType = .DisclosureIndicator
             cell.selectionStyle = .None

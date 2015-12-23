@@ -132,8 +132,6 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        
         tableView.backgroundColor = BACK_COLOR//backColor
         tableView.tableFooterView = UIView()
         
@@ -193,6 +191,13 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         return cell
 
     }
+    
+//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        let data = friendsData[indexPath.row]
+//        let vc = MeInfoVC()
+//        vc.id = data["id"].stringValue
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
     
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -598,12 +603,22 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
         
         UITableViewHeaderFooterView.appearance().tintColor = BACK_COLOR//backColor
         
-        tableView.allowsSelection = false
+        //tableView.allowsSelection = false
         
         refreshCont = UIRefreshControl()
         refreshCont.addTarget(self, action: "pullRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshCont)
         loadFriends()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+   
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
     }
     
     
@@ -674,10 +689,18 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
         else if data["gender"].stringValue == "女" {
             cell.gender.image = UIImage(named: "female")
         }
-        cell.selectedBackgroundView = UIView()
         cell.delegate = self
+        cell.selectionStyle = .None
         return cell
     }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let data = friendsData[indexPath.row]
+        let vc = MeInfoVC()
+        vc.id = data["id"].stringValue
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
     
     
     func didTapAvatarAtCell(cell: ConversationTableCell) {

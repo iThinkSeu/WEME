@@ -55,9 +55,11 @@ class HomeVC: UITabBarController {
         let navSocial = UINavigationController(rootViewController: SocialVC())
         //let navMe = UINavigationController(rootViewController: PersonalInfoVC())
         let Me =  UINavigationController(rootViewController: ProfileVC())
+        
+        let food = CardVC()
 
         
-        setViewControllers([navHand, navSocial, Me], animated: true)
+        setViewControllers([navHand, navSocial, food, Me], animated: true)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR_BACK], forState: UIControlState.Normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR], forState: UIControlState.Selected)
         tabBar.tintColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)//UIColor.colorFromRGB(0x32CD32)//UIColor.colorFromRGB(0xEE3B3B)//UIColor.redColor()
@@ -78,7 +80,8 @@ class HomeVC: UITabBarController {
         
         Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
 
-        
+        food.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
+
         
     }
     
@@ -123,6 +126,13 @@ class SettingVC :UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.hidden = true
+        
+       // tabBarController?.tabBar.hidden = false
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -218,7 +228,7 @@ class SettingVC :UITableViewController {
                })
         }
         else if indexPath.item == 1{
-            navigationController?.pushViewController(AboutVC(), animated: true)
+            navigationController?.pushViewController(AboutUSVC(), animated: true)
             //let nav = UINavigationController(rootViewController: AboutVC())
             //presentViewController(nav, animated: true, completion: nil)
         }
@@ -227,316 +237,6 @@ class SettingVC :UITableViewController {
 }
 
 
-class AboutCollectionViewCell:UICollectionViewCell {
-
-    
-    lazy var avatar:UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .ScaleAspectFill
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    var nameLabel:UILabel!
-    var infoLabel:UILabel!
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        initialize()
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        initialize()
-    }
-
-    
-    func initialize() {
-    
-        
-        //avatar.translatesAutoresizingMaskIntoConstraints = false
-        avatar.translatesAutoresizingMaskIntoConstraints = false
-        avatar.layer.cornerRadius = 4.0
-       // avatar.layer.cornerRadius = 30
-       // avatar.layer.masksToBounds = true
-        addSubview(avatar)
-        
-        nameLabel = UILabel()
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        addSubview(nameLabel)
-        
-        infoLabel = UILabel()
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-        infoLabel.textColor = UIColor.lightGrayColor()
-        addSubview(infoLabel)
-        
-       
-        
-        
-        let viewDict = ["avatar" : avatar, "nameLabel":nameLabel, "infoLabel":infoLabel]
-        
-        var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-10-[avatar(40)]", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
-        var constraint = NSLayoutConstraint(item: avatar, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
-        
-        addConstraints(constraints)
-        addConstraint(constraint)
-        //constraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[avatar(44)]", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
-        constraint = NSLayoutConstraint(item: avatar, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
-        
-        addConstraint(constraint)
-        
-        
-        
-        constraint = NSLayoutConstraint(item: nameLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: avatar, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 2)
-        addConstraint(constraint)
-        
-        constraint = NSLayoutConstraint(item: nameLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: avatar, attribute: NSLayoutAttribute.Right, multiplier: 1.0, constant: 5)
-        addConstraint(constraint)
-        
-        constraint = NSLayoutConstraint(item: infoLabel, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: avatar, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: -2)
-        addConstraint(constraint)
-        
-        constraint = NSLayoutConstraint(item: infoLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: nameLabel, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0)
-        addConstraint(constraint)
-        
-        
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[nameLabel]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
-        addConstraints(constraints)
-        
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[infoLabel]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
-        addConstraints(constraints)
-        
-        
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        avatar.image = nil
-        
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-
-    
-}
-
-
-class AboutVC:UIViewController {
-    private var _view :UIScrollView!
-    private var contentView :UIView!
-
-
-    private(set) lazy var peopleCollectionView:UICollectionView = {
-        let imageCollectionView = UICollectionView(frame: CGRect(), collectionViewLayout: UICollectionViewFlowLayout())
-        imageCollectionView.dataSource = self
-        imageCollectionView.delegate  = self
-        imageCollectionView.registerClass(AboutCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(AboutCollectionViewCell))
-        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        imageCollectionView.backgroundColor = UIColor.whiteColor()
-        return imageCollectionView
-        }()
-    
-
-    private let dev_name = ["李磊", "叶庆仕", "刘历", "宋嘉冀", "马申斌"]
-    private let dev_info = ["产品经理", "后台开发", "iOS开发", "Android开发", "UI设计师"]
-    private let dev_img = ["dev_lilei", "dev_yeqingshi", "dev_liuli", "dev_songjiaji", "dev_mashenbin"]
-    
-    
-    func cancel(sender:AnyObject?) {
-        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if peopleCollectionView.frame.size.height > peopleCollectionView.collectionViewLayout.collectionViewContentSize().height {
-            peopleCollectionView.snp_updateConstraints(closure: { (make) -> Void in
-                make.height.equalTo(peopleCollectionView.collectionViewLayout.collectionViewContentSize().height)
-                self.view.layoutIfNeeded()
-            })
-        }
-        
-        if _view.contentSize.height < view.frame.height {
-            contentView.snp_makeConstraints(closure: { (make) -> Void in
-                make.height.greaterThanOrEqualTo(view.snp_height).offset(5).priorityHigh()
-            })
-        }
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        automaticallyAdjustsScrollViewInsets = false
-        
-        setNeedsStatusBarAppearanceUpdate()
-        navigationController?.navigationBar.barStyle = .Black
-        
-       // let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-    
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(title: "返回", style: .Plain, target: self, action: "cancel:")
-       // navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "cancel:")
-       // navigationItem.leftBarButtonItem?.tintColor = UIColor.whiteColor()
-        
-        _view = UIScrollView()
-        // _view.contentInset = UIEdgeInsets(top: -64, left: 0, bottom: 0, right: 0)
-        
-        _view.backgroundColor = BACK_COLOR//backColor
-        view.addSubview(_view)
-        _view.translatesAutoresizingMaskIntoConstraints = false
-        var constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[_view]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["_view":_view])
-        view.addConstraints(constraints)
-        var constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: topLayoutGuide, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-        constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-        contentView = UIView()
-        contentView.backgroundColor = BACK_COLOR//backColor
-        _view.addSubview(contentView)
-        // contentView.backgroundColor = UIColor.yellowColor()
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[contentView]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["contentView":contentView])
-        _view.addConstraints(constraints)
-        
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-0-[contentView]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["contentView":contentView])
-        _view.addConstraints(constraints)
-        
-        constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-        constraint = NSLayoutConstraint(item: contentView, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-
-        //
-
-        title = "关于\(APP)"
-        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        view.backgroundColor = BACK_COLOR//backColor
-        automaticallyAdjustsScrollViewInsets = false
-        
-        contentView.addSubview(peopleCollectionView)
-        
-        peopleCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[peopleCollectionView]-0-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: ["peopleCollectionView":peopleCollectionView])
-        view.addConstraints(constraints)
-        
-        constraint = NSLayoutConstraint(item: peopleCollectionView, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute:NSLayoutAttribute.Top , multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-        
-//        let constrint_h = NSLayoutConstraint(item: peopleCollectionView, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 200)
-//        view.addConstraint(constrint_h)
-        
-        peopleCollectionView.snp_makeConstraints { (make) -> Void in
-            make.height.equalTo(200)
-        }
-        let contactLabel = UILabel()
-        contactLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(contactLabel)
-        contactLabel.numberOfLines = 0
-        contactLabel.lineBreakMode = .ByCharWrapping
-        contactLabel.backgroundColor = UIColor.whiteColor()
-        contactLabel.textAlignment = .Center
-        contactLabel.text = "  如果有问题咨询我们，请发邮件至邮箱: \n  leilee1992@163.com"
-       // contactLabel.textColor = UIColor.lightGrayColor()
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[contact]-0-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["contact":contactLabel])
-        view.addConstraints(constraints)
-        let rect = (contactLabel.text! as NSString).boundingRectWithSize(CGSizeMake(view.frame.size.width-20, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : contactLabel.font], context: nil)
-        
-        constraint = NSLayoutConstraint(item: contactLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: rect.height + 20)
-        view.addConstraint(constraint)
-        constraint = NSLayoutConstraint(item: contactLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: peopleCollectionView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
-        view.addConstraint(constraint)
-        
-        let thanksLabel = UILabel()
-        thanksLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(thanksLabel)
-        thanksLabel.text = "特别感谢"
-        thanksLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-[thanks]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["thanks":thanksLabel])
-        view.addConstraints(constraints)
-        
-        constraint = NSLayoutConstraint(item:thanksLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: 40)
-        view.addConstraint(constraint)
-        constraint = NSLayoutConstraint(item: thanksLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: contactLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 2)
-        view.addConstraint(constraint)
-        
-        
-        let peopleLabel = UILabel()
-        peopleLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(peopleLabel)
-        peopleLabel.numberOfLines = 0
-        peopleLabel.backgroundColor = UIColor.whiteColor()
-        peopleLabel.lineBreakMode = .ByWordWrapping
-        peopleLabel.textAlignment = .Center
-        peopleLabel.text = "杨骁  黄洲荣  李多  王哲\n路娟 张炜森  刘安国  吴浩\n李建宇 王阳  姚舜  杨荆轲"
-        peopleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[people]-0-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: ["people":peopleLabel])
-        view.addConstraints(constraints)
-        let rc = (peopleLabel.text! as NSString).boundingRectWithSize(CGSizeMake(view.frame.size.width-20, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName : peopleLabel.font], context: nil)
-        
-        constraint = NSLayoutConstraint(item: peopleLabel, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 1.0, constant: rc.height + 20)
-        view.addConstraint(constraint)
-        constraint = NSLayoutConstraint(item: peopleLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: thanksLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 5)
-        view.addConstraint(constraint)
-        
-//        constraint = NSLayoutConstraint(item: peopleLabel, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: contentView, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: -300)
-//        view.addConstraint(constraint)
-        
-        contentView.snp_makeConstraints { (make) -> Void in
-            make.bottom.equalTo(peopleLabel.snp_bottom).priorityLow()
-        }
-//        contentView.snp_makeConstraints { (make) -> Void in
-//            make.height.greaterThanOrEqualTo(view.snp_height).offset(5)
-//        }
-
-        
-
-    }
-   
-}
-
-
-extension AboutVC: UICollectionViewDataSource {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dev_name.count
-    }
-    
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell  = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(AboutCollectionViewCell), forIndexPath: indexPath) as! AboutCollectionViewCell
-        cell.avatar.image = UIImage(named: dev_img[indexPath.item])
-        cell.nameLabel.text = dev_name[indexPath.item]
-        cell.infoLabel.text = dev_info[indexPath.item]
-        
-        return cell
-        
-    }
-}
-
-extension AboutVC: UICollectionViewDelegate {
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let agrume = Agrume(image: UIImage(named: dev_img[indexPath.item] )!)
-        agrume.showFrom(self)
-
-    }
-}
-
-extension AboutVC: UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(140, 60)
-    }
-    
-   
-}
 
 class ChangeInfoVC:ActivityRegisterVC {
 
