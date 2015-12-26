@@ -696,11 +696,11 @@ extension PostVC : PostArticleTableViewCellDelegate {
     
     
     func showProfileFor(id:String) {
-        if let Id = myId where Id != id{
+        //if let Id = myId where Id != id{
             let vc = MeInfoVC()
             vc.id = id
             navigationController?.pushViewController(vc, animated: true)
-        }
+        //}
     }
     
     func didTapAvatar() {

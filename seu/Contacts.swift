@@ -267,6 +267,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
         navigationController?.navigationBar.barTintColor = THEME_COLOR//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
     }
     
     override func viewDidLoad() {
@@ -396,7 +397,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
                         //debugprint(response)
                         if let d = response.result.value {
                             let json = JSON(d)
-                            if json["state"] == "successful" || json["state"] == "sucessful" {
+                            if json["state"].stringValue == "successful"{
                                 self?.friendsData.removeAtIndex(indexPath.row)
                                 self?.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                                 
@@ -457,7 +458,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = UITableViewCell()
-            cell.textLabel?.text = indexPath.row == 0 ? "好友推荐":"好友私信"
+            cell.textLabel?.text = indexPath.row == 0 ? "好友推荐":"关注我的人"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.selectionStyle = .None
             return cell
@@ -488,7 +489,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section <= 0 {
-            return 1
+            return 2
         }
         else {
             return friendsData.count
@@ -496,7 +497,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 1 ? "我的好友" : ""
+        return section == 1 ? "我关注的人" : ""
     }
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 {
@@ -520,9 +521,9 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
                 navigationController?.pushViewController(RecommendedFriendsVC(), animated: true)
             }
             else {
-                let msgVC = MessageConversationVC()
-                msgVC.title = "私信"
-                navigationController?.pushViewController(msgVC, animated: true)
+                let VC = MyFolloweeVC()
+                VC.title = "关注我的人"
+                navigationController?.pushViewController(VC, animated: true)
             }
         }
         else {
@@ -582,6 +583,119 @@ extension ContactsVC: UISearchControllerDelegate {
     }
 }
 
+class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private var tableView:UITableView!
+    private var friendsData = [JSON]()
+    private var page = 1
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = THEME_COLOR_BACK
+        tableView = UITableView(frame: view.frame)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0)
+        tableView.registerClass(ConversationTableCell.self, forCellReuseIdentifier: NSStringFromClass(ConversationTableCell))
+        view.addSubview(tableView)
+        tableView.tableFooterView = UIView()
+        loadOnePage()
+        
+    }
+    
+    func loadOnePage() {
+        if let t = token {
+            request(.POST, GET_FOLLOWERS_URL, parameters: ["token":t, "page":"\(page)", "direction":"followers"], encoding: .JSON, headers: nil).responseJSON(completionHandler: { (response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value {
+                    
+                    let json = JSON(d)
+                    if json["state"].stringValue == "successful"{
+                        
+                        if let arr = json["result"].array {
+                            let cnt = self.friendsData.count
+                            
+                            
+                            self.friendsData.appendContentsOf(arr)
+                            
+                            var indexArr = [NSIndexPath]()
+                            for k in 0..<arr.count {
+                                let indexPath = NSIndexPath(forRow: cnt+k, inSection: 0)
+                                indexArr.append(indexPath)
+                            }
+                            
+                            if (arr.count > 0) {
+                                self.page++
+                                self.tableView.insertRowsAtIndexPaths(indexArr, withRowAnimation: UITableViewRowAnimation.Fade)
+                                
+                            }
+                            
+                        }
+                    }
+                }
+                
+            })
+        }
+        
+        
+    }
+  
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60
+    }
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return friendsData.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ConversationTableCell), forIndexPath: indexPath) as! ConversationTableCell
+        let data = friendsData[indexPath.row]
+        let id = data["id"].stringValue
+        let url = thumbnailAvatarURLForID(id)
+        cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
+        cell.nameLabel.text = data["name"].string ?? " "
+        cell.infoLabel.text = data["school"].string ?? " "
+        
+        if data["gender"].stringValue == "男" {
+            cell.gender.image  = UIImage(named: "male")
+        }
+        else if data["gender"].stringValue == "女" {
+            cell.gender.image = UIImage(named: "female")
+        }
+        cell.selectionStyle = .None
+        cell.accessoryType = .DisclosureIndicator
+        return cell
+
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+     
+        let vc = MeInfoVC()
+        vc.id = friendsData[indexPath.row]["id"].stringValue
+        navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == self.friendsData.count - 1 {
+            loadOnePage()
+        }
+    }
+    
+}
 
 private let RecommendFriendsExitNotification = "RecommendFriendsExitNotification"
 class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{

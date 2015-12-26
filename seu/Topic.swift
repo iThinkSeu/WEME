@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BubbleTransition
 
 
 struct Post {
@@ -539,14 +538,14 @@ extension TopicVC: TopicTableViewCellDelegate {
     
     func didTapAvatarAtCell(cell: TopicTableViewCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
-            if let id = myId {
+            //if let id = myId {
                 let vc = MeInfoVC()
                 let data = posts[indexPath.section]
                 vc.id = data.userid
-                if id != vc.id {
+                //if id != vc.id {
                     navigationController?.pushViewController(vc, animated: true)
-                }
-            }
+                //}
+            //}
         }
     }
 }
@@ -554,14 +553,14 @@ extension TopicVC: TopicTableViewCellDelegate {
 extension TopicVC:TopicTableViewPureTextCellDelegate {
     func didTapAvatarAtPureTextCell(cell: TopicTableViewPureTextCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
-            if let id = myId {
+            //if let id = myId {
                 let vc = MeInfoVC()
                 let data = posts[indexPath.section]
                 vc.id = data.userid
-                if id != vc.id {
+              //  if id != vc.id {
                     navigationController?.pushViewController(vc, animated: true)
-                }
-            }
+              //  }
+            //}
         }
     }
 }

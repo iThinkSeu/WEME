@@ -39,7 +39,8 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //title = "关于\(APP)"
+        
+      //  title = "关于\(APP)"
         automaticallyAdjustsScrollViewInsets = false
         let backView = UIImageView(image: UIImage(named: "food"))
         backView.frame = view.frame
@@ -72,6 +73,20 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         tableView.registerClass(AboutUSTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(AboutUSTableViewCell))
         initialTransform = CGAffineTransformMakeScale(0, 0)
+        
+        
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let offset = scrollView.contentOffset.y
+        if offset < 40 {
+            navigationItem.hidesBackButton = false
+            //navigationItem.titleView?.hidden = false
+        }
+        else {
+            navigationItem.hidesBackButton = true
+           // navigationItem.titleView?.hidden = true
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -96,10 +111,16 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 160
+        return SCREEN_HEIGHT / 5
     }
     
-
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        return true
+    }
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let messageAction = UITableViewRowAction(style:.Default, title: "私信") { (action, indexPath) -> Void in
             let id = self.id_arr[indexPath.row]
@@ -124,8 +145,12 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             shownIndexPaths.insert(indexPath)
             if let c = cell as? AboutUSTableViewCell {
                 c.avatar.transform = initialTransform
+                c.nameLabel.transform = initialTransform
+                c.infoLabel.transform = initialTransform
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
                     c.avatar.transform = CGAffineTransformIdentity
+                    c.nameLabel.transform = CGAffineTransformIdentity
+                    c.infoLabel.transform = CGAffineTransformIdentity
                 })
             }
         }
@@ -161,7 +186,7 @@ class AboutUSTableViewCell : UITableViewCell {
     
         avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
-        avatar.layer.cornerRadius = 60
+        avatar.layer.cornerRadius = SCREEN_HEIGHT/12
         avatar.layer.masksToBounds = true
         avatar.layer.borderColor = UIColor.whiteColor().CGColor
         avatar.layer.borderWidth = 2
@@ -188,18 +213,18 @@ class AboutUSTableViewCell : UITableViewCell {
         avatar.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_leftMargin)
             make.centerY.equalTo(contentView.snp_centerY)
-            make.width.height.equalTo(120)
+            make.width.height.equalTo(SCREEN_HEIGHT/6)
         }
         
         nameLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(avatar.snp_right).offset(10)
-            make.top.equalTo(avatar.snp_top).offset(20)
+            make.top.equalTo(avatar.snp_top).offset(15)
             make.right.equalTo(contentView.snp_rightMargin)
         }
         
         infoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(avatar.snp_right).offset(10)
-            make.bottom.equalTo(avatar.snp_bottom).offset(-20)
+            make.bottom.equalTo(avatar.snp_bottom).offset(-15)
             make.right.equalTo(contentView.snp_rightMargin)
         }
         

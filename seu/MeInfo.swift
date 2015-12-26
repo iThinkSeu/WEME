@@ -25,6 +25,8 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
     private var statusBarView:UIView?
     
     
+    private var personInfo:PersonModel?
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -72,11 +74,17 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
         action.tintColor = UIColor.whiteColor()
         navigationItem.rightBarButtonItem = action
-        
+        visit()
         setUI()
     }
     
-    
+    func visit() {
+        if let t = token, id = id {
+            request(.POST, VISIT_URL, parameters: ["token":t, "userid":id], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
+                
+            })
+        }
+    }
     
     func action(sender:AnyObject) {
         if let ID = myId where ID != id {
@@ -198,7 +206,7 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(infoLabel)
         infoLabel.textColor = THEME_COLOR_BACK
-        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
         infoLabel.textAlignment = .Center
         
         cover.snp_makeConstraints { (make) -> Void in
@@ -252,18 +260,22 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         let avatarURL = thumbnailAvatarURLForID(id)
         avatar.sd_setImageWithURL(avatarURL, placeholderImage: UIImage(named: "avatar"))
         
-        infoLabel.text = "Stay Hungry, Stay Foolish"
+        fetchFriendInfo()
+        //infoLabel.text = "Stay Hungry, Stay Foolish"
     }
     
     
     func fetchFriendInfo() {
-        if let t = token {
-        request(.POST, GET_FRIEND_PROFILE_URL, parameters: ["token": t, "id":id], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+        if let t = token, id = id {
+        request(.POST, GET_VISIT_INFO_URL, parameters: ["token": t, "userid":id], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
             if let d = response.result.value, S = self {
                 let json = JSON(d)
-                guard json != .null && json["state"].stringValue == "sucessful" else {
+                guard json != .null && json["state"].stringValue == "successful" && json["result"] != .null && json["result"]["today"] != .null else {
                     return
                 }
+            
+                S.infoLabel.text = "今日访问 \((json["result"]["today"]).stringValue) 总访问 \(json["result"]["total"].stringValue)"
+               
             }
             
             
@@ -409,7 +421,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     var id:String!
     private var tableView:UITableView!
     
-    private let infomationSections = ["基本信息", "学校信息", "家乡信息", "联系方式","加为好友"]
+    private let infomationSections = ["基本信息", "学校信息", "家乡信息", "联系方式","添加关注"]
     private let sectionRows = [2, 2, 1, 2, 1]
     
     private var info:PersonModel?
@@ -430,7 +442,9 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func configUI() {
+       
         fetchInfo()
+        
     }
     
     func fetchInfo() {
@@ -492,7 +506,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let title = infomationSections[indexPath.section]
-        if title != "加为好友"{
+        if title != "添加关注"{
             let  cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(PersonalInfoVCTableViewCell), forIndexPath: indexPath) as! PersonalInfoVCTableViewCell
             if indexPath.section == 0 {
                 if indexPath.row == 0 {
@@ -545,7 +559,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
             addFriendButton.layer.cornerRadius = 4.0
             addFriendButton.layer.masksToBounds = true
-            addFriendButton.setTitle("加为好友", forState: .Normal)
+            addFriendButton.setTitle("添加关注", forState: .Normal)
             addFriendButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             addFriendButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
             addFriendButton.backgroundColor = THEME_COLOR

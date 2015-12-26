@@ -106,11 +106,11 @@
 		B12FB2BA1BFAF85800566266 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2B91BFAF85800566266 /* Observable.swift */; };
 		B12FB2BD1BFEF67500566266 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2BC1BFEF67500566266 /* PostVC.swift */; };
 		B12FB2BF1C009D1C00566266 /* FloatingActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2BE1C009D1C00566266 /* FloatingActionView.swift */; };
-		B12FB2C71C00DF7200566266 /* BubbleTransition.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B12FB2C41C00DF6600566266 /* BubbleTransition.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B12FB2C91C00EE4D00566266 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2C81C00EE4D00566266 /* Images.xcassets */; };
 		B12FB2CB1C00FB5C00566266 /* RefreshContents.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */; };
 		B12FB2CD1C00FC2A00566266 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2CC1C00FC2A00566266 /* Topic.swift */; };
 		B12FB3931C04849200566266 /* ComposePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB3921C04849200566266 /* ComposePost.swift */; };
+		B13EF4C61C2ADCDF00262116 /* BubbleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13EF4C51C2ADCDF00262116 /* BubbleTransition.swift */; };
 		B14F5FD41BCFA37B0026C80F /* HandVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14F5FD31BCFA37B0026C80F /* HandVC.swift */; };
 		B16F95341C18354A00429B47 /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B16F95331C18354A00429B47 /* ActivityModel.m */; };
 		B17CF8921C05E93B0074FF3F /* STInputBar.m in Sources */ = {isa = PBXBuildFile; fileRef = B17CF88D1C05E93B0074FF3F /* STInputBar.m */; };
@@ -211,7 +211,6 @@
 				B120C14D1BF452410099F78A /* RSKImageCropper.framework in Embed Frameworks */,
 				B120C1511BF452410099F78A /* GMPhotoPicker.framework in Embed Frameworks */,
 				B1CC24F21C193E3900953A07 /* WebImage.framework in Embed Frameworks */,
-				B12FB2C71C00DF7200566266 /* BubbleTransition.framework in Embed Frameworks */,
 				B1CC24EC1C1843D900953A07 /* Mantle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -355,12 +354,12 @@
 		B12FB2B91BFAF85800566266 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		B12FB2BC1BFEF67500566266 /* PostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		B12FB2BE1C009D1C00566266 /* FloatingActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingActionView.swift; sourceTree = "<group>"; };
-		B12FB2C41C00DF6600566266 /* BubbleTransition.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BubbleTransition.framework; path = seu/BubbleTransition.framework; sourceTree = "<group>"; };
 		B12FB2C81C00EE4D00566266 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = seu/Images.xcassets; sourceTree = "<group>"; };
 		B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RefreshContents.bundle; path = ../RefreshContents.bundle; sourceTree = "<group>"; };
 		B12FB2CC1C00FC2A00566266 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		B12FB38A1C042F5300566266 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = seu/WebImage.framework; sourceTree = "<group>"; };
 		B12FB3921C04849200566266 /* ComposePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePost.swift; sourceTree = "<group>"; };
+		B13EF4C51C2ADCDF00262116 /* BubbleTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTransition.swift; sourceTree = "<group>"; };
 		B14F5FD31BCFA37B0026C80F /* HandVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandVC.swift; sourceTree = "<group>"; };
 		B16F95321C18354A00429B47 /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
 		B16F95331C18354A00429B47 /* ActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModel.m; sourceTree = "<group>"; };
@@ -584,6 +583,17 @@
 			name = DACircularProgress;
 			sourceTree = "<group>";
 		};
+		B105CA4A1C2ACCC300E946D8 /* System Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B189503D1C1B036600645482 /* CoreTelephony.framework */,
+				B189503F1C1B039400645482 /* SystemConfiguration.framework */,
+				B18950411C1B03BA00645482 /* libsqlite3.0.tbd */,
+				B189501E1C1AF6DD00645482 /* libz.tbd */,
+			);
+			name = "System Frameworks";
+			sourceTree = "<group>";
+		};
 		B10759A11BEB7E9E00FEC0A0 /* CAPSPageMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,10 +726,10 @@
 		B13DE9691BF0487F0042331A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B13EF4C71C2BB5FB00262116 /* BubbleTransition */,
 				B1CC24ED1C19346700953A07 /* MBProgressHUD.framework */,
 				B1CC24E91C1843C800953A07 /* Mantle.framework */,
 				B12FB38A1C042F5300566266 /* WebImage.framework */,
-				B12FB2C41C00DF6600566266 /* BubbleTransition.framework */,
 				B120C1441BF4522D0099F78A /* RSKImageCropper.framework */,
 				B120C1461BF4522D0099F78A /* GMPhotoPicker.framework */,
 				B1D03C1C1BCE59D100DF0B44 /* Alamofire */,
@@ -730,7 +740,14 @@
 				B10759A41BEC518C00FEC0A0 /* SnapKit */,
 			);
 			name = Frameworks;
-			path = ..;
+			sourceTree = "<group>";
+		};
+		B13EF4C71C2BB5FB00262116 /* BubbleTransition */ = {
+			isa = PBXGroup;
+			children = (
+				B13EF4C51C2ADCDF00262116 /* BubbleTransition.swift */,
+			);
+			name = BubbleTransition;
 			sourceTree = "<group>";
 		};
 		B16F95311C1834F300429B47 /* Model */ = {
@@ -882,6 +899,7 @@
 				B19A9ABC1BF0732400EE58DB /* CustomBadge */,
 			);
 			name = "ObjC-frameworks";
+			path = seu;
 			sourceTree = "<group>";
 		};
 		B19A9ABC1BF0732400EE58DB /* CustomBadge */ = {
@@ -989,10 +1007,9 @@
 		B1FC433B1B9FC25700133869 = {
 			isa = PBXGroup;
 			children = (
-				B18950411C1B03BA00645482 /* libsqlite3.0.tbd */,
-				B189503F1C1B039400645482 /* SystemConfiguration.framework */,
-				B189503D1C1B036600645482 /* CoreTelephony.framework */,
-				B189501E1C1AF6DD00645482 /* libz.tbd */,
+				B13DE9691BF0487F0042331A /* Frameworks */,
+				B19A9AB51BF072DB00EE58DB /* ObjC-frameworks */,
+				B105CA4A1C2ACCC300E946D8 /* System Frameworks */,
 				B12FB2C81C00EE4D00566266 /* Images.xcassets */,
 				B1FC43461B9FC25700133869 /* seu */,
 				B1FC435C1B9FC25700133869 /* seuTests */,
@@ -1015,7 +1032,6 @@
 				B18950221C1AFF0200645482 /* SNS */,
 				B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */,
 				B12FB2931BF9B4D100566266 /* voice */,
-				B19A9AB51BF072DB00EE58DB /* ObjC-frameworks */,
 				B19F9A351BD8AB340008CA12 /* Utility */,
 				B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */,
 				B12FB2BB1BFAF86C00566266 /* social */,
@@ -1030,7 +1046,6 @@
 				B107599D1BEB1D5700FEC0A0 /* Message.swift */,
 				B1DBF4141C0F14F3000A6178 /* MeVC.swift */,
 				B189504C1C1D4A6C00645482 /* MeInfo.swift */,
-				B13DE9691BF0487F0042331A /* Frameworks */,
 				B1FC43471B9FC25700133869 /* Supporting Files */,
 				B1FC436A1BA2B9C500133869 /* Launch Screen.xib */,
 			);
@@ -1306,6 +1321,7 @@
 				B10759BB1BEC518C00FEC0A0 /* EdgeInsets.swift in Sources */,
 				B17CF8A51C05E94C0074FF3F /* STEmoji.m in Sources */,
 				B1AE74621BD514EC0014BE12 /* ImagePickerAction.swift in Sources */,
+				B13EF4C61C2ADCDF00262116 /* BubbleTransition.swift in Sources */,
 				B105CA471C27A1F300E946D8 /* Card.swift in Sources */,
 				B105C9D21C22FB4A00E946D8 /* TimelineModel.m in Sources */,
 				B12FB2B81BFA14C800566266 /* Social.swift in Sources */,
@@ -1421,7 +1437,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
 		};
@@ -1556,7 +1572,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1592,7 +1608,7 @@
 				PRODUCT_NAME = WE;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

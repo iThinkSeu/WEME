@@ -26,7 +26,8 @@
              @"school":@"school",
              @"department":@"department",
              @"gender":@"gender",
-             @"hometown":@"hometown"
+             @"hometown":@"hometown",
+             @"lookcount":@"lookcount"
              };
 }
 
@@ -44,5 +45,21 @@
         
     }];
 
+}
+
++ (NSValueTransformer *) lookcountJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", value];
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            return value;
+        }
+        else {
+            return @"";
+        }
+        
+    }];
+    
 }
 @end

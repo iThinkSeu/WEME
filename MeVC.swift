@@ -12,11 +12,13 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items = ["好友", "私信"]
-    let imgs = ["follow", "message"]
+    let items = ["好友", "私信", "活动"]
+    let imgs = ["follow", "message", "time"]
     var more = ["设置"]
     
     var personInfo:PersonModel?
+    
+    var unreadMessage:String?
  
     
     override func viewDidLoad() {
@@ -39,17 +41,18 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if personInfo == nil {
-            fetchNameInfo()
-        }
-        tabBarController?.tabBar.hidden = true
+        
+        fetchNameInfo()
+        
+        fetchUnreadMessage()
+        
+        tabBarController?.tabBar.hidden = false
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.barTintColor = THEME_COLOR
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barStyle = .Black
         navigationController?.navigationBar.alpha = 1.0
         
-        tableView.reloadData()
     }
     
     func loadNameInfoFromFile() {
@@ -57,6 +60,22 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         let profileFile = cacheDir.stringByAppendingString("/\(PROFILE_CACHE_FILE)")
         if NSFileManager.defaultManager().fileExistsAtPath(profileFile) {
             
+        }
+    }
+    
+    func fetchUnreadMessage() {
+        if let t = token {
+            request(.POST, GET_UNREAD_MESSAGE_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json != .null && json["state"].stringValue == "successful" && json["number"] != .null else {
+                        return
+                    }
+                    
+                    S.unreadMessage = json["number"].stringValue
+                    S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                }
+            })
         }
     }
     
@@ -71,7 +90,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     do {
                         S.personInfo = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject) as? PersonModel
-                        S.tableView.reloadData()
+                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
                     }
                     catch {
                         print(error)
@@ -92,7 +111,6 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeTableViewCell), forIndexPath: indexPath) as! MeTableViewCell
             cell.avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
             cell.nameLabel.text = personInfo?.name ?? " "
-          
             cell.accessoryType = .DisclosureIndicator
             cell.selectionStyle = .None
             return cell
@@ -103,6 +121,21 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             if indexPath.section == 1 {
                 cell.icon.image = UIImage(named: imgs[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
                 cell.itemLabel.text = items[indexPath.row]
+                if indexPath.row == 1 {
+                    if let _ = unreadMessage {
+                        if let num = Int(unreadMessage!) where num > 0 {
+                            let badge = CustomBadge(string: "\(num)")
+                            cell.accessoryView = badge
+                        }
+                        else {
+                            cell.accessoryView = nil
+                        }
+                    }
+                    else {
+                        cell.accessoryView = nil
+                    }
+                }
+                
             }
             else {
                 cell.icon.image = UIImage(named: "setting")?.imageWithRenderingMode(.AlwaysTemplate)
@@ -120,7 +153,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             return  1
         }
         else if section == 1{
-            return 2
+            return 3
         }
         else {
             return 1
@@ -163,10 +196,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(MessageConversationVC(), animated: true)
         }
     }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        tabBarController?.tabBar.hidden = false
-    }
+    
 }
 
 

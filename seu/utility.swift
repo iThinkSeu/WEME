@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 //MARK: - RESTFUL API
-
-let BASE_URL = "http://218.244.147.240:8080/"
+//let BASE_URL = "http:/223.3.4.47:8080/"
+let BASE_URL = "http:/218.244.147.240:8080/"
 
 let BASE_URL_NGINX = "http://218.244.147.240/"
 
@@ -90,6 +90,11 @@ let SIGNUP_ACTIVITY_URL = BASE_URL + "signup"
 
 let GET_USER_TIMELINE = BASE_URL + "getusertimeline"
 let GET_USER_TIMELINE_IMAGES = BASE_URL + "getuserimages"
+
+let GET_UNREAD_MESSAGE_URL = BASE_URL + "getmessageunreadnumber"
+
+let GET_VISIT_INFO_URL = BASE_URL + "visitinfo"
+let VISIT_URL = BASE_URL + "visit"
 
 let PROFILE = "PROFILE_KEY"
 

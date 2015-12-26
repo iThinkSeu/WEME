@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import BubbleTransition
+
 
 class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, FloatingActionViewDelegate {
     static let TOPIC_IMAGE_WIDTH = SCREEN_WIDTH

@@ -1608,6 +1608,7 @@ class MessageConversationVC:UITableViewController {
 
     override func viewDidLoad() {
         title = "私信列表"
+        automaticallyAdjustsScrollViewInsets = false
         tableView.backgroundColor = BACK_COLOR
         tableView.tableFooterView = UIView()
         tableView.registerClass(MessageConversationCell.self, forCellReuseIdentifier: NSStringFromClass(MessageConversationCell))
@@ -1644,7 +1645,7 @@ class MessageConversationVC:UITableViewController {
     func loadConversation() {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(TOKEN) {
             request(.POST, GET_MESSGE_USER_LIST, parameters: ["token":token], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
-               //debugPrint(response)
+               debugPrint(response)
                 if let d = response.result.value {
                     let json = JSON(d)
                     if json["state"] == "successful" {

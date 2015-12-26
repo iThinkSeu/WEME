@@ -159,8 +159,8 @@ class CardVC:UIViewController {
         cardView.snp_makeConstraints { (make) -> Void in
             make.centerX.equalTo(hostView.snp_centerX)
             make.centerY.equalTo(hostView.snp_centerY)
-            make.width.equalTo(hostView.snp_width).multipliedBy(0.8)
-            make.height.equalTo(cardView.snp_width).multipliedBy(1.4)
+            make.width.equalTo(hostView.snp_width).multipliedBy(0.7)
+            make.height.equalTo(cardView.snp_width).multipliedBy(1.5)
         }
         
     
@@ -207,7 +207,7 @@ class CardVC:UIViewController {
                     self.refreshBackView(cardDefault1)
                     let card1 = CardContentView(frame: self.cardView.bounds)
                     card1.imgView.image = UIImage(named: "food")
-                    card1.avatar.image = UIImage(named: "dev_liuli")
+                    card1.avatar.image = UIImage(named: "dj")
                     card1.infoLabel.text = "wanwan 推荐"
                     card1.titleLabel.text = "蒜泥蒸大虾"
                     card1.detailIcon.image = UIImage(named: "location")
@@ -282,7 +282,7 @@ class CardVC:UIViewController {
                         cardDefault.removeFromSuperview()
                         let card1 = CardContentView(frame: self.cardView.bounds)
                         card1.imgView.image = UIImage(named: "food")
-                        card1.avatar.image = UIImage(named: "dev_liuli")
+                        card1.avatar.image = UIImage(named: "dj")
                         card1.infoLabel.text = "wanwan 推荐"
                         card1.titleLabel.text = "蒜泥蒸大虾"
                         card1.detailIcon.image = UIImage(named: "location")
@@ -304,7 +304,7 @@ class CardVC:UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let path = UIBezierPath(roundedRect:deckView.bounds, byRoundingCorners: [.TopLeft, .TopRight], cornerRadii: CGSizeMake(5.0, 5.0))
+        let path = UIBezierPath(roundedRect:deckView.bounds, byRoundingCorners: [.TopLeft, .TopRight], cornerRadii: CGSizeMake(10.0, 10.0))
         let shape = CAShapeLayer()
         shape.path = path.CGPath
         deckView.layer.mask = shape
@@ -422,7 +422,7 @@ class CardContentView:UIView, CardView {
     weak var delegate:CardContentViewDelegate?
     
     func initialize() {
-        layer.cornerRadius = 5.0
+        layer.cornerRadius = 10.0
         layer.masksToBounds = true
         
         backgroundColor = UIColor.whiteColor()
@@ -432,8 +432,10 @@ class CardContentView:UIView, CardView {
         
         avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
-        avatar.layer.cornerRadius = 30
+        avatar.layer.cornerRadius = 22
         avatar.layer.masksToBounds = true
+        avatar.layer.borderColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.5).CGColor
+        avatar.layer.borderWidth = 3
         addSubview(avatar)
         
         infoLabel = UILabel()
@@ -481,7 +483,7 @@ class CardContentView:UIView, CardView {
         avatar.snp_makeConstraints { (make) -> Void in
             make.centerY.equalTo(imgView.snp_bottom)
             make.centerX.equalTo(snp_centerX)
-            make.width.height.equalTo(60)
+            make.width.height.equalTo(44)
         }
         
         infoLabel.snp_makeConstraints { (make) -> Void in
@@ -550,7 +552,7 @@ class CardFoodDetailView:CardDetailView {
     
     func initialize() {
         backgroundColor = UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1.0)
-        layer.cornerRadius = 5.0
+        layer.cornerRadius = 10.0
         layer.masksToBounds = true
         
         imgView = UIImageView()

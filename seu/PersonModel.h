@@ -24,4 +24,5 @@
 @property (nonatomic, copy) NSString *department;
 @property (nonatomic, copy) NSString *gender;
 @property (nonatomic, copy) NSString *hometown;
+@property (nonatomic, copy) NSString *lookcount;
 @end
