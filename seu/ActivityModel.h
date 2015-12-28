@@ -18,8 +18,13 @@
 @property (nonatomic, copy)NSString *location;
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *capacity;
-@property (nonatomic, copy)NSString *state;
+@property (nonatomic, assign)BOOL state;
 @property (nonatomic, copy)NSString * signnumber;
 @property (nonatomic, copy)NSString *remark;
+@property (nonatomic, copy)NSString *author;
+@property (nonatomic, copy)NSString *detail;
+@property (nonatomic, copy)NSString *advertise;
+@property (nonatomic, assign)BOOL needsImage;
+@property (nonatomic, assign)BOOL likeFlag;
 
 @end

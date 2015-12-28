@@ -19,8 +19,70 @@
              @"capacity":@"number",
              @"state":@"state",
              @"signnumber":@"signnumber",
-             @"remark":@"remark"
+             @"remark":@"remark",
+             @"author":@"author",
+             @"detail":@"detail",
+             @"advertise":@"advertise",
+             @"needsImage":@"whetherimage",
+             @"likeFlag":@"likeflag"
              };
+}
+
++ (NSValueTransformer *) needsImageJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            if ([value isEqualToNumber:@(1)]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            if ([value isEqualToString:@"1"]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else {
+            return @NO;
+        }
+        
+    }];
+}
++ (NSValueTransformer *) likeFlagJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            if ([value isEqualToNumber:@(1)]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            if ([value isEqualToString:@"1"]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else {
+            return @NO;
+        }
+    }];
+}
+
++ (NSValueTransformer *) stateJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isEqualToString:@"yes"]) {
+            return @YES;
+        }
+        else return @NO;
+    }];
 }
 
 + (NSValueTransformer *) capacityJSONTransformer {
@@ -39,6 +101,21 @@
 }
 
 + (NSValueTransformer *) activityIDJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", value];
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            return value;
+        }
+        else {
+            return @"";
+        }
+        
+    }];
+}
+
++ (NSValueTransformer *) signnumberJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
         if ([value isKindOfClass:[NSNumber class]]) {
             return [NSString stringWithFormat:@"%@", value];

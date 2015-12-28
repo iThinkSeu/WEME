@@ -508,13 +508,13 @@ class CardContentView:UIView, CardView {
         
         detailLabel.snp_makeConstraints { (make) -> Void in
             //make.top.equalTo(titleLabel.snp_bottom).offset(10)
-            make.bottom.equalTo(snp_bottom).offset(-10)
+            make.bottom.equalTo(snp_bottom).offset(-20)
             make.centerX.equalTo(snp_centerX).offset(5)
         }
         
         nextIcon.snp_makeConstraints { (make) -> Void in
             make.right.equalTo(snp_rightMargin)
-            make.height.width.equalTo(26)
+            make.height.width.equalTo(20)
             make.centerY.equalTo(detailLabel.snp_centerY)
         }
         
@@ -562,7 +562,7 @@ class CardFoodDetailView:CardDetailView {
         imgView.snp_makeConstraints { (make) -> Void in
             make.centerX.equalTo(snp_centerX)
             make.top.equalTo(snp_top).offset(10)
-            make.width.height.equalTo(snp_width).multipliedBy(0.6)
+            make.width.height.equalTo(snp_width).multipliedBy(0.5)
         }
         
         let locationBack = UIView()
@@ -596,7 +596,7 @@ class CardFoodDetailView:CardDetailView {
         locationLabel.textColor = UIColor.colorFromRGB(0x3c404a)
         locationBack.addSubview(locationLabel)
         locationLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(locationIcon.snp_right).offset(20)
+            make.left.equalTo(locationIcon.snp_right).offset(5)
             make.right.equalTo(locationBack.snp_right)
             make.centerY.equalTo(locationBack.snp_centerY)
         }
@@ -630,11 +630,11 @@ class CardFoodDetailView:CardDetailView {
         infoIcon.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(infoBack.snp_leftMargin)
             make.centerY.equalTo(infoBack.snp_centerY)
-            make.width.height.equalTo(20)
+            make.width.height.equalTo(16)
         }
         
         infoLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(infoIcon.snp_right).offset(20)
+            make.left.equalTo(infoIcon.snp_right).offset(5)
             make.right.equalTo(infoBack.snp_right)
             make.centerY.equalTo(infoBack.snp_centerY)
         }
@@ -673,7 +673,7 @@ class CardFoodDetailView:CardDetailView {
         
         backIcon.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(snp_leftMargin)
-            make.height.width.equalTo(26)
+            make.height.width.equalTo(20)
             make.centerY.equalTo(authorLabel.snp_centerY)
         }
         
@@ -681,7 +681,7 @@ class CardFoodDetailView:CardDetailView {
             make.right.equalTo(snp_rightMargin)
             make.left.equalTo(backIcon.snp_right)
             //make.top.equalTo(commentLabel.snp_bottom).offset(20)
-            make.bottom.equalTo(snp_bottom).offset(-10)
+            make.bottom.equalTo(snp_bottom).offset(-20)
         }
         
     }

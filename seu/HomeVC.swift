@@ -74,13 +74,13 @@ class HomeVC: UITabBarController {
         
         //let hand_active = UIImage(named: "hand_inactive")?.imageWithRenderingMode(.AlwaysTemplate)
         
-        navHand.tabBarItem = UITabBarItem(title: "活动", image: UIImage(named: "hand_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "hand_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
+        navHand.tabBarItem = UITabBarItem(title: "活动", image: UIImage(named: "hand")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "hand")?.imageWithRenderingMode(.AlwaysTemplate))
         //navContacts.tabBarItem = UITabBarItem(title: "联系人", image: UIImage(named: "contacts_inactive"), selectedImage: UIImage(named: "contacts_active"))
-        navSocial.tabBarItem = UITabBarItem(title: "社区", image: UIImage(named: "discovery_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
+        navSocial.tabBarItem = UITabBarItem(title: "社区", image: UIImage(named: "social")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "social")?.imageWithRenderingMode(.AlwaysTemplate))
         
-        Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
+        Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysTemplate))
 
-        food.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me_inactive")?.imageWithRenderingMode(.AlwaysTemplate))
+        food.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
 
         
     }

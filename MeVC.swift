@@ -34,9 +34,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.backgroundColor = UIColor.colorFromRGB(0xefeff4)
         navigationController?.navigationBar.barStyle = .Black
         
-        if #available(iOS 9, *) {
-            tableView.cellLayoutMarginsFollowReadableWidth = false
-        }
+       
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,7 +71,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     
                     S.unreadMessage = json["number"].stringValue
-                    S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                    //S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                    S.tableView.reloadData()
                 }
             })
         }
@@ -90,7 +89,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     do {
                         S.personInfo = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject) as? PersonModel
-                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+                       // S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+                        S.tableView.reloadData()
                     }
                     catch {
                         print(error)
@@ -194,6 +194,9 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         else if indexPath.section == 1 && indexPath.row == 1 {
             navigationController?.pushViewController(MessageConversationVC(), animated: true)
+        }
+        else if indexPath.section == 1 && indexPath.row == 2 {
+            navigationController?.pushViewController(MyActivityVC(), animated: true)
         }
     }
     

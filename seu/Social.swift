@@ -160,7 +160,11 @@ class SocialVC:UIViewController {
         }
         animateTimer = NSTimer.scheduledTimerWithTimeInterval(0.015, target: self, selector: "tick:", userInfo: nil, repeats: true)
         //animateRefresh()
-        configUI()
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+            self.configUI()
+        }
+
         let endTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * NSEC_PER_SEC))
         dispatch_after(endTime, dispatch_get_main_queue()) { () -> Void in
             self.refreshControl.endRefreshing()
@@ -173,6 +177,7 @@ class SocialVC:UIViewController {
         let rect = CGRectMake(view.center.x-40, 0, 80, 80)
         
         refreshCustomizeImageView.frame = rect
+        refreshCustomizeImageView.backgroundColor = UIColor.clearColor()
         refreshControl.addSubview(refreshCustomizeImageView)
         
     }
@@ -194,7 +199,6 @@ class SocialVC:UIViewController {
     
     
     func resetAnimateRefresh() {
-        print("called")
         self.currentIndex = 0
         refreshCustomizeImageView.image = nil
         animateTimer?.invalidate()

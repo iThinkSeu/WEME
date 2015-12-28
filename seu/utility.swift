@@ -86,7 +86,7 @@ let GET_POST_LIKE_USERS = BASE_URL + "getpostlikeusers"
 let GET_ACTIVITY_INFO_URL = BASE_URL + "getactivityinformation"
 
 let SIGNUP_ACTIVITY_URL = BASE_URL + "signup"
-
+let LIKE_ACTIVITY_URL = BASE_URL + "likeactivity"
 
 let GET_USER_TIMELINE = BASE_URL + "getusertimeline"
 let GET_USER_TIMELINE_IMAGES = BASE_URL + "getuserimages"
@@ -98,6 +98,9 @@ let VISIT_URL = BASE_URL + "visit"
 
 let PROFILE = "PROFILE_KEY"
 
+//Activity
+let GET_TOP_ACTIVITY_URL = BASE_URL + "activitytopofficial"
+let GET_ACTIVITY_DETAIL_URL = BASE_URL + "getactivitydetail"
 
 //MARK - Cache File
 

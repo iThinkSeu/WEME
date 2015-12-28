@@ -16,8 +16,8 @@ class ActivityCell:UITableViewCell {
     var hostIcon:UIImageView!
     var locationIcon:UIImageView!
     var timeIcon:UIImageView!
-    var remarkIcon:UIImageView!
-    var remarkLabel:UILabel!
+//    var remarkIcon:UIImageView!
+//    var remarkLabel:UILabel!
 
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -89,17 +89,17 @@ class ActivityCell:UITableViewCell {
         locationIcon.tintColor = THEME_COLOR_BACK
         contentView.addSubview(locationIcon)
         
-        remarkIcon = UIImageView(image: UIImage(named: "remark")?.imageWithRenderingMode(.AlwaysTemplate))
-        remarkIcon.translatesAutoresizingMaskIntoConstraints = false
-        remarkIcon.tintColor = THEME_COLOR_BACK
-        contentView.addSubview(remarkIcon)
+//        remarkIcon = UIImageView(image: UIImage(named: "remark")?.imageWithRenderingMode(.AlwaysTemplate))
+//        remarkIcon.translatesAutoresizingMaskIntoConstraints = false
+//        remarkIcon.tintColor = THEME_COLOR_BACK
+//        contentView.addSubview(remarkIcon)
 
         
-        remarkLabel = UILabel()
-        remarkLabel.translatesAutoresizingMaskIntoConstraints = false
-        remarkLabel.textColor = UIColor.lightGrayColor()
-        remarkLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-        contentView.addSubview(remarkLabel)
+//        remarkLabel = UILabel()
+//        remarkLabel.translatesAutoresizingMaskIntoConstraints = false
+//        remarkLabel.textColor = UIColor.lightGrayColor()
+//        remarkLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+//        contentView.addSubview(remarkLabel)
         
         titleLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
@@ -130,17 +130,17 @@ class ActivityCell:UITableViewCell {
             make.top.equalTo(timeLabel.snp_bottom).offset(10)
         }
         
-        remarkIcon.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(hostIcon.snp_right).offset(10)
-            make.centerY.equalTo(remarkLabel.snp_centerY)
-            make.width.height.equalTo(20)
-        }
-        
-        remarkLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(remarkIcon.snp_right).offset(10)
-            make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(locationLabel.snp_bottom).offset(10)
-        }
+//        remarkIcon.snp_makeConstraints { (make) -> Void in
+//            make.left.equalTo(hostIcon.snp_right).offset(10)
+//            make.centerY.equalTo(remarkLabel.snp_centerY)
+//            make.width.height.equalTo(20)
+//        }
+//        
+//        remarkLabel.snp_makeConstraints { (make) -> Void in
+//            make.left.equalTo(remarkIcon.snp_right).offset(10)
+//            make.right.equalTo(contentView.snp_rightMargin)
+//            make.top.equalTo(locationLabel.snp_bottom).offset(10)
+//        }
 
         
         infoLabel.snp_makeConstraints { (make) -> Void in
@@ -181,7 +181,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     var moreButton:UIBarButtonItem!
 
 
-    //var activities = [Activity]()
+    var page = 1
     var activities = [ActivityModel]()
     
     var timer:NSTimer?
@@ -195,8 +195,6 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
                 let offset_x = CGFloat(pageControl.numberOfPages+1) * boardScrollView.frame.size.width
                 self.boardScrollView.scrollRectToVisible(CGRectMake(offset_x, 0, boardScrollView.frame.size.width, boardScrollView.frame.size.height), animated: true)
                 pageControl.currentPage = 0
-                
-                //self.boardScrollView.scrollRectToVisible(CGRectMake(boardScrollView.frame.size.width, 0, boardScrollView.frame.size.width, boardScrollView.frame.size.height), animated: true)
             }
             else {
                 pageControl.currentPage = (pageControl.currentPage + 1) % pageControl.numberOfPages
@@ -211,39 +209,30 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     func fetchActivityInfo() {
         if let t = token {
-        request(.POST, GET_ACTIVITY_INFO_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+        request(.POST, GET_ACTIVITY_INFO_URL, parameters: ["token":t, "page":"\(page)"], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
             debugPrint(response)
             if let S = self, d = response.result.value {
                 let json = JSON(d)
-                guard json != .null && json["state"] == "successful" && json["result"].array != nil && json["result"].array?.count > 0 else {
+                guard json != .null && json["state"] == "successful" && json["result"] != .null else {
                     return
                 }
-                
-                var acs = [ActivityModel]()
-
-
-                for a in json["result"].array! {
-                    guard let dic = (a.dictionaryObject) else {
-                        continue
-                    }
                     
-                    //let a = Activity(title: a["title"].stringValue, time: a["time"].stringValue, location: a["location"].stringValue, peopleCapacity: a["number"].stringValue, state: a["state"].stringValue, id:a["id"].stringValue)
-                    //acs.append(a)
-                    do {
-                       let ac = try MTLJSONAdapter.modelOfClass(ActivityModel.self, fromJSONDictionary: dic) as! ActivityModel
-                        acs.append(ac)
+                do {
+                   let ac = try MTLJSONAdapter.modelsOfClass(ActivityModel.self, fromJSONArray: json["result"].arrayObject) as? [ActivityModel]
+                    if let a = ac where a.count > 0 {
+                        var k = S.activities.count
+                        let indexSets = NSMutableIndexSet()
+                        for _ in a {
+                            indexSets.addIndex(k++)
+                        }
+                        S.activities.appendContentsOf(a)
+                        S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
+                        S.refreshControl.endRefreshing()
+                        S.page++
                     }
-                    catch let error as NSError {
-                        print(error.localizedDescription)
-                    }
-
-                    
                 }
-//
-                if acs.count > 0 {
-                    S.activities = acs
-                    S.tableView.reloadData()
-                    S.refreshControl.endRefreshing()
+                catch let error as NSError {
+                    print(error.localizedDescription)
                 }
 
                 
@@ -251,6 +240,8 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         })
         }
     }
+    
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -270,9 +261,10 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let data = activities[indexPath.row]
-        let vc = ActivityRegisterVC()
-        vc.id = data.activityID
+        let data = activities[indexPath.section]
+        let vc = ActivityInfoVC()//ActivityDetailVC()//ActivityRegisterVC()
+        //vc.id = data.activityID
+        vc.activityID = data.activityID
         navigationController?.pushViewController(vc, animated: true)
         
     }
@@ -286,27 +278,20 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
                         self?.view.layoutIfNeeded()
                         self?.boardScrollView.contentSize = CGSizeMake((self?.view.frame.width)! * CGFloat(board_arr.count+2), ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         
-                        var imgView = UIImageView()//UIImageView(image: imgs[board_arr.count-1])
-                        //imgView.sd_setImageWithURL(NSURL(string:board_arr[board_arr.count-1].image)!, placeholderImage: UIImage(named: "profile_background"))
-                        imgView.image = UIImage(named: board_arr[board_arr.count-1].image)
-                        //imgView.contentMode = UIViewContentMode.ScaleAspectFill
+                        var imgView = UIImageView()
+                        imgView.sd_setImageWithURL(NSURL(string:board_arr[board_arr.count-1].image)!, placeholderImage: UIImage(named: "profile_background"))
                         imgView.frame = CGRectMake(0, 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
-                        //
                         
                         for (index, board) in board_arr.enumerate() {
                             let imgView = UIImageView()
-                            //imgView.contentMode = UIViewContentMode.ScaleAspectFill
-                            //imgView.sd_setImageWithURL(NSURL(string:board.image)!, placeholderImage: UIImage(named: "profile_background"))
-                            imgView.image = UIImage(named: board.image)
+                            imgView.sd_setImageWithURL(NSURL(string:board.image)!, placeholderImage: UIImage(named: "profile_background"))
                             imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(index+1), 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                             self?.boardScrollView.addSubview(imgView)
                         }
-                        //
+                    
                         imgView = UIImageView()
-                        //imgView.sd_setImageWithURL(NSURL(string:board_arr[0].image)!, placeholderImage: UIImage(named: "profile_background"))
-                        imgView.image = UIImage(named: board_arr[0].image)
-                        //imgView.contentMode = UIViewContentMode.ScaleAspectFill
+                        imgView.sd_setImageWithURL(NSURL(string:board_arr[0].image)!, placeholderImage: UIImage(named: "profile_background"))
                         imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(board_arr.count+1), 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
                         
@@ -322,6 +307,18 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         }
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tabBarController?.tabBar.hidden = false
+        
+        // navigationController?.navigationBar.setBackgroundImage(barBG, forBarMetrics: .Default)
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -331,32 +328,47 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         tableView.dataSource = self
         tableView.registerClass(ActivityCell.self, forCellReuseIdentifier: NSStringFromClass(ActivityCell))
         tableView.backgroundColor = BACK_COLOR
-        //tableView.backgroundColor = UIColor.redColor()
         let edgeInsets = UIEdgeInsetsMake(0, 0, tabBarController?.tabBar.frame.size.height ?? 0 , 0)
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
         navigationController?.navigationBar.barStyle = .Black
-        
-        //automaticallyAdjustsScrollViewInsets = false
-        
+        removeNavBorderLine()
         boardViewModel = ActivityBoardViewModel()
-        
+
+        setUI()
+        configUI()
         refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = UIColor.clearColor()
+        refreshControl.backgroundColor = THEME_COLOR
         refreshControl.tintColor = UIColor.clearColor()
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         configRefreshControl()
-
-        setUI()
-        configUI()
     }
+    
+    func removeNavBorderLine() {
+        if let nav = navigationController {
+            var flag = false
+            for v in nav.navigationBar.subviews {
+                if !flag {
+                    for vv in v.subviews {
+                        if vv is UIImageView && vv.frame.size.height < 2 {
+                            vv.removeFromSuperview()
+                            flag = true
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     
     func configRefreshControl() {
         refreshCustomizeImageView.contentMode = .ScaleAspectFill
-        let rect = CGRectMake(refreshControl.center.x-80/2, refreshControl.center.y+TopicVC.TOPIC_IMAGE_HEIGHT/2-80/2, 80, 80)
+        refreshCustomizeImageView.backgroundColor = UIColor.clearColor()
+        let rect = CGRectMake(refreshControl.center.x-80/2, refreshControl.center.y-80/2, 80, 80)
         refreshCustomizeImageView.frame = rect
         refreshControl.addSubview(refreshCustomizeImageView)
         
@@ -370,9 +382,12 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         }
         animateTimer = NSTimer.scheduledTimerWithTimeInterval(0.015, target: self, selector: "tick:", userInfo: nil, repeats: true)
         //animateRefresh()
+        activities.removeAll()
+        tableView.reloadData()
+        page = 1
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
         dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
-            self.fetchActivityInfo()
+            self.configUI()
         }
 
         let endTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * NSEC_PER_SEC))
@@ -433,7 +448,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         }
         
         
-        moreButton = UIBarButtonItem(image: UIImage(named: "activity_more"), style: .Plain, target: self, action: "more:")
+        moreButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .Plain, target: self, action: "more:")
         navigationItem.rightBarButtonItem = moreButton
         
     }
@@ -454,8 +469,31 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         
     }
     
+    func fetchTopActivity() {
+        if let t = token {
+            request(.POST, GET_TOP_ACTIVITY_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json  = JSON(d)
+                    guard json != .null  && json["state"].stringValue == "successful" && json["result"].array != nil else {
+                        return
+                    }
+                    
+                    var top = [ActivityBoard]()
+                    for t in json["result"].array! {
+                        top.append(ActivityBoard(image: t["imageurl"].stringValue, activityID: t["activityid"].stringValue))
+                    }
+                    if top.count > 0 {
+                        S.boardViewModel?.boards.value = top
+                    }
+                }
+            })
+        }
+        
+    }
+    
     func configUI() {
-            boardViewModel?.boards.value = [ActivityBoard(image: "activity_back1"), ActivityBoard(image: "test")]
+            fetchTopActivity()
             fetchActivityInfo()
     }
     
@@ -471,12 +509,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityCell), forIndexPath: indexPath) as! ActivityCell
         let data = activities[indexPath.section]
         cell.titleLabel.text = data.title
-//        let timeText = NSMutableAttributedString(string: "时间 2015年11月10日19:00")
-//        timeText.addAttributes([NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName:UIColor.darkGrayColor()], range: NSMakeRange(0, 2))
         cell.timeLabel.text = data.time
-//        
-//        let locationText = NSMutableAttributedString(string: "地点 东南大学四牌楼校区兰园活动中心")
-//        locationText.addAttributes([NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline), NSForegroundColorAttributeName:UIColor.darkGrayColor()], range: NSMakeRange(0, 2))
         cell.locationLabel.text = data.location
         if data.capacity.characters.count <= 3 {
             cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
@@ -488,7 +521,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         
         cell.hostIcon.image = UIImage(named: "seu")
         
-        cell.remarkLabel.text = data.remark.characters.count == 0 ? "(无备注信息)" : data.remark
+       // cell.remarkLabel.text = data.remark.characters.count == 0 ? "(无备注信息)" : data.remark
         
         cell.selectionStyle = .None
         
@@ -518,7 +551,13 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 120
+        return 100
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == activities.count - 1 {
+            fetchActivityInfo()
+        }
     }
     
     
@@ -564,6 +603,7 @@ extension ActivityVC:UIScrollViewDelegate {
 
 struct ActivityBoard {
     let image:String
+    let activityID:String
 }
 class ActivityBoardViewModel {
     private var boards:Observable<[ActivityBoard]>  = Observable([])
