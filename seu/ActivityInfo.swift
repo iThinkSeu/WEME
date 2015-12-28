@@ -61,6 +61,11 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             make.right.equalTo(imgBG.snp_right)
             make.bottom.equalTo(imgBG.snp_bottom).offset(-20)
         }
+        
+        let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
+        action.tintColor = UIColor.whiteColor()
+        navigationItem.rightBarButtonItem = action
+
 
         fetchActivityInfo()
     }
@@ -299,6 +304,20 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         }
     }
     
+    func action(sender:AnyObject) {
+        
+        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            if index == 0 {
+                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.showInView(self.navigationController!.view)
+            }
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
+        sheet.setButtonTextColor(THEME_COLOR)
+        sheet.showInView(navigationController!.view)
+        
+    }
+
+    
     
     func register(sender:AnyObject) {
         print("register")
@@ -350,7 +369,7 @@ class ActivityInfoActionTableViewCell:UITableViewCell {
         
         backView = UIView()
         backView.translatesAutoresizingMaskIntoConstraints = false
-        backView.backgroundColor = UIColor.whiteColor()
+        backView.backgroundColor = BACK_COLOR
         contentView.addSubview(backView)
 
         
@@ -364,7 +383,7 @@ class ActivityInfoActionTableViewCell:UITableViewCell {
         backView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left)
             make.right.equalTo(contentView.snp_right)
-            make.top.equalTo(titleInfoLabel.snp_bottom)
+            make.top.equalTo(titleInfoLabel.snp_bottom).offset(5)
             make.bottom.equalTo(contentView.snp_bottom)
             backView.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
             backView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
@@ -390,7 +409,7 @@ class ActivityInfoActionTableViewCell:UITableViewCell {
         titleInfoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left).offset(5)
             make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(contentView.snp_top)
+            make.top.equalTo(contentView.snp_top).offset(5)
             titleInfoLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
             titleInfoLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         }
@@ -453,7 +472,7 @@ class ActivityInfoAvatarTableViewCell:UITableViewCell {
         backView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left)
             make.right.equalTo(contentView.snp_right)
-            make.top.equalTo(titleInfoLabel.snp_bottom)
+            make.top.equalTo(titleInfoLabel.snp_bottom).offset(5)
             make.bottom.equalTo(contentView.snp_bottom)
             backView.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
             backView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
@@ -488,7 +507,7 @@ class ActivityInfoAvatarTableViewCell:UITableViewCell {
         titleInfoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(backView.snp_left).offset(5)
             make.right.equalTo(backView.snp_right)
-            make.top.equalTo(contentView.snp_top)
+            make.top.equalTo(contentView.snp_top).offset(5)
             titleInfoLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
             titleInfoLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         }
@@ -504,13 +523,13 @@ class ActivityInfoAvatarTableViewCell:UITableViewCell {
         nameLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(avatar.snp_right).offset(10)
             make.right.equalTo(detailButton.snp_left)
-            make.top.equalTo(avatar.snp_top)
+            make.top.equalTo(avatar.snp_top).offset(5)
         }
         
         infoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
             make.right.equalTo(detailButton.snp_left)
-            make.bottom.equalTo(avatar.snp_bottom)
+            make.bottom.equalTo(avatar.snp_bottom).offset(-5)
         }
         
         detailButton.snp_makeConstraints { (make) -> Void in
@@ -556,7 +575,7 @@ class ActivityInfoTableViewCell:UITableViewCell {
         backView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left)
             make.right.equalTo(contentView.snp_right)
-            make.top.equalTo(titleInfoLabel.snp_bottom)
+            make.top.equalTo(titleInfoLabel.snp_bottom).offset(5)
             make.bottom.equalTo(contentView.snp_bottom)
             backView.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
             backView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
@@ -577,7 +596,7 @@ class ActivityInfoTableViewCell:UITableViewCell {
         titleInfoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left).offset(5)
             make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(contentView.snp_top)
+            make.top.equalTo(contentView.snp_top).offset(5)
             titleInfoLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
             titleInfoLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         }
