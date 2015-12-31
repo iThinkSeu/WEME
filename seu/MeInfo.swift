@@ -48,7 +48,7 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         
         self.scrollViewDidScroll(self._view)
         
-        configUI()
+       
     }
     
     
@@ -76,6 +76,7 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         navigationItem.rightBarButtonItem = action
         visit()
         setUI()
+        configUI()
     }
     
     func visit() {
@@ -254,6 +255,7 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
     }
     
     func configUI() {
+        print("called config")
         let coverURL = profileBackgroundURLForID(id)
         cover.sd_setImageWithURL(coverURL, placeholderImage: UIImage(named: "profile_background"))
         
@@ -315,7 +317,6 @@ extension MeInfoVC:RSKImageCropViewControllerDelegate, RSKImageCropViewControlle
     func imageCropViewController(controller: RSKImageCropViewController!, didCropImage croppedImage: UIImage!, usingCropRect cropRect: CGRect) {
         dismissViewControllerAnimated(true, completion: nil)
         self.cover.image = croppedImage
-        
         if let t = token,
             let id =  myId{
                 upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
@@ -329,11 +330,11 @@ extension MeInfoVC:RSKImageCropViewControllerDelegate, RSKImageCropViewControlle
                         switch encodingResult {
                         case .Success(let upload, _ , _):
                             upload.responseJSON { response in
-                                //debugPrint(response)
+                                 //debugPrint(response)
                                 if let d = response.result.value {
                                     let j = JSON(d)
                                     if j != .null && j["state"].stringValue  == "successful" {
-                                        SDImageCache.sharedImageCache().storeImage(self.cover.image, forKey:profileBackgroundURLForID(id).absoluteString, toDisk:true)
+                                        SDImageCache.sharedImageCache().storeImage(croppedImage, forKey:profileBackgroundURLForID(id).absoluteString)
                                     }
                                     else {
                                         let alert = UIAlertController(title: "提示", message: j["reason"].stringValue, preferredStyle: .Alert)
@@ -430,6 +431,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         super.viewDidLoad()
         tableView = UITableView(frame: view.frame, style: .Grouped)
         //tableView.bounces = false
+        automaticallyAdjustsScrollViewInsets = false
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 100, 0)
         tableView.dataSource = self
         tableView.delegate = self

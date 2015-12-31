@@ -16,6 +16,7 @@ class ActivityCell:UITableViewCell {
     var hostIcon:UIImageView!
     var locationIcon:UIImageView!
     var timeIcon:UIImageView!
+    var statusLabel:UILabel!
 //    var remarkIcon:UIImageView!
 //    var remarkLabel:UILabel!
 
@@ -47,6 +48,12 @@ class ActivityCell:UITableViewCell {
         contentView.addSubview(titleLabel)
         titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
         titleLabel.textColor = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)//UIColor.colorFromRGB(0x6A5ACD)
+        
+        statusLabel = UILabel()
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(statusLabel)
+        statusLabel.textColor = THEME_COLOR
+        statusLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
         
         infoLabel = UILabel()
         infoLabel.translatesAutoresizingMaskIntoConstraints  = false
@@ -104,30 +111,40 @@ class ActivityCell:UITableViewCell {
         titleLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
             make.top.equalTo(contentView.snp_topMargin)
-            titleLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: UILayoutConstraintAxis.Horizontal)
+            titleLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: UILayoutConstraintAxis.Horizontal)
+            titleLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Horizontal)
+        }
+        
+        statusLabel.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(contentView.snp_right).offset(-5)
+            make.left.equalTo(titleLabel.snp_right)
+            make.centerY.equalTo(titleLabel.snp_centerY)
+            statusLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
+            statusLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Horizontal)
         }
         
         timeIcon.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
             make.centerY.equalTo(timeLabel.snp_centerY)
             make.width.height.equalTo(20)
+            make.top.equalTo(titleLabel.snp_bottom).offset(10)
         }
         timeLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(timeIcon.snp_right).offset(10)
             make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(titleLabel.snp_bottom).offset(10)
         }
         
         locationIcon.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
             make.centerY.equalTo(locationLabel.snp_centerY)
             make.width.height.equalTo(20)
+            make.top.equalTo(timeIcon.snp_bottom).offset(10)
         }
 
         locationLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(locationIcon.snp_right).offset(10)
             make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(timeLabel.snp_bottom).offset(10)
+            
         }
         
 //        remarkIcon.snp_makeConstraints { (make) -> Void in
@@ -162,7 +179,7 @@ class ActivityCell:UITableViewCell {
     }
 }
 
-class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
+class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, ActivitySearchVCDelegate{
     static let BOARD_SCROLLVIEW_HEIGHT:CGFloat = (SCREEN_WIDTH)/2
     
     var tableView:UITableView!
@@ -241,7 +258,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         }
     }
     
-
+   
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -420,10 +437,24 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         refreshImgs.removeAll()
     }
 
+    func tapBoard(sender:AnyObject) {
+        guard pageControl.currentPage < boardViewModel?.boards.value.count else {
+            return
+        }
+        if let id = boardViewModel?.boards.value[pageControl.currentPage].activityID {
+            let vc = ActivityInfoVC()
+            vc.activityID = id
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+
 
     
     func setUI() {
         boardScrollView = UIScrollView(frame: CGRectMake(0, 0, SCREEN_WIDTH, ActivityVC.BOARD_SCROLLVIEW_HEIGHT))
+        let TapGesture = UITapGestureRecognizer(target: self, action: "tapBoard:")
+        boardScrollView.addGestureRecognizer(TapGesture)
         boardScrollView.pagingEnabled = true
         boardScrollView.translatesAutoresizingMaskIntoConstraints = false
         boardScrollView.bounces = false
@@ -451,6 +482,8 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         moreButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .Plain, target: self, action: "more:")
         navigationItem.rightBarButtonItem = moreButton
         
+        navigationItem.setHidesBackButton(true, animated: false)
+        
     }
     
     func more(sender:AnyObject) {
@@ -458,7 +491,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         let searchItem = KxMenuItem("搜索活动",image: search, target:self, action:"search:")
         searchItem.foreColor = UIColor.whiteColor()
         let more = UIImage(named: "activity_more")?.imageWithRenderingMode(.AlwaysTemplate)
-        let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"search:")
+        let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"editActivity:")
         publishItem.foreColor = UIColor.whiteColor()
         let v = moreButton.valueForKey("view") as! UIView
         let vv = navigationController!.view
@@ -467,6 +500,26 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         KxMenu.setMenuIconTintColor(UIColor.whiteColor())
         KxMenu.showMenuInView(vv, fromRect: rect , menuItems: [searchItem, publishItem])
         
+    }
+    
+    func search(sender:AnyObject) {
+        
+        let vc = ActivitySearchVC()
+        vc.delegate  = self
+        navigationController?.pushViewController(vc, animated: false)
+
+    }
+    
+    func editActivity(sender:AnyObject) {
+        let vc = UINavigationController(rootViewController: ActivityEditVC())
+        presentViewController(vc, animated: true, completion: nil)
+    }
+    
+    func didSearchText(text: String) {
+        print("called")
+        let vc = ActivitySearchResultVC()
+        vc.searchText = text
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func fetchTopActivity() {
@@ -511,15 +564,11 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
         cell.titleLabel.text = data.title
         cell.timeLabel.text = data.time
         cell.locationLabel.text = data.location
-        if data.capacity.characters.count <= 3 {
-            cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
-        }
-        else {
-            cell.infoLabel.text = data.capacity.substringWithRange(Range(start: data.capacity.startIndex, end: data.capacity.startIndex.advancedBy(3)))
-        }
+        cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
+    
         
         
-        cell.hostIcon.image = UIImage(named: "seu")
+        cell.hostIcon.sd_setImageWithURL(thumbnailAvatarURLForID(data.authorID), placeholderImage: UIImage(named: "avatar"))
         
        // cell.remarkLabel.text = data.remark.characters.count == 0 ? "(无备注信息)" : data.remark
         
@@ -543,7 +592,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 5))
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: section == 0 ? 10 : 5))
         v.backgroundColor = BACK_COLOR
         return v
     }

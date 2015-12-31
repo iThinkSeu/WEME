@@ -161,7 +161,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         super.init(nibName: nil, bundle: nil)
         
         controllerArray = viewControllers
-        
+        automaticallyAdjustsScrollViewInsets = false
         self.view.frame = frame
     }
     
@@ -231,6 +231,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         }
     }
     
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -254,16 +255,19 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
         controllerScrollView.translatesAutoresizingMaskIntoConstraints = false
         controllerScrollView.alwaysBounceHorizontal = enableHorizontalBounce
         controllerScrollView.bounces = enableHorizontalBounce
+        controllerScrollView.bounces = false
+        controllerScrollView.alwaysBounceVertical = false
+        controllerScrollView.alwaysBounceHorizontal = false
         
         controllerScrollView.frame = CGRectMake(0.0, menuHeight, self.view.frame.width, self.view.frame.height)
         
         self.view.addSubview(controllerScrollView)
-        
-        let controllerScrollView_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controllerScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        let controllerScrollView_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controllerScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-        
-        self.view.addConstraints(controllerScrollView_constraint_H)
-        self.view.addConstraints(controllerScrollView_constraint_V)
+//        
+//        let controllerScrollView_constraint_H:Array = NSLayoutConstraint.constraintsWithVisualFormat("H:|[controllerScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+//        let controllerScrollView_constraint_V:Array = NSLayoutConstraint.constraintsWithVisualFormat("V:|[controllerScrollView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
+//        
+//        self.view.addConstraints(controllerScrollView_constraint_H)
+//        self.view.addConstraints(controllerScrollView_constraint_V)
         
         // Set up menu scroll view
         menuScrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -284,6 +288,15 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
             make.right.equalTo(view.snp_right)
             make.height.equalTo(menuHeight)
         }
+        
+        controllerScrollView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+            make.top.equalTo(view.snp_top)
+            make.bottom.equalTo(view.snp_bottom)
+        }
+        
+    
         // Add hairline to menu scroll view
         if addBottomMenuHairline {
             let menuBottomHairline : UIView = UIView()
@@ -860,6 +873,7 @@ public class CAPSPageMenu: UIViewController, UIScrollViewDelegate, UIGestureReco
     override public func viewDidLayoutSubviews() {
         // Configure controller scroll view content size
         controllerScrollView.contentSize = CGSizeMake(self.view.frame.width * CGFloat(controllerArray.count), self.view.frame.height - menuHeight)
+        
         
         let oldCurrentOrientationIsPortrait : Bool = currentOrientationIsPortrait
         currentOrientationIsPortrait = UIApplication.sharedApplication().statusBarOrientation.isPortrait

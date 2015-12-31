@@ -24,8 +24,18 @@
              @"detail":@"detail",
              @"advertise":@"advertise",
              @"needsImage":@"whetherimage",
-             @"likeFlag":@"likeflag"
+             @"likeFlag":@"likeflag",
+             @"authorID":@"authorid",
+             @"school":@"school",
+             @"poster":@"imageurl",
+             @"status":@"status"
              };
+}
+
++ (NSValueTransformer *) posterJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *value, BOOL *success, NSError *__autoreleasing *error) {
+        return [[NSURL alloc]initWithString:value];
+    }];
 }
 
 + (NSValueTransformer *) needsImageJSONTransformer {
@@ -82,6 +92,21 @@
             return @YES;
         }
         else return @NO;
+    }];
+}
+
++ (NSValueTransformer *) authorIDJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            return [NSString stringWithFormat:@"%@", value];
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            return value;
+        }
+        else {
+            return @"";
+        }
+        
     }];
 }
 

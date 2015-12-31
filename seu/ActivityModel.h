@@ -26,5 +26,8 @@
 @property (nonatomic, copy)NSString *advertise;
 @property (nonatomic, assign)BOOL needsImage;
 @property (nonatomic, assign)BOOL likeFlag;
-
+@property (nonatomic, copy)NSString *authorID;
+@property (nonatomic, copy)NSString *school;
+@property (nonatomic, strong)NSURL *poster;
+@property (nonatomic, copy) NSString *status;
 @end

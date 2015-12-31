@@ -124,14 +124,20 @@ class ConversationTableCell:UITableViewCell {
     }
 }
 
+protocol SearchResultsVCDelegate:class {
+    func didScroll()
+    func didSelectUserID(id:String)
+}
 
 class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
     
+    weak var delegate:SearchResultsVCDelegate?
     private var friendsData = [JSON]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //automaticallyAdjustsScrollViewInsets = false
+        self.edgesForExtendedLayout = .None
         tableView.backgroundColor = BACK_COLOR//backColor
         tableView.tableFooterView = UIView()
         
@@ -153,6 +159,13 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         
     }
 
+//    override func scrollViewDidScroll(scrollView: UIScrollView) {
+//        delegate?.didScroll()
+//    }
+    
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.didScroll()
+    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -166,6 +179,12 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         
         return 60
         
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let data = friendsData[indexPath.row]
+        let id = data["id"].stringValue
+        delegate?.didSelectUserID(id)
     }
     
 
@@ -249,7 +268,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
     
 }
 
-class ContactsVC:UITableViewController, UINavigationControllerDelegate {
+class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SearchResultsVCDelegate {
     
     
     // private var searchVC :UISearchDisplayController!
@@ -270,25 +289,67 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
         navigationController?.navigationBar.alpha = 1.0
     }
     
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func didScroll() {
+        //searchController?.searchBar.resignFirstResponder()
+        if let text = searchController?.searchBar.text where text.characters.count > 0,
+            let s = searchController?.searchBar.isFirstResponder() where s == true{
+            searchController?.searchBar.resignFirstResponder()
+        }
+        
+    }
+    
+    func didSelectUserID(id: String) {
+        let vc = MeInfoVC()
+        vc.id = id
+        searchController?.active = false
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "朋友"
         setNeedsStatusBarAppearanceUpdate()
         tableView.tableFooterView = UIView()
+        
         //let backColor = BACK_COLOR//UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-
-        searchController = UISearchController(searchResultsController: SearchResultsVC())
+        let vc = SearchResultsVC()
+        vc.delegate = self
+        searchController = UISearchController(searchResultsController: vc)
         searchController?.searchResultsUpdater = self
         searchController?.searchBar.placeholder = "输入姓名或ID快速查找"
         searchController?.searchBar.sizeToFit()
         searchController?.searchBar.tintColor = THEME_COLOR//UIColor.redColor()
         searchController?.searchBar.barTintColor = BACK_COLOR//backColor
         searchController?.searchBar.backgroundColor = BACK_COLOR//backColor
+        searchController?.definesPresentationContext = true
+        //searchController?.searchBar.scopeButtonTitles = []
        // searchController?.hidesNavigationBarDuringPresentation = false
        // definesPresentationContext = false
         //searchController?.searchBar.setValue("取消", forKey: "_cancelButtonText")
         searchController?.delegate = self
+        searchController?.searchBar.delegate = self
         self.navigationController?.extendedLayoutIncludesOpaqueBars = true
+
         
         tableView.tableHeaderView = searchController?.searchBar
         
@@ -535,6 +596,8 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate {
     
     
     
+    
+    
 }
 
 extension ContactsVC: UISearchResultsUpdating {
@@ -774,9 +837,9 @@ class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
 
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self.friendsData.count > 0 ? "左滑选择关注可查看详细信息" : ""
-    }
+//    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return self.friendsData.count > 0 ? "左滑选择关注可查看详细信息" : ""
+//    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

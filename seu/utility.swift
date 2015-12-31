@@ -101,7 +101,11 @@ let PROFILE = "PROFILE_KEY"
 //Activity
 let GET_TOP_ACTIVITY_URL = BASE_URL + "activitytopofficial"
 let GET_ACTIVITY_DETAIL_URL = BASE_URL + "getactivitydetail"
-
+let GET_LIKED_ACTIVITY_URL = BASE_URL + "getlikeactivity"
+let GET_REGISTERED_ACTIVITY_URL = BASE_URL + "getattentactivity"
+let SEARCH_ACTIVITY_URL = BASE_URL + "searchactivity"
+let GET_PUBLISHED_ACTIVITY_URL = BASE_URL + "getpublishactivity"
+let PUBLISH_ACTIVITY_URL = BASE_URL + "publishactivity"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"

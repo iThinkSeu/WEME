@@ -86,6 +86,10 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         
     }
     
+    deinit {
+        visualView?.removeFromSuperview()
+    }
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
         
@@ -136,7 +140,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     func configUI() {
         if let a = activity {
-            imgBG.image = UIImage(named: "food")
+            imgBG.sd_setImageWithURL(a.poster, placeholderImage: UIImage(named: "profile_background"))
             sloganLabel.text = a.advertise
             title = a.title
             content = [a.detail, a.capacity, a.time, a.location, a.remark]
@@ -215,7 +219,6 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         }
         else {
             let data = content[indexPath.section-1]
-            print(data)
             let rect = (data as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-40, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)], context: nil)
 
             return rect.height+40
@@ -249,9 +252,9 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityInfoAvatarTableViewCell), forIndexPath: indexPath) as! ActivityInfoAvatarTableViewCell
-            cell.avatar?.image = UIImage(named: "seu")
-            cell.nameLabel.text = "WEME官方帐号"
-            cell.infoLabel.text = "东南大学"
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(activity?.authorID ?? ""), placeholderImage: UIImage(named: "avatar"))
+            cell.nameLabel.text = activity?.author
+            cell.infoLabel.text = activity?.school
             cell.selectionStyle = .None
             //cell.accessoryType = .DisclosureIndicator
             cell.titleInfoLabel.text = sections[indexPath.section]
@@ -300,7 +303,11 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
-            
+            if let a = activity{
+                let vc = MeInfoVC()
+                vc.id = a.authorID
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
