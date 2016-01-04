@@ -57,7 +57,7 @@ class MyActivityVC:UIViewController{
             .UseMenuLikeSegmentedControl(true),
             .SelectionIndicatorHeight(1),
         ]
-        pageMenuController = CAPSPageMenu(viewControllers: [vc1, vc2, vc3], frame: CGRectMake(0, 0, view.frame.width, view.frame.height), pageMenuOptions: parameters)
+        pageMenuController = CAPSPageMenu(viewControllers: [vc3, vc2, vc1], frame: CGRectMake(0, 0, view.frame.width, view.frame.height), pageMenuOptions: parameters)
         pageMenuController.view.translatesAutoresizingMaskIntoConstraints = false
         pageMenuController.view.backgroundColor = BACK_COLOR
         view.addSubview(pageMenuController.view)
@@ -141,7 +141,7 @@ class ActivityLikeVC:UITableViewController {
         cell.titleLabel.text = data.title
         cell.timeLabel.text = data.time
         cell.locationLabel.text = data.location
-        cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
+        cell.infoLabel.text = " \(data.signnumber)/\(data.capacity) "
             
         cell.hostIcon.sd_setImageWithURL(thumbnailAvatarURLForID(data.authorID ?? ""), placeholderImage: UIImage(named: "avatar"))
         
@@ -221,14 +221,20 @@ class ActivityPublishedVC:ActivityLikeVC {
         cell.titleLabel.text = data.title
         cell.timeLabel.text = data.time
         cell.locationLabel.text = data.location
-        cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
+        cell.infoLabel.text = " \(data.signnumber)/\(data.capacity) "
         
         cell.hostIcon.sd_setImageWithURL(thumbnailAvatarURLForID(data.authorID ?? ""), placeholderImage: UIImage(named: "avatar"))
         cell.statusLabel.text = data.status
         cell.selectionStyle = .None
-        
         return cell
         
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let data = activities[indexPath.section]
+        let vc = ActivityAdminVC()
+        vc.activityID = data.activityID
+        navigationController?.pushViewController(vc, animated: true)
         
     }
 

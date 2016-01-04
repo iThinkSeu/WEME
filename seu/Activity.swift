@@ -564,7 +564,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         cell.titleLabel.text = data.title
         cell.timeLabel.text = data.time
         cell.locationLabel.text = data.location
-        cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
+        cell.infoLabel.text = " \(data.signnumber)/\(data.capacity) "
     
         
         

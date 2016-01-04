@@ -25,4 +25,5 @@
 @property (nonatomic, copy) NSString *gender;
 @property (nonatomic, copy) NSString *hometown;
 @property (nonatomic, copy) NSString *lookcount;
+@property (nonatomic, assign)BOOL activityStatus;
 @end

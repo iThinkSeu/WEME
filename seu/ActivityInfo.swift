@@ -86,9 +86,11 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         
     }
     
-    deinit {
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         visualView?.removeFromSuperview()
     }
+
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
@@ -175,7 +177,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
 
 
     }
-
+    
     
     func fetchActivityInfo() {
         if let t = token {
@@ -264,7 +266,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityInfoActionTableViewCell), forIndexPath: indexPath) as! ActivityInfoActionTableViewCell
          
             if let s = activity?.state where s == true {
-                cell.registerButton.setTitle("已报名[\(activity?.signnumber ?? "0")]", forState: .Normal)
+                cell.registerButton.setTitle("取消报名[\(activity?.signnumber ?? "0")]", forState: .Normal)
                 cell.registerButton.backgroundColor = THEME_COLOR_BACK
                 cell.registerButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
                 cell.registerButton.addTarget(self, action: "unregister:", forControlEvents: .TouchUpInside)
@@ -277,7 +279,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
 
             }
             if let s = activity?.likeFlag where s == true {
-                cell.likeButton.setTitle("已关注", forState: .Normal)
+                cell.likeButton.setTitle("取消关注", forState: .Normal)
                 cell.likeButton.backgroundColor = THEME_COLOR_BACK
                 cell.likeButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
                 cell.likeButton.addTarget(self, action: "unlike:", forControlEvents: .TouchUpInside)
@@ -290,6 +292,9 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             }
             cell.selectionStyle = .None
             cell.titleInfoLabel.text = sections[indexPath.section]
+            if let a = activity {
+                cell.titleInfoLabel.text = a.needsImage ? "\(sections[indexPath.section])(报名该活动需上传生活照)" : sections[indexPath.section]
+            }
             return cell
         }
         else {
@@ -327,37 +332,119 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     
     func register(sender:AnyObject) {
-        print("register")
-//        if let t = token {
-//            request(.POST, SIGNUP_ACTIVITY_URL, parameters: ["token":t, "activity":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
-//                debugPrint(response)
-//                if let d = response.result.value, S = self {
-//                    
-//                }
-//            })
-//        }
+        if let a = activity {
+            if a.needsImage {
+                let vc = UpLoadImageVC()
+                vc.id = a.activityID
+                navigationController?.pushViewController(vc, animated: true)
+            }
+            else {
+                if let t = token {
+                    request(.POST, SIGNUP_ACTIVITY_URL, parameters: ["token":t, "activity":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                        debugPrint(response)
+                        if let d = response.result.value, S = self {
+                            let json = JSON(d)
+                            guard json != .null && json["state"].stringValue == "successful" else {
+                                let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                                hud.labelText = "错误"
+                                hud.detailsLabelText = "报名失败"
+                                hud.hide(true, afterDelay: 1)
+                                return
+                            }
+                            
+                            S.fetchActivityInfo()
+                            let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                            hud.labelText = "报名成功"
+                            hud.mode = .CustomView
+                            hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                            hud.hide(true, afterDelay: 1)
+                            
+                        }
+                        })
+                }
+            }
+        }
+
 
     }
     
     func like(sender:AnyObject) {
-        print("like")
-//        if let t = token {
-//            request(.POST, LIKE_ACTIVITY_URL, parameters: ["token":t, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
-//                debugPrint(response)
-//                if let d = response.result.value, S = self {
-//                    
-//                }
-//            })
-//        }
+        if let t = token {
+            request(.POST, LIKE_ACTIVITY_URL, parameters: ["token":t, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json != .null && json["state"].stringValue == "successful" else {
+                        let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                        hud.labelText = "错误"
+                        hud.detailsLabelText = "添加关注失败"
+                        hud.hide(true, afterDelay: 1)
+                        return
+                    }
+                    S.fetchActivityInfo()
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.labelText = "添加关注成功"
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.hide(true, afterDelay: 1)
+
+                }
+            })
+        }
 
     }
     
     func unregister(sender:AnyObject) {
-        print("unregister")
+        if let t = token {
+            request(.POST, CANCEL_REGISTER_ACTIVITY_URL, parameters: ["token":t, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json != .null && json["state"].stringValue == "successful" else {
+                        let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                        hud.labelText = "错误"
+                        hud.detailsLabelText = "取消报名失败"
+                        hud.hide(true, afterDelay: 1)
+                        return
+                    }
+                    S.fetchActivityInfo()
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.labelText = "取消报名成功"
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.hide(true, afterDelay: 1)
+                    
+                }
+
+            })
+        }
     }
     
     func unlike(sender:AnyObject) {
-        print("unlike")
+        if let t = token {
+            request(.POST, CANCEL_LIKE_ACTIVITY_URL, parameters: ["token":t, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json != .null && json["state"].stringValue == "successful" else {
+                        let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                        hud.labelText = "错误"
+                        hud.detailsLabelText = "取消关注失败"
+                        hud.hide(true, afterDelay: 1)
+                        return
+                    }
+                    S.fetchActivityInfo()
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.labelText = "取消关注成功"
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.hide(true, afterDelay: 1)
+                    
+                }
+                
+                })
+        }
+
     }
     
 

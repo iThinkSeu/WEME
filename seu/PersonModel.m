@@ -27,9 +27,36 @@
              @"department":@"department",
              @"gender":@"gender",
              @"hometown":@"hometown",
-             @"lookcount":@"lookcount"
+             @"lookcount":@"lookcount",
+             @"activityStatus":@"flag"
              };
 }
+
+
++ (NSValueTransformer *) activityStatusJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        if ([value isKindOfClass:[NSNumber class]]) {
+            if ([value isEqualToNumber:@(1)]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else if ([value isKindOfClass:[NSString class]]){
+            if ([value isEqualToString:@"1"]) {
+                return @YES;
+            }
+            else {
+                return @NO;
+            }
+        }
+        else {
+            return @NO;
+        }
+    }];
+}
+
 
 + (NSValueTransformer *) IDJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {

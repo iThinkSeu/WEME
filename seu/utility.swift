@@ -106,6 +106,11 @@ let GET_REGISTERED_ACTIVITY_URL = BASE_URL + "getattentactivity"
 let SEARCH_ACTIVITY_URL = BASE_URL + "searchactivity"
 let GET_PUBLISHED_ACTIVITY_URL = BASE_URL + "getpublishactivity"
 let PUBLISH_ACTIVITY_URL = BASE_URL + "publishactivity"
+let CANCEL_REGISTER_ACTIVITY_URL = BASE_URL + "deletesignup"
+let CANCEL_LIKE_ACTIVITY_URL = BASE_URL + "unlikeactivity"
+let GET_REGISTERED_USER_URL = BASE_URL + "getactivityattentuser"
+let ALLOW_USER_ACTIVITY_URL = BASE_URL + "setpassuser"
+let DENY_USER_ACTIVITY_URL = BASE_URL + "deletepassuser"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"
@@ -179,7 +184,7 @@ let BACK_COLOR = UIColor.colorFromRGB(0xf0eff5)//UIColor.colorFromRGB(0xefeff4)
 let THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)//UIColor.colorFromRGB(0x415788)//UIColor.colorFromRGB(0x3e5d9e)//UIColor.blackColor()//UIColor.colorFromRGB(0xFF69B4)//UIColor.blackColor()//UIColor.colorFromRGB(0x104E8B)//UIColor.redColor()
 let THEME_COLOR_BACK = UIColor(red: 197/255.0, green: 197/255.0, blue: 218/255.0, alpha: 1.0)
 let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
-
+let TEXT_COLOR = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)
 
 
 extension UIImage {
