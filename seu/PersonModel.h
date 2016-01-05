@@ -26,4 +26,6 @@
 @property (nonatomic, copy) NSString *hometown;
 @property (nonatomic, copy) NSString *lookcount;
 @property (nonatomic, assign)BOOL activityStatus;
+@property (nonatomic, strong)NSArray *activityImages;
+@property (nonatomic, strong)NSArray *activityImageThumbnails;
 @end

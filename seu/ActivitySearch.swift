@@ -216,7 +216,7 @@ class ActivitySearchResultVC:UITableViewController {
             cell.titleLabel.text = data.title
             cell.timeLabel.text = data.time
             cell.locationLabel.text = data.location
-            cell.infoLabel.text = "\(data.signnumber)/\(data.capacity)"
+            cell.infoLabel.text = " \(data.signnumber)/\(data.capacity) "
             
             cell.hostIcon.sd_setImageWithURL(thumbnailAvatarURLForID(data.authorID ?? ""), placeholderImage: UIImage(named: "avatar"))
             cell.selectionStyle = .None

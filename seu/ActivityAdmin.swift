@@ -321,7 +321,9 @@ class ActivityAdminUserVC:UITableViewController {
                             }
                             S.users.appendContentsOf(uu)
                             S.currentPage++
+                            S.tableView.beginUpdates()
                             S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
+                            S.tableView.endUpdates()
                         }
                     }
                     catch {
@@ -341,26 +343,55 @@ class ActivityAdminUserVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityAdminTableViewCell), forIndexPath: indexPath) as! ActivityAdminTableViewCell
+     
         let u = users[indexPath.section]
-        cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(u.ID), placeholderImage: UIImage(named: "avatar"))
-        cell.nameLabel.text = u.name
-        cell.infoLabel.text  = u.school
-        if u.activityStatus {
-            cell.actionButton.backgroundColor = THEME_COLOR_BACK
-            cell.actionButton.setTitle(" 拒绝参加活动 ", forState: .Normal)
-            cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
-            cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+        if u.activityImages.count  == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityAdminTableViewCell), forIndexPath: indexPath) as! ActivityAdminTableViewCell
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(u.ID), placeholderImage: UIImage(named: "avatar"))
+            cell.nameLabel.text = u.name
+            cell.infoLabel.text  = u.school
+            if u.activityStatus {
+                cell.actionButton.backgroundColor = THEME_COLOR_BACK
+                cell.actionButton.setTitle(" 拒绝参加活动 ", forState: .Normal)
+                cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
+                cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+            }
+            else {
+                cell.actionButton.backgroundColor = THEME_COLOR
+                cell.actionButton.setTitle(" 允许参加活动 ", forState: .Normal)
+                cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
+                cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+            }
+            cell.actionButton.tag = indexPath.section
+            cell.selectionStyle = .None
+            return cell
         }
         else {
-            cell.actionButton.backgroundColor = THEME_COLOR
-            cell.actionButton.setTitle(" 允许参加活动 ", forState: .Normal)
-            cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
-            cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityAdminImageTableViewCell), forIndexPath: indexPath) as! ActivityAdminImageTableViewCell
+            if cell.imgController == nil {
+                cell.imgController = ActivityImageController()
+            }
+            cell.imgController.imageURLs = u.activityImageThumbnails as! [NSURL]
+            cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(u.ID), placeholderImage: UIImage(named: "avatar"))
+            cell.nameLabel.text = u.name
+            cell.infoLabel.text  = u.school
+            if u.activityStatus {
+                cell.actionButton.backgroundColor = THEME_COLOR_BACK
+                cell.actionButton.setTitle(" 拒绝参加活动 ", forState: .Normal)
+                cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
+                cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+            }
+            else {
+                cell.actionButton.backgroundColor = THEME_COLOR
+                cell.actionButton.setTitle(" 允许参加活动 ", forState: .Normal)
+                cell.actionButton.removeTarget(nil, action: nil, forControlEvents: .TouchUpInside)
+                cell.actionButton.addTarget(self, action: "action:", forControlEvents: .TouchUpInside)
+            }
+            cell.actionButton.tag = indexPath.section
+            cell.selectionStyle = .None
+            cell.delegate = self
+            return cell
         }
-        cell.actionButton.tag = indexPath.section
-        cell.selectionStyle = .None
-        return cell
     }
     
     func allow(uid:String, atIndex index:Int) {
@@ -429,7 +460,13 @@ class ActivityAdminUserVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60
+        let u = users[indexPath.section]
+        if u.activityImages.count  == 0 {
+            return 60
+        }
+        else {
+            return 60 + TopicImageCollectionViewCell.SIZE + 20
+        }
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -442,6 +479,16 @@ class ActivityAdminUserVC:UITableViewController {
         return v
     }
     
+}
+
+extension ActivityAdminUserVC:ActivityImageCellDelegate {
+    func didTapImageCollectionViewAtCell(cell: ActivityAdminImageTableViewCell, atIndexPath index: NSIndexPath) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            let data = users[indexPath.section]
+            let agrume = Agrume(imageURLs: data.activityImages as! [NSURL], startIndex: index.section)
+            agrume.showFrom(self)
+        }
+    }
 }
 
 class ActivityAdminTableViewCell:UITableViewCell {
@@ -515,7 +562,7 @@ class ActivityAdminTableViewCell:UITableViewCell {
 
 
 class ActivityImageController:NSObject {
-    private(set) var imageURLs = [String]() {
+    private(set) var imageURLs = [NSURL]() {
         didSet {
             cell?.imageCollectionView.reloadData()
         }
@@ -536,7 +583,7 @@ extension ActivityImageController:UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(TopicImageCollectionViewCell), forIndexPath: indexPath) as! TopicImageCollectionViewCell
-        cell.imgView.sd_setImageWithURL(NSURL(string:imageURLs[indexPath.item]))
+        cell.imgView.sd_setImageWithURL(imageURLs[indexPath.item])
         return cell
     }
     
@@ -612,10 +659,13 @@ class ActivityAdminImageTableViewCell:UITableViewCell {
         actionButton.layer.masksToBounds = true
         contentView.addSubview(actionButton)
         
+        imageCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(imageCollectionView)
+        
         avatar.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_leftMargin)
-            //make.top.equalTo(contentView.snp_topMargin)
-            make.centerY.equalTo(contentView.snp_centerY)
+            make.top.equalTo(contentView.snp_topMargin)
+            //make.centerY.equalTo(contentView.snp_centerY)
             make.width.height.equalTo(40)
         }
         
@@ -633,8 +683,16 @@ class ActivityAdminImageTableViewCell:UITableViewCell {
         
         actionButton.snp_makeConstraints { (make) -> Void in
             make.right.equalTo(contentView.snp_rightMargin)
-            make.centerY.equalTo(contentView.snp_centerY)
+            make.centerY.equalTo(avatar.snp_centerY)
         }
+        
+        imageCollectionView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(infoLabel.snp_bottom).offset(5)
+            make.height.greaterThanOrEqualTo(TopicImageCollectionViewCell.SIZE+20)
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.right.equalTo(contentView.snp_rightMargin)
+        }
+
 
     }
     

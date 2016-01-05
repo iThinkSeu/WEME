@@ -28,9 +28,40 @@
              @"gender":@"gender",
              @"hometown":@"hometown",
              @"lookcount":@"lookcount",
-             @"activityStatus":@"flag"
+             @"activityStatus":@"flag",
+             @"activityImages":@"image",
+             @"activityImageThumbnails":@"thumbnail"
              };
 }
+
++ (NSValueTransformer *) activityImagesJSONTransformer {
+    NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
+    return [MTLValueTransformer transformerUsingForwardBlock:^NSArray *(NSArray *values, BOOL *success, NSError *__autoreleasing *error) {
+        NSMutableArray *transformedValues = [NSMutableArray arrayWithCapacity:values.count];
+        for (NSString *value in values) {
+            id transformedValue = [transformer transformedValue:value];
+            if (transformedValue) {
+                [transformedValues addObject:transformedValue];
+            }
+        }
+        return transformedValues;
+    }];
+}
+
++ (NSValueTransformer *) activityImageThumbnailsJSONTransformer {
+    NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
+    return [MTLValueTransformer transformerUsingForwardBlock:^NSArray *(NSArray *values, BOOL *success, NSError *__autoreleasing *error) {
+        NSMutableArray *transformedValues = [NSMutableArray arrayWithCapacity:values.count];
+        for (NSString *value in values) {
+            id transformedValue = [transformer transformedValue:value];
+            if (transformedValue) {
+                [transformedValues addObject:transformedValue];
+            }
+        }
+        return transformedValues;
+    }];
+}
+
 
 
 + (NSValueTransformer *) activityStatusJSONTransformer {
