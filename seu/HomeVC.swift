@@ -213,17 +213,10 @@ class ChangeInfoVC:ActivityRegisterVC {
         seperator.hidden = true
         confirmButton.hidden = true
         infoLabel.hidden = true
+        automaticallyAdjustsScrollViewInsets = false
         
-        if let pvc = presentingViewController {
-            //navigationItem.rightBarButtonItem = UIBarButtonItem(title: "完成", style: .Plain, target: self, action: "done:")
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "done:")
-            navigationItem.leftBarButtonItem?.tintColor = UIColor.whiteColor()
-        }
     }
     
-    func done(sender:AnyObject?) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-    }
 }
 
 

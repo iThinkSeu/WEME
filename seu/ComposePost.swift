@@ -190,7 +190,7 @@ class ComposePostVC:UIViewController {
         let seperator = UIView()
         seperator.translatesAutoresizingMaskIntoConstraints = false
         back.addSubview(seperator)
-        seperator.backgroundColor = UIColor.lightGrayColor()
+        seperator.backgroundColor = BACK_COLOR
         back.addSubview(seperator)
         
         seperator.snp_makeConstraints { (make) -> Void in

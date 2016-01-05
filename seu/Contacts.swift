@@ -43,7 +43,7 @@ class ConversationTableCell:UITableViewCell {
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-        nameLabel.textColor = THEME_COLOR
+        nameLabel.textColor = TEXT_COLOR
         addSubview(nameLabel)
         
         infoLabel = UILabel()
@@ -327,7 +327,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "朋友"
+        title = "好友"
         setNeedsStatusBarAppearanceUpdate()
         tableView.tableFooterView = UIView()
         

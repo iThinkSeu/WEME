@@ -50,6 +50,7 @@ class UserImageVC:UIViewController, UICollectionViewDelegate, UICollectionViewDa
         imageCollectionView.dataSource = self
         imageCollectionView.delegate = self
         view.addSubview(imageCollectionView)
+        view.backgroundColor = UIColor.whiteColor()
         setupUI()
         fetchImages()
     }

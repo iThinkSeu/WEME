@@ -42,7 +42,7 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         
       //  title = "关于\(APP)"
         automaticallyAdjustsScrollViewInsets = false
-        let backView = UIImageView(image: UIImage(named: "food"))
+        let backView = UIImageView(image: UIImage(named: "splash"))
         backView.frame = view.frame
         view.addSubview(backView)
         

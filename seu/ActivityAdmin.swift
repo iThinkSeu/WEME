@@ -322,7 +322,7 @@ class ActivityAdminUserVC:UITableViewController {
                             S.users.appendContentsOf(uu)
                             S.currentPage++
                             S.tableView.beginUpdates()
-                            S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
+                            S.tableView.insertSections(indexSets, withRowAnimation: .Right)
                             S.tableView.endUpdates()
                         }
                     }

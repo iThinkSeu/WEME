@@ -33,14 +33,15 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = UIColor.colorFromRGB(0xefeff4)
         navigationController?.navigationBar.barStyle = .Black
-        
-       
+        tableView.separatorStyle = .None
+        fetchNameInfo()
     }
+    
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchNameInfo()
+      
         
         fetchUnreadMessage()
         
@@ -71,8 +72,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     
                     S.unreadMessage = json["number"].stringValue
-                    //S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
-                    S.tableView.reloadData()
+                    S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
+                    //S.tableView.reloadData()
                 }
             })
         }
@@ -89,8 +90,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     do {
                         S.personInfo = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject) as? PersonModel
-                       // S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
-                        S.tableView.reloadData()
+                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+                        //S.tableView.reloadData()
                     }
                     catch {
                         print(error)
@@ -136,10 +137,15 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
                 
+                if indexPath.row == 2 {
+                    cell.seperator.hidden = true
+                }
+                
             }
             else {
                 cell.icon.image = UIImage(named: "setting")?.imageWithRenderingMode(.AlwaysTemplate)
                 cell.itemLabel.text = "设置"
+                cell.seperator.hidden = true
             }
             cell.accessoryType = .DisclosureIndicator
             cell.selectionStyle = .None
@@ -244,6 +250,7 @@ class MeTableViewCell:UITableViewCell {
 class MeItemTableViewCell:UITableViewCell {
     var icon:UIImageView!
     var itemLabel:UILabel!
+    var seperator:UIView!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style:style, reuseIdentifier:reuseIdentifier)
@@ -266,6 +273,11 @@ class MeItemTableViewCell:UITableViewCell {
         contentView.addSubview(itemLabel)
         itemLabel.textColor = UIColor.colorFromRGB(0x636363)
         
+        seperator = UIView()
+        seperator.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(seperator)
+        seperator.backgroundColor = BACK_COLOR
+        
         icon.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_leftMargin)
             // make.top.equalTo(contentView.snp_topMargin)
@@ -278,6 +290,13 @@ class MeItemTableViewCell:UITableViewCell {
             make.left.equalTo(icon.snp_right).offset(10)
             make.right.equalTo(contentView.snp_rightMargin)
             make.centerY.equalTo(icon.snp_centerY)
+        }
+        
+        seperator.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(itemLabel.snp_left)
+            make.right.equalTo(contentView.snp_right)
+            make.top.equalTo(contentView.snp_bottom).offset(-1)
+            make.height.equalTo(1)
         }
 
     }

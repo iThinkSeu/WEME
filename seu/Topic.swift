@@ -993,7 +993,7 @@ extension TopicImageCollectionViewController:UICollectionViewDataSource, UIColle
 }
 
 class TopicImageCollectionViewCell: UICollectionViewCell {
-    static let SIZE = (SCREEN_WIDTH-50)/6
+    static let SIZE = (SCREEN_WIDTH-50)/5
     
     let imgView:UIImageView = {
         let imageView = UIImageView()
