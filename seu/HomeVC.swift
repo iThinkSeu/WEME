@@ -14,8 +14,6 @@ class HomeVC: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.whiteColor()
-        //tabBar.tintColor = THEME_COLOR
-        //navigationController?.navigationBar.barTintColor = UIColor.blackColor()
         loadUI()
         checkForUpdates()
     }
@@ -37,7 +35,7 @@ class HomeVC: UITabBarController {
                             let url = info["trackViewUrl"].stringValue
                             UIApplication.sharedApplication().openURL(NSURL(string: url)!)
                         }))
-                        alert.view.tintColor = THEME_COLOR//UIColor.redColor()
+                        alert.view.tintColor = THEME_COLOR
                         self.presentViewController(alert, animated: true, completion: nil)
                     }
                     
@@ -51,36 +49,30 @@ class HomeVC: UITabBarController {
     
     func loadUI() {
         let navHand = UINavigationController(rootViewController: ActivityVC())
-        //let navContacts =  UINavigationController(rootViewController: ContactsVC())
         let navSocial = UINavigationController(rootViewController: SocialVC())
-        //let navMe = UINavigationController(rootViewController: PersonalInfoVC())
         let Me =  UINavigationController(rootViewController: ProfileVC())
-        
-        let food = CardVC()
+       // let food = CardVC()
 
         
-        setViewControllers([navHand, navSocial, food, Me], animated: true)
+        setViewControllers([navHand, navSocial, Me], animated: true)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR_BACK], forState: UIControlState.Normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR], forState: UIControlState.Selected)
-        tabBar.tintColor = THEME_COLOR//UIColor.colorFromRGB(0x6A5ACD)//UIColor.colorFromRGB(0x32CD32)//UIColor.colorFromRGB(0xEE3B3B)//UIColor.redColor()
+        tabBar.tintColor = THEME_COLOR
         tabBar.backgroundColor = UIColor.whiteColor()
-        //tabBar.translucent = false
-        UINavigationBar.appearance().barTintColor =  THEME_COLOR//UIColor.blackColor()//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
+        UINavigationBar.appearance().barTintColor =  THEME_COLOR
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-        
         selectedIndex = 0
         
-        //let hand_active = UIImage(named: "hand_inactive")?.imageWithRenderingMode(.AlwaysTemplate)
         
         navHand.tabBarItem = UITabBarItem(title: "活动", image: UIImage(named: "hand")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "hand")?.imageWithRenderingMode(.AlwaysTemplate))
-        //navContacts.tabBarItem = UITabBarItem(title: "联系人", image: UIImage(named: "contacts_inactive"), selectedImage: UIImage(named: "contacts_active"))
+    
         navSocial.tabBarItem = UITabBarItem(title: "社区", image: UIImage(named: "social")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "social")?.imageWithRenderingMode(.AlwaysTemplate))
         
         Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysTemplate))
 
-        food.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
+      //  food.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
 
         
     }
@@ -141,31 +133,6 @@ class SettingVC :UITableViewController {
     }
     
     func logout(sender : AnyObject) {
-        //print("logout")
-//        NSUserDefaults.standardUserDefaults().removeObjectForKey(TOKEN)
-//        NSUserDefaults.standardUserDefaults().removeObjectForKey(ID)
-//        NSUserDefaults.standardUserDefaults().synchronize()
-//        let documents = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-//        let path = documents.stringByAppendingString("/profile_background.jpg")
-//        let avatar_path = documents.stringByAppendingString("/avatar.jpg")
-//        if NSFileManager.defaultManager().fileExistsAtPath(path) {
-//            do {
-//                try NSFileManager.defaultManager().removeItemAtPath(path)
-//            }
-//            catch {
-//                print("cannot delete profile")
-//            }
-//        }
-//        
-//        if NSFileManager.defaultManager().fileExistsAtPath(avatar_path) {
-//            
-//            do {
-//                try NSFileManager.defaultManager().removeItemAtPath(avatar_path)
-//            }
-//            catch {
-//                print("cannot delete avatar")
-//            }
-//        }
 
         let cacheManager = SDImageCache.sharedImageCache()
         cacheManager.clearMemory()

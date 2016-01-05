@@ -582,8 +582,8 @@ typedef enum {
 //    };
     
     const CGFloat components[] = {
-        0xef/255.0, 0xef/255.0, 0xf4/255.0, 1,
-        0xef/255.0, 0xef/255.0, 0xf4/255.0, 1,
+        0xef/255.0, 0xef/255.0, 0xf4/255.0, 0.5,
+        0xef/255.0, 0xef/255.0, 0xf4/255.0, 0.5,
     };
     
     return [self gradientImageWithSize:size locations:locations components:components count:2];

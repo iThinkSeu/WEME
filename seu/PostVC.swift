@@ -109,7 +109,6 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         if WXApi.isWXAppInstalled() {
             let share = UIBarButtonItem(image: UIImage(named: "share")?.imageWithRenderingMode(.AlwaysTemplate), style: UIBarButtonItemStyle.Plain, target: self, action: "share:")
-            share.tintColor = THEME_COLOR
             navigationItem.rightBarButtonItem = share
         }
         
@@ -247,10 +246,10 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             if post.flag == "1" {
                 cell.likeImage.image = UIImage(named: "liked")?.imageWithRenderingMode(.AlwaysTemplate)
             }
-            cell.titleLabel.text = post.title//"好奇心远比雄心走的更远"
-            cell.bodyLabel.text = post.body//" <<丈量世界>>里的主人公--数学家高斯和博物学家洪堡，一个足不出户，一个步行天下，两人本不是一路人, 却在与世隔绝之后的书中相遇。他们身上有一个最大的共同特点就是，对未知世界的探索。\n虽然我们毕生追求的事业最后都会衰退和消亡，但是人最大的价值是对未知世界的探索，即好奇心。\n牵手社区新版块“看世界”，带你看看未知的世界！本版块欢迎分享身边“最熟悉的不知道”。\n老规矩，请不要在本版块发布水帖或者恶意晒自拍，若发现立马拎进小黑屋，没得商量 （傲娇脸"
-            cell.commentLabel.text = post.commentnumber//"\(1 + (random()%1000))"
-            cell.likeLabel.text = post.likenumber//"\(1 + (random()%1000))"
+            cell.titleLabel.text = post.title
+            cell.bodyLabel.text = post.body
+            cell.commentLabel.text = post.commentnumber
+            cell.likeLabel.text = post.likenumber
             if cell.imgController == nil {
                 cell.imgController = PostImageManager()
             }
@@ -307,10 +306,9 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         if section > 0 {
             let header = tableView.dequeueReusableHeaderFooterViewWithIdentifier(NSStringFromClass(CommentHeaderView)) as! CommentHeaderView
             let data = comments[section-1]
-            //header.avatar.image = UIImage(named: "dev_liuli")
             header.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data.userID), placeholderImage: UIImage(named: "avatar"))
-            header.nameLabel.text = data.name//"刘历"
-            header.infoLabel.text = data.school//"东南大学・射手座"
+            header.nameLabel.text = data.name
+            header.infoLabel.text = data.school
             let dateFormat = NSDateFormatter(withUSLocaleAndFormat: "EE, d LLLL yyyy HH:mm:ss zzzz")
             if let date = dateFormat.dateFromString(data.timestamp) {
                 header.timeLabel.text = date.hunmanReadableString()
@@ -329,8 +327,8 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             if data.flag == "1" {
                 footer.likeImage.image = UIImage(named: "liked")?.imageWithRenderingMode(.AlwaysTemplate)
             }
-            footer.commentLabel.text = "\(data.reply.count)"//"\(1 + (random()%1000))"
-            footer.likeLabel.text = data.likenumber//"\(1 + (random()%1000))"
+            footer.commentLabel.text = "\(data.reply.count)"
+            footer.likeLabel.text = data.likenumber
             footer.tag = section
             footer.delegate = self
             return footer

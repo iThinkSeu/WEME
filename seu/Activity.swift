@@ -479,7 +479,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         }
         
         
-        moreButton = UIBarButtonItem(image: UIImage(named: "menu"), style: .Plain, target: self, action: "more:")
+        moreButton = UIBarButtonItem(image: UIImage(named: "more"), style: .Plain, target: self, action: "more:")
         navigationItem.rightBarButtonItem = moreButton
         
         navigationItem.setHidesBackButton(true, animated: false)
@@ -490,7 +490,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         let search = UIImage(named: "search")?.imageWithRenderingMode(.AlwaysTemplate)
         let searchItem = KxMenuItem("搜索活动",image: search, target:self, action:"search:")
         searchItem.foreColor = UIColor.whiteColor()
-        let more = UIImage(named: "activity_more")?.imageWithRenderingMode(.AlwaysTemplate)
+        let more = UIImage(named: "publish")?.imageWithRenderingMode(.AlwaysTemplate)
         let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"editActivity:")
         publishItem.foreColor = UIColor.whiteColor()
         let v = moreButton.valueForKey("view") as! UIView

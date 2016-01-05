@@ -135,7 +135,8 @@ class ActivitySearchVC:UIViewController, UISearchBarDelegate, UITableViewDataSou
             cell.textLabel?.textColor = UIColor.lightGrayColor()
         }
         else {
-          cell.textLabel?.text = history[indexPath.row]
+            cell.textLabel?.text = history[indexPath.row]
+            cell.textLabel?.textColor = TEXT_COLOR
         }
         cell.textLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         

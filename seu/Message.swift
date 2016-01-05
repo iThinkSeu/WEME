@@ -525,6 +525,7 @@ class MessagePureTextCell:UITableViewCell {
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .ByWordWrapping
+        bodyLabel.textColor = TEXT_COLOR
         //bodyLabel.backgroundColor = UIColor.yellowColor()
         bodyLabel.font = UIFont.systemFontOfSize(15)
         contentView.addSubview(bodyLabel)
@@ -567,7 +568,7 @@ class MessagePureTextCell:UITableViewCell {
         bodyLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
             make.top.equalTo(nameLabel.snp_bottom).priorityHigh()
-            make.right.equalTo(contentView.snp_right)
+            make.right.equalTo(contentView.snp_rightMargin)
             make.height.equalTo(100).priorityMedium()
             bodyLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
             //make.bottom.equalTo(snp_bottom).offset(-10)
@@ -639,57 +640,7 @@ class MessageSingleImageCell:UITableViewCell {
         else {
             return CGSizeMake(0, newHeight)
         }
-//        if let img = image {
-//            let height = img.size.height
-//            let width = img.size.width
-//            //if max(width, height) > MessageSingleImageCell.IMAGE_SIZE {
-//                if width > height {
-//                    let newHeight = MessageSingleImageCell.IMAGE_SIZE
-//                    let newWidth = min(width * newHeight / height, SCREEN_WIDTH - 100)
-//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                            self.imgView.snp_updateConstraints(closure: { (make) -> Void in
-//                                make.height.equalTo(newHeight).priorityLow()
-//                                make.width.equalTo(newWidth).priorityHigh()
-//                            })
-//                        })
-//                        return CGSizeMake(newWidth, newHeight)
-//                    
-//                }
-//                else {
-//                    let newWidth = MessageSingleImageCell.IMAGE_SIZE
-//                    let newHeight = height * newWidth / width
-//                    
-//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        self.imgView.snp_updateConstraints(closure: { (make) -> Void in
-//                            make.height.equalTo(newHeight).priorityHigh()
-//                            make.width.equalTo(newWidth).priorityLow()
-//                        })
-//                    })
-//                    return CGSizeMake(newWidth, newHeight)
-//                    
-//                }
-//            //}
-////            else {
-////                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-////
-////                    self.imgView.snp_updateConstraints(closure: { (make) -> Void in
-////                        make.height.equalTo(img.size.height).priorityLow()
-////                        make.width.equalTo(img.size.width).priorityLow()
-////                    })
-////                })
-////               return img.size
-////            }
-//        }
-//        else {
-//            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//
-//                self.imgView.snp_updateConstraints(closure: { (make) -> Void in
-//                    make.height.equalTo(0).priorityHigh()
-//                    make.width.equalTo(0).priorityHigh()
-//                })
-//            })
-//            return CGSizeZero
-//        }
+
     }
     
     static let AVATAR_SIZE:CGFloat = 48
@@ -719,13 +670,6 @@ class MessageSingleImageCell:UITableViewCell {
     }
     
     
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        contentView.setNeedsUpdateConstraints()
-//        contentView.layoutIfNeeded()
-//        bodyLabel.preferredMaxLayoutWidth = CGRectGetWidth(bodyLabel.frame)
-//    }
-    
     func initialize() {
         avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
@@ -753,6 +697,7 @@ class MessageSingleImageCell:UITableViewCell {
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .ByWordWrapping
+        bodyLabel.textColor = TEXT_COLOR
        // bodyLabel.backgroundColor = UIColor.yellowColor()
         bodyLabel.font = UIFont.systemFontOfSize(15)
         contentView.addSubview(bodyLabel)
@@ -804,8 +749,8 @@ class MessageSingleImageCell:UITableViewCell {
         bodyLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
             make.top.equalTo(nameLabel.snp_bottom).offset(0)
-            make.right.equalTo(contentView.snp_right)
-            make.height.equalTo(100).priorityMedium()
+            make.right.equalTo(contentView.snp_rightMargin)
+           // make.height.equalTo(100).priorityMedium()
             bodyLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
             //make.bottom.equalTo(snp_bottom).offset(-10)
         }
@@ -813,7 +758,7 @@ class MessageSingleImageCell:UITableViewCell {
         //imgView.contentMode = UIViewContentMode.ScaleAspectFill
         imgView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
-            make.top.equalTo(bodyLabel.snp_bottom).priorityLow()
+            make.top.equalTo(bodyLabel.snp_bottom)
             //make.width.equalTo(180)//.priorityLow()
             make.height.equalTo(180)//.priorityLow()
             
@@ -875,9 +820,6 @@ class MessageMultiImageController:NSObject {
     
     private weak var cell:MessageMultiImageCell?
     
-    deinit {
-        print("MsgController deinit")
-    }
     
 }
 
@@ -970,7 +912,7 @@ class MessageMultiImageCell:UITableViewCell {
     static let AVATAR_SIZE:CGFloat = 48
     
     static let IMAGE_SPACE:CGFloat = 10
-    static let IMAGE_SIZE:CGFloat = 70
+    static let IMAGE_SIZE:CGFloat = (SCREEN_WIDTH-120)/3
     
     private weak var delegate:MessageMultiImageCellDelegate?
     private var avatar:UIImageView!
@@ -1021,14 +963,14 @@ class MessageMultiImageCell:UITableViewCell {
         bodyLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left)
             make.top.equalTo(nameLabel.snp_bottom).offset(0)
-            make.right.equalTo(contentView.snp_right)
-            make.height.equalTo(100).priorityHigh()
+            make.right.equalTo(contentView.snp_rightMargin)
+            //make.height.equalTo(100).priorityHigh()
             bodyLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         }
             //make.bottom.equalTo(snp
         imageCollectionView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_left).offset(-MessageMultiImageCell.IMAGE_SPACE)
-            make.top.equalTo(bodyLabel.snp_bottom).priorityHigh()
+            make.top.equalTo(bodyLabel.snp_bottom)
             //make.width.equalTo(0)
             //make.height.equalTo(80 * (msgController.imageURLs.count + 2/3))
             //resizeImageCollectionView()
@@ -1081,6 +1023,7 @@ class MessageMultiImageCell:UITableViewCell {
         bodyLabel.translatesAutoresizingMaskIntoConstraints = false
         bodyLabel.numberOfLines = 0
         bodyLabel.lineBreakMode = .ByWordWrapping
+        bodyLabel.textColor = TEXT_COLOR
         //bodyLabel.backgroundColor = UIColor.yellowColor()
         bodyLabel.font = UIFont.systemFontOfSize(15)
         contentView.addSubview(bodyLabel)
@@ -1118,7 +1061,7 @@ class MessageMultiImageCell:UITableViewCell {
         let w = CGFloat(cols) * MessageMultiImageCell.IMAGE_SIZE + CGFloat(cols + 1) * MessageMultiImageCell.IMAGE_SPACE
         
         imageCollectionView.snp_updateConstraints { (make) -> Void in
-            make.height.equalTo(h)
+            make.height.equalTo(h).priorityHigh()
             make.width.equalTo(w)
         }
         
@@ -1149,7 +1092,6 @@ class MessageVC :UITableViewController {
 
     
     func loadOnePage() {
-        print("load one page called")
         if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN"),
             let id = sendID {
             request(.POST, GET_MESSAGE_DETAIL_LIST, parameters: ["token":token, "page":"\(page)", "SendId":id], encoding: .JSON, headers: nil).responseJSON(completionHandler: { [weak self](response) -> Void in
@@ -1187,18 +1129,16 @@ class MessageVC :UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "私信"
-        
+        automaticallyAdjustsScrollViewInsets = false
         tableView.backgroundColor = BACK_COLOR
         tableView.tableFooterView = UIView()
         tableView.registerClass(MessagePureTextCell.self, forCellReuseIdentifier: (NSStringFromClass(MessagePureTextCell.self) as String))
         tableView.registerClass(MessageSingleImageCell.self, forCellReuseIdentifier: (NSStringFromClass(MessageSingleImageCell.self) as String))
         tableView.registerClass(MessageMultiImageCell.self, forCellReuseIdentifier: NSStringFromClass(MessageMultiImageCell))
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 180
+        //tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.estimatedRowHeight = 180
         tableView.allowsSelection = false
         
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: "back:")
-       // navigationItem.leftBarButtonItem?.tintColor = UIColor.whiteColor()
         
         refreshCont = UIRefreshControl()
         refreshCont.backgroundColor = BACK_COLOR
@@ -1213,7 +1153,6 @@ class MessageVC :UITableViewController {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        print("deinit")
     }
     
     func didSendMessage(sender:AnyObject) {
@@ -1221,10 +1160,7 @@ class MessageVC :UITableViewController {
     }
     
     
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        pullRefresh(nil)
-//    }
+
     func pullRefresh(sender:AnyObject?) {
         messages = [JSON]()
         tableView.reloadData()
@@ -1250,7 +1186,6 @@ class MessageVC :UITableViewController {
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        //print("called")
         if indexPath.row == self.messages.count - 1 {
             loadOnePage()
         }
@@ -1260,10 +1195,32 @@ class MessageVC :UITableViewController {
     func readMessageForID(id:String) {
         if let token = NSUserDefaults.standardUserDefaults().stringForKey(TOKEN) {
             request(.POST, READ_MESSAGE, parameters: ["token":token, "id":id], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
-                //debugPrint(response)
+                
             })
         }
     }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let data = self.messages[indexPath.row]
+        let text = data["text"].string ?? " "
+        let rect = (text as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width-80, CGFloat.max), options: .UsesLineFragmentOrigin, attributes:[NSFontAttributeName:UIFont.systemFontOfSize(15)], context: nil)
+
+        
+        if data["image"].array?.count == 1 {
+            return rect.height + MessageSingleImageCell.IMAGE_SIZE + 80
+        }
+        else if data["image"].array?.count > 1 {
+            let c = data["image"].array!.count
+            let rows = (c + 2) / 3
+            let h = CGFloat(rows) * MessageMultiImageCell.IMAGE_SIZE + CGFloat(rows + 1) * MessageMultiImageCell.IMAGE_SPACE
+            return rect.height + h + 80
+        }
+        else {
+            return rect.height + 80
+        }
+        
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
@@ -1271,12 +1228,9 @@ class MessageVC :UITableViewController {
         if data["readstate"].stringValue == "1" {
             readMessageForID(data["messageid"].stringValue)
         }
-       // if data["image"].stringValue == "" || data["image"].stringValue == "null" {
-           //let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessageSingleImageCell), forIndexPath: indexPath) as! MessageSingleImageCell
-                    //cell.imgView.load(NSURL(string: data["image"].stringValue)!, placehol
-           // cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
+        
+       
         if data["image"].array?.count == 1 {
-           // let cell = MessageSingleImageCell(style: UITableViewCellStyle.Default, reuseIdentifier:nil)
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessageSingleImageCell), forIndexPath: indexPath) as! MessageSingleImageCell
             cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholderImage: UIImage(named: "avatar"))
 
@@ -1284,41 +1238,14 @@ class MessageVC :UITableViewController {
             cell.infoLabel.text = data["school"].string ?? " "
             cell.timeLabel.text = " "
             cell.bodyLabel.text = data["text"].string ?? " "
-            cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
+           // cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
             let url = NSURL(string:data["image"][0].stringValue)!
             cell.imgView?.sd_setImageWithURL(url, completed: { (image, error, cacheType, url) -> Void in
                 let img = image?.scaleImage(cell.imageSizeFor(image))
                 cell.imgView?.image = img
             })
             
-//            cell.imgView.load(NSURL(string: data["image"][0].stringValue)!, placeholder: nil) { (url, image, var error, cacheType) -> Void in
-//                if error == nil {
-//                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
-//                        let img = image?.scaleImage(cell.imageSizeFor(image))
-//                   // if let img = image {
-//                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                            //print(img?.size.width, img?.size.height)
-//                            cell.imgView.image = img
-////                            cell.imgView.invalidateIntrinsicContentSize()
-////                            cell.imgView.setNeedsLayout()
-////                            cell.imgView.layoutIfNeeded()
-//                            //cell.imgView.setNeedsDisplay()
-//                            //cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
-//                            //cell.imgView.resizeMessageImageViewSizeWithSnapKit()
-//                            //tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-//                            //cell.contentView.setNeedsUpdateConstraints()
-//                            //cell.contentView.updateConstraintsIfNeeded()
-//                            //cell.contentView.invalidateIntrinsicContentSize()
-//                        })
-//                    //}
-//                    })
-//                }
-//                else {
-//                    error = nil
-//                }
-//               
-//                //cell.updateConstraints()
-//           }
+
             cell.nameLabel.text = data["name"].string ?? " "
             let time = data["time"].stringValue
             let dateFormat = NSDateFormatter(withUSLocaleAndFormat: "EE, d LLLL yyyy HH:mm:ss zzzz")
@@ -1327,14 +1254,9 @@ class MessageVC :UITableViewController {
             }
             cell.reply.hidden = (data["SendId"].stringValue != (sendID!))
             cell.delegate = self
-            //cell.contentView.setNeedsLayout()
-            //cell.contentView.layoutIfNeeded()
-            
-            //cell.updateConstraints()
             return cell
         }
         else if data["image"].array?.count > 1 {
-           //let cell = MessageMultiImageCell(style: UITableViewCellStyle.Default, reuseIdentifier:nil)
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MessageMultiImageCell), forIndexPath: indexPath) as! MessageMultiImageCell
             if cell.msgController == nil {
                 cell.msgController = MessageMultiImageController()
@@ -1344,15 +1266,11 @@ class MessageVC :UITableViewController {
            
    
             cell.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(data["SendId"].stringValue), placeholderImage: UIImage(named: "avatar"))
-            /*cell.avatar.load(thumbnailAvatarURLForID(data["SendID"].stringValue), placeholder: UIImage(named: "avatar"), completionHandler: { (url, image, error, cacheType) -> Void in
-                cell.avatar.image = image
-                //cell.avatar.setNeedsDisplay()
-            })
-            */
+        
             cell.infoLabel.text = data["school"].string ?? " "
             cell.timeLabel.text = " "
             cell.bodyLabel.text = data["text"].string ?? " "
-            cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
+           // cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
             cell.nameLabel.text = data["name"].string ?? " "
             let time = data["time"].stringValue
             let dateFormat = NSDateFormatter(withUSLocaleAndFormat: "EE, d LLLL yyyy HH:mm:ss zzzz")
@@ -1361,10 +1279,6 @@ class MessageVC :UITableViewController {
             }
             cell.reply.hidden = (data["SendId"].stringValue != (sendID!))
             cell.delegate = self
-            //cell.contentView.setNeedsLayout()
-            //cell.contentView.layoutIfNeeded()
-            
-            //cell.updateConstraints()
             return cell
 
         }
@@ -1377,17 +1291,14 @@ class MessageVC :UITableViewController {
             cell.infoLabel.text = data["school"].string ?? " "
             cell.timeLabel.text = " "
             cell.bodyLabel.text = data["text"].string ?? " "
-            cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
+            //cell.bodyLabel.resizeMessageBodyLabelHeightWithSnapKit()
             let time = data["time"].stringValue
-            let dateFormat = NSDateFormatter(withUSLocaleAndFormat: "EE, d LLLL yyyy HH:mm:ss zzzz")//NSDateFormatter()
-            //dateFormat.dateFormat = "EE, d LLLL yyyy HH:mm:ss zzzz"
+            let dateFormat = NSDateFormatter(withUSLocaleAndFormat: "EE, d LLLL yyyy HH:mm:ss zzzz")
             if let date = dateFormat.dateFromString(time) {
                 cell.timeLabel.text = date.hunmanReadableString()
             }
             cell.reply.hidden = (data["SendId"].stringValue != (sendID!))
             cell.delegate = self
-            //cell.contentView.setNeedsLayout()
-            //cell.contentView.layoutIfNeeded()
 
             return cell
         }

@@ -11,7 +11,7 @@ import RSKImageCropper
 
 class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UITextFieldDelegate, UITextViewDelegate{
     
-    private let info = ["活动时间...", "活动地点...", "活动人数...", "活动备注..."]
+    private let info = ["活动时间(必填)...", "活动地点(必填)...", "活动人数(必填)...", "活动备注(可选)..."]
     private let info_icon = ["time", "location", "hand", "remark"]
     
     private var posterImg:UIImage?
@@ -24,6 +24,7 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
     private var aLocation:String?
     private var aPeople:String?
     private var aRemark:String?
+    private var aSlogan:String?
     
     private var hudd:MBProgressHUD?
     
@@ -71,7 +72,7 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
                         "remark":aRemark ?? "",
                         "detail":aContent ?? "",
                         "whetherimage":(needImage ? "1" : "0"),
-                        "advertise":"",
+                        "advertise":(aSlogan ?? ""),
                         "label":""]
             request(.POST, PUBLISH_ACTIVITY_URL, parameters: dict, encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
                 if let d = response.result.value, S = self {
@@ -203,12 +204,16 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ActivityEditMainTableViewCell), forIndexPath: indexPath) as! ActivityEditMainTableViewCell
             
-            cell.titleTextView.placeholder = "活动标题"
+            cell.titleTextView.placeholder = "活动标题(必填)"
+            cell.sloganTextView.placeholder = "活动宣传语(可选)"
+            cell.sloganTextView.tag = 0
             cell.titleTextView.tag = 1
+            cell.sloganTextView.delegate = self
             cell.bodyTextView.delegate = self
             cell.titleTextView.delegate = self
             cell.coverImageView.image = posterImg ?? UIImage(named: "add_img")
             cell.titleTextView.becomeFirstResponder()
+            cell.sloganTextView.addTarget(self, action: "textChange:", forControlEvents: .EditingChanged)
             cell.titleTextView.addTarget(self, action: "textChange:", forControlEvents: UIControlEvents.EditingChanged)
             cell.selectionStyle = .None
             cell.delegate = self
@@ -265,6 +270,8 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
     
     func textChange(sender:UITextField) {
        switch sender.tag {
+       case 0:
+            aSlogan = sender.text
         case 1:
             aTitle = sender.text
         case 2:
@@ -319,7 +326,7 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
         let currentText = textView.text
         let updatedText = (currentText as NSString).stringByReplacingCharactersInRange(range, withString: text)
         if updatedText.isEmpty {
-            textView.text = "活动详情..."
+            textView.text = "活动详情(必填)..."
             textView.textColor = UIColor.colorFromRGB(0xC7C7CD)
             textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
             return false
@@ -332,7 +339,14 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
         return true
         
     }
+
     
+    func textViewDidChangeSelection(textView: UITextView) {
+        if textView.textColor == UIColor.colorFromRGB(0xC7C7CD) {
+            textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            
+        }
+    }
     
 }
 
@@ -427,6 +441,8 @@ class ActivityEditMainTableViewCell:UITableViewCell, UITextViewDelegate {
     
     private var bodyTextView:UITextView!
     
+    private var sloganTextView:UITextField!
+    
     weak var delegate:ActivityEditMainCellDelegate?
 
     func initialize() {
@@ -454,12 +470,23 @@ class ActivityEditMainTableViewCell:UITableViewCell, UITextViewDelegate {
         bodyTextView.translatesAutoresizingMaskIntoConstraints = false
         bodyTextView.delegate = self
         contentView.addSubview(bodyTextView)
-        bodyTextView.text = "活动详情..."
+        bodyTextView.text = "活动详情(必填)..."
         bodyTextView.textColor = UIColor.colorFromRGB(0xC7C7CD)
         bodyTextView.tintColor = THEME_COLOR
         bodyTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         bodyTextView.selectedTextRange = bodyTextView.textRangeFromPosition(bodyTextView.beginningOfDocument, toPosition: bodyTextView.beginningOfDocument)
 
+        let seperator1 = UIView()
+        seperator1.backgroundColor = BACK_COLOR
+        seperator1.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(seperator1)
+        
+        sloganTextView = UITextField()
+        sloganTextView.translatesAutoresizingMaskIntoConstraints = false
+        sloganTextView.tintColor = THEME_COLOR
+        sloganTextView.textColor = TEXT_COLOR
+        sloganTextView.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        contentView.addSubview(sloganTextView)
         
         
         coverImageView.snp_makeConstraints { (make) -> Void in
@@ -483,12 +510,25 @@ class ActivityEditMainTableViewCell:UITableViewCell, UITextViewDelegate {
             make.height.equalTo(1)
         }
         
+        sloganTextView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.top.equalTo(seperator.snp_bottom).offset(10)
+        }
+
+        seperator1.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.top.equalTo(sloganTextView.snp_bottom).offset(10)
+            make.height.equalTo(1)
+        }
+
 
         
         bodyTextView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_leftMargin)
             make.right.equalTo(contentView.snp_rightMargin)
-            make.top.equalTo(seperator.snp_bottom).offset(5)
+            make.top.equalTo(seperator1.snp_bottom).offset(5)
             make.height.equalTo(bodyTextView.snp_width).multipliedBy(0.2)
             make.bottom.equalTo(contentView.snp_bottom)
         }

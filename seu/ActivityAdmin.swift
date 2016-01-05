@@ -512,10 +512,130 @@ class ActivityAdminTableViewCell:UITableViewCell {
         fatalError()
     }
 }
+
+
+class ActivityImageController:NSObject {
+    private(set) var imageURLs = [String]() {
+        didSet {
+            cell?.imageCollectionView.reloadData()
+        }
+    }
+    
+    private weak var cell:ActivityAdminImageTableViewCell?
+
+}
+
+extension ActivityImageController:UICollectionViewDataSource, UICollectionViewDelegate {
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imageURLs.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(TopicImageCollectionViewCell), forIndexPath: indexPath) as! TopicImageCollectionViewCell
+        cell.imgView.sd_setImageWithURL(NSURL(string:imageURLs[indexPath.item]))
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: TopicImageCollectionViewCell.SIZE , height: TopicImageCollectionViewCell.SIZE)
+    }
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        cell?.delegate?.didTapImageCollectionViewAtCell(cell!, atIndexPath: indexPath)
+    }
+    
+}
+
+protocol ActivityImageCellDelegate:class {
+    func didTapImageCollectionViewAtCell(cell:ActivityAdminImageTableViewCell, atIndexPath:NSIndexPath)
+}
+
 class ActivityAdminImageTableViewCell:UITableViewCell {
     
-    func initialze() {
+    var avatar:UIImageView!
+    var nameLabel:UILabel!
+    var infoLabel:UILabel!
+    var actionButton:UIButton!
     
+    weak var delegate:ActivityImageCellDelegate?
+    
+    
+    var imageCollectionView:UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .Horizontal
+        let collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.registerClass(TopicImageCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(TopicImageCollectionViewCell))
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        
+        return collectionView
+    }()
+    
+    var imgController:ActivityImageController! {
+        didSet {
+            imgController.cell = self
+            imageCollectionView.dataSource = imgController
+            imageCollectionView.delegate = imgController
+        }
+    }
+
+    
+    func initialze() {
+        avatar = UIImageView()
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+        avatar.layer.cornerRadius = 20
+        avatar.layer.masksToBounds = true
+        contentView.addSubview(avatar)
+        
+        nameLabel = UILabel()
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        nameLabel.textColor = TEXT_COLOR
+        contentView.addSubview(nameLabel)
+        
+        infoLabel = UILabel()
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        infoLabel.textColor = TEXT_COLOR
+        contentView.addSubview(infoLabel)
+        
+        actionButton = UIButton()
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        actionButton.backgroundColor = THEME_COLOR
+        actionButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
+        actionButton.layer.cornerRadius = 4.0
+        actionButton.layer.masksToBounds = true
+        contentView.addSubview(actionButton)
+        
+        avatar.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_leftMargin)
+            //make.top.equalTo(contentView.snp_topMargin)
+            make.centerY.equalTo(contentView.snp_centerY)
+            make.width.height.equalTo(40)
+        }
+        
+        nameLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(avatar.snp_right).offset(5)
+            make.top.equalTo(avatar.snp_top)
+            make.right.equalTo(contentView.snp_rightMargin)
+        }
+        
+        infoLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(avatar.snp_right).offset(5)
+            make.bottom.equalTo(avatar.snp_bottom)
+            make.right.equalTo(contentView.snp_rightMargin)
+        }
+        
+        actionButton.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.centerY.equalTo(contentView.snp_centerY)
+        }
+
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
