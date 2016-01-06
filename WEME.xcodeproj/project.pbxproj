@@ -114,6 +114,11 @@
 		B12FB3931C04849200566266 /* ComposePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB3921C04849200566266 /* ComposePost.swift */; };
 		B13EF4C61C2ADCDF00262116 /* BubbleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13EF4C51C2ADCDF00262116 /* BubbleTransition.swift */; };
 		B162BE891C2FC7AF00136F28 /* MyActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162BE881C2FC7AF00136F28 /* MyActivity.swift */; };
+		B169C2A21C3D85FD002F6869 /* city.plist in Resources */ = {isa = PBXBuildFile; fileRef = B169C2A11C3D85FD002F6869 /* city.plist */; };
+		B169C2A41C3D8621002F6869 /* university.json in Resources */ = {isa = PBXBuildFile; fileRef = B169C2A31C3D8621002F6869 /* university.json */; };
+		B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2A61C3D8C27002F6869 /* CityModel.m */; };
+		B169C2AA1C3D91CE002F6869 /* UniversityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2A91C3D91CE002F6869 /* UniversityModel.m */; };
+		B169C2AD1C3D94D6002F6869 /* SchoolModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2AC1C3D94D6002F6869 /* SchoolModel.m */; };
 		B16B6B881C3A53290081922F /* ActivityImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B6B871C3A53290081922F /* ActivityImageUploader.swift */; };
 		B16F95341C18354A00429B47 /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B16F95331C18354A00429B47 /* ActivityModel.m */; };
 		B17B236E1C3A65E600537241 /* ActivityAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B236D1C3A65E600537241 /* ActivityAdmin.swift */; };
@@ -372,6 +377,14 @@
 		B12FB3921C04849200566266 /* ComposePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePost.swift; sourceTree = "<group>"; };
 		B13EF4C51C2ADCDF00262116 /* BubbleTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleTransition.swift; sourceTree = "<group>"; };
 		B162BE881C2FC7AF00136F28 /* MyActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyActivity.swift; sourceTree = "<group>"; };
+		B169C2A11C3D85FD002F6869 /* city.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = city.plist; sourceTree = "<group>"; };
+		B169C2A31C3D8621002F6869 /* university.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = university.json; sourceTree = "<group>"; };
+		B169C2A51C3D8C27002F6869 /* CityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityModel.h; sourceTree = "<group>"; };
+		B169C2A61C3D8C27002F6869 /* CityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityModel.m; sourceTree = "<group>"; };
+		B169C2A81C3D91CE002F6869 /* UniversityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UniversityModel.h; sourceTree = "<group>"; };
+		B169C2A91C3D91CE002F6869 /* UniversityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversityModel.m; sourceTree = "<group>"; };
+		B169C2AB1C3D94D6002F6869 /* SchoolModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchoolModel.h; sourceTree = "<group>"; };
+		B169C2AC1C3D94D6002F6869 /* SchoolModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchoolModel.m; sourceTree = "<group>"; };
 		B16B6B871C3A53290081922F /* ActivityImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityImageUploader.swift; sourceTree = "<group>"; };
 		B16F95321C18354A00429B47 /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
 		B16F95331C18354A00429B47 /* ActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModel.m; sourceTree = "<group>"; };
@@ -771,6 +784,10 @@
 		B16F95311C1834F300429B47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B169C2AB1C3D94D6002F6869 /* SchoolModel.h */,
+				B169C2AC1C3D94D6002F6869 /* SchoolModel.m */,
+				B169C2A81C3D91CE002F6869 /* UniversityModel.h */,
+				B169C2A91C3D91CE002F6869 /* UniversityModel.m */,
 				B16F95321C18354A00429B47 /* ActivityModel.h */,
 				B16F95331C18354A00429B47 /* ActivityModel.m */,
 				B16F95351C1837E400429B47 /* Model.h */,
@@ -780,6 +797,8 @@
 				B105C9D11C22FB4A00E946D8 /* TimelineModel.m */,
 				B105C9D51C23CB3700E946D8 /* UserImageModel.h */,
 				B105C9D61C23CB3700E946D8 /* UserImageModel.m */,
+				B169C2A51C3D8C27002F6869 /* CityModel.h */,
+				B169C2A61C3D8C27002F6869 /* CityModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1056,6 +1075,8 @@
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1D37C291C33FB9C00CE42C1 /* ActivityEdit.swift */,
+				B169C2A31C3D8621002F6869 /* university.json */,
+				B169C2A11C3D85FD002F6869 /* city.plist */,
 				B162BE881C2FC7AF00136F28 /* MyActivity.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
@@ -1190,6 +1211,7 @@
 				B105CA2B1C23DB1600E946D8 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				B105CA241C23DB1600E946D8 /* PlayButtonOverlayLarge@2x.png in Resources */,
 				B12FB2A21BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png in Resources */,
+				B169C2A41C3D8621002F6869 /* university.json in Resources */,
 				B17CF8A21C05E94C0074FF3F /* keyboard_btn_delete@3x.png in Resources */,
 				B105CA211C23DB1600E946D8 /* ImageSelectedSmallOn@2x.png in Resources */,
 				B1FC436B1BA2B9C500133869 /* Launch Screen.xib in Resources */,
@@ -1223,6 +1245,7 @@
 				B105CA251C23DB1600E946D8 /* PlayButtonOverlayLarge@3x.png in Resources */,
 				B105CA281C23DB1600E946D8 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
 				B12FB2A51BF9B50000566266 /* aio_voice_operate_press@3x.png in Resources */,
+				B169C2A21C3D85FD002F6869 /* city.plist in Resources */,
 				B12FB2CB1C00FB5C00566266 /* RefreshContents.bundle in Resources */,
 				B12FB2C91C00EE4D00566266 /* Images.xcassets in Resources */,
 				B105CA291C23DB1600E946D8 /* UIBarButtonItemArrowLeft.png in Resources */,
@@ -1307,6 +1330,7 @@
 				B10759B71BEC518C00FEC0A0 /* ConstraintItem.swift in Sources */,
 				B1D03C371BCE59D100DF0B44 /* Result.swift in Sources */,
 				B17B23751C3D092C00537241 /* ActivityStat.swift in Sources */,
+				B169C2AD1C3D94D6002F6869 /* SchoolModel.m in Sources */,
 				B1DBF4151C0F14F3000A6178 /* MeVC.swift in Sources */,
 				B12FB2BA1BFAF85800566266 /* Observable.swift in Sources */,
 				B10759B91BEC518C00FEC0A0 /* ConstraintRelation.swift in Sources */,
@@ -1322,6 +1346,7 @@
 				B10759C01BEC518C00FEC0A0 /* View+SnapKit.swift in Sources */,
 				B1D03C341BCE59D100DF0B44 /* Request.swift in Sources */,
 				B125DBE01C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m in Sources */,
+				B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */,
 				B12FB2B11BF9B50F00566266 /* WavAmrCodec.cpp in Sources */,
 				B1D03C311BCE59D100DF0B44 /* Manager.swift in Sources */,
 				B19F9A371BD8FC9C0008CA12 /* Contacts.swift in Sources */,
@@ -1352,6 +1377,7 @@
 				B10759BB1BEC518C00FEC0A0 /* EdgeInsets.swift in Sources */,
 				B17CF8A51C05E94C0074FF3F /* STEmoji.m in Sources */,
 				B1AE74621BD514EC0014BE12 /* ImagePickerAction.swift in Sources */,
+				B169C2AA1C3D91CE002F6869 /* UniversityModel.m in Sources */,
 				B13EF4C61C2ADCDF00262116 /* BubbleTransition.swift in Sources */,
 				B105CA471C27A1F300E946D8 /* Card.swift in Sources */,
 				B105C9D21C22FB4A00E946D8 /* TimelineModel.m in Sources */,

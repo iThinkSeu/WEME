@@ -545,7 +545,7 @@ class ActivityInfoAvatarTableViewCell:UITableViewCell {
     var nameLabel:UILabel!
     var infoLabel:UILabel!
     var backView:UIView!
-    var detailButton:UIButton!
+    var detailButton:UIImageView!
     
     func initialize() {
         contentView.backgroundColor = BACK_COLOR
@@ -596,8 +596,7 @@ class ActivityInfoAvatarTableViewCell:UITableViewCell {
         infoLabel.textColor = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)
         backView.addSubview(infoLabel)
         
-        detailButton = UIButton()
-        detailButton.setImage(UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        detailButton = UIImageView(image: UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate))
         detailButton.translatesAutoresizingMaskIntoConstraints = false
         detailButton.tintColor = THEME_COLOR_BACK
         backView.addSubview(detailButton)

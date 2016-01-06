@@ -11,7 +11,7 @@ import RSKImageCropper
 
 let EDIT_INFO_NOTIFICATION = "EDIT_INFO_NOTIFICATION"
 
-class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate, CityVCDelegate, UniversityVCDelegate {
     
     let sections = ["头像", "姓名", "性别", "生日","手机号", "学校", "学历","专业","微信", "QQ", "家乡", ]
     let placeholder = ["必填...", "必填...", "必填...", "必填...", "必填(不公开)...","必填(公开)...", "必填(公开)...", "可选(公开)...","可选(公开)...", "可选(公开)...", "可选(公开)..."]
@@ -54,6 +54,7 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
         tableView.registerClass(EditInfoTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(EditInfoTableViewCell))
         tableView.registerClass(EditInfoAvatarTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(EditInfoAvatarTableViewCell))
         tableView.registerClass(EditInfoGenderTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(EditInfoGenderTableViewCell))
+        tableView.registerClass(EditInfoSelectionTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(EditInfoSelectionTableViewCell))
         let done = UIBarButtonItem(title: "完成", style: .Plain, target: self, action: "done:")
         navigationItem.rightBarButtonItem = done
         setupUI()
@@ -239,6 +240,26 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
             presentViewController(imagePicker, animated: true, completion: nil)
 
         }
+        else if indexPath.row == 10 {
+            let vc = CityVC()
+            vc.delegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        else if indexPath.row == 5 {
+            let vc = UniversityVC()
+            vc.delegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
+    func didSelectCity(city: String) {
+        personInfo?.hometown = city
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 10, inSection: 0)], withRowAnimation: .None)
+    }
+    
+    func didSelectUniversity(university: String) {
+        personInfo?.school = university
+        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 5, inSection: 0)], withRowAnimation: .None)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -268,6 +289,36 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
             return cell
         }
             
+        else if indexPath.row == 10 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(EditInfoSelectionTableViewCell), forIndexPath: indexPath) as! EditInfoSelectionTableViewCell
+            cell.titleInfoLabel.text = sections[indexPath.row]
+            if let h = personInfo?.hometown where h.characters.count > 0 {
+                 cell.detailContentLabel.textColor = TEXT_COLOR
+                 cell.detailContentLabel.text = h
+            }
+            else {
+                cell.detailContentLabel.textColor = UIColor.colorFromRGB(0xC7C7CD)
+                cell.detailContentLabel.text = placeholder[indexPath.row]
+            }
+            cell.selectionStyle = .None
+            return cell
+        }
+        else if indexPath.row == 5 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(EditInfoSelectionTableViewCell), forIndexPath: indexPath) as! EditInfoSelectionTableViewCell
+            cell.titleInfoLabel.text = sections[indexPath.row]
+            if let s = personInfo?.school where s.characters.count > 0 {
+                cell.detailContentLabel.textColor = TEXT_COLOR
+                cell.detailContentLabel.text = s
+            }
+            else {
+                cell.detailContentLabel.textColor = UIColor.colorFromRGB(0xC7C7CD)
+                cell.detailContentLabel.text = placeholder[indexPath.row]
+            }
+            cell.selectionStyle = .None
+            return cell
+
+        }
+            
         else {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(EditInfoTableViewCell), forIndexPath: indexPath) as! EditInfoTableViewCell
             cell.titleInfoLabel.text = sections[indexPath.row]
@@ -288,9 +339,6 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
                 cell.textContentField.keyboardType = UIKeyboardType.NumberPad
                 cell.textContentField.text = personInfo?.phone
             }
-            else if indexPath.row == 5 {
-                cell.textContentField.text = personInfo?.school
-            }
             else if indexPath.row == 6 {
                 cell.textContentField.inputView = degreePicker
                 cell.textContentField.inputAccessoryView = degreeToolbar
@@ -304,9 +352,6 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
             }
             else if indexPath.row == 9 {
                 cell.textContentField.text = personInfo?.qq
-            }
-            else if indexPath.row == 10 {
-                cell.textContentField.text = personInfo?.hometown
             }
             return cell
         }
@@ -337,8 +382,6 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
             personInfo?.birthday = sender.text
         case 4:
             personInfo?.phone = sender.text
-        case 5:
-            personInfo?.school = sender.text
         case 6:
             personInfo?.degree = sender.text
         case 7:
@@ -347,8 +390,6 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
             personInfo?.wechat = sender.text
         case 9:
             personInfo?.qq = sender.text
-        case 10:
-            personInfo?.hometown = sender.text
         default:
             break
         }
@@ -417,11 +458,130 @@ extension EditInfoVC:RSKImageCropViewControllerDelegate, RSKImageCropViewControl
     }
 }
 
+protocol UniversityVCDelegate:class {
+    func didSelectUniversity(university:String)
+}
+
+class UniversityVC:UITableViewController {
+    private var universities = [UniversityModel]()
+    
+    weak var delegate:UniversityVCDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "选择大学"
+        view.backgroundColor = BACK_COLOR
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            let path = NSBundle.mainBundle().pathForResource("university", ofType: "json")!
+            let data = NSData(contentsOfFile: path)!
+            do {
+                
+                let arr = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+                self.universities = try MTLJSONAdapter.modelsOfClass(UniversityModel.self, fromJSONArray: arr as! [AnyObject]) as! [UniversityModel]
+                self.tableView.reloadData()
+            }
+            catch {
+                print(error)
+            }
+
+        }
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return universities.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return universities[section].universities.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
+        cell.textLabel?.text = (universities[indexPath.section].universities[indexPath.row ] as! SchoolModel).name
+        cell.textLabel?.textColor = TEXT_COLOR
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return universities[section].province
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let u = (universities[indexPath.section].universities[indexPath.row ] as! SchoolModel).name
+        navigationController?.popViewControllerAnimated(true)
+        delegate?.didSelectUniversity(u)
+    }
+
+}
+
+protocol CityVCDelegate:class {
+    func didSelectCity(city:String)
+}
+
+class CityVC:UITableViewController {
+    
+    private var cities = [CityModel]()
+    
+    weak var delegate:CityVCDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "选择城市"
+        view.backgroundColor = BACK_COLOR
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
+            let path = NSBundle.mainBundle().pathForResource("city", ofType: "plist")
+            let arr = NSArray(contentsOfFile: path!)!
+            do {
+                self.cities = try MTLJSONAdapter.modelsOfClass(CityModel.self, fromJSONArray: arr as [AnyObject]) as! [CityModel]
+                self.tableView.reloadData()
+            }
+            catch {
+                print(error)
+            }
+
+        }
+
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return cities.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cities[section].cities.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
+        cell.textLabel?.text = cities[indexPath.section].cities[indexPath.row] as! String
+        cell.textLabel?.textColor = TEXT_COLOR
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return cities[section].state
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let city = cities[indexPath.section].cities[indexPath.row] as! String
+        navigationController?.popViewControllerAnimated(true)
+        delegate?.didSelectCity(city)
+    }
+    
+    
+    
+    
+}
+
 class EditInfoAvatarTableViewCell:UITableViewCell {
     var titleInfoLabel:UILabel!
     var avatar:UIImageView!
     var backView:UIView!
-    var detailButton:UIButton!
+    var detailButton:UIImageView!
     
     func initialize() {
         
@@ -455,12 +615,10 @@ class EditInfoAvatarTableViewCell:UITableViewCell {
         avatar.layer.masksToBounds = true
         backView.addSubview(avatar)
        
-        detailButton = UIButton()
-        detailButton.setImage(UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        detailButton = UIImageView(image: UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate))
         detailButton.translatesAutoresizingMaskIntoConstraints = false
         detailButton.tintColor = THEME_COLOR_BACK
         backView.addSubview(detailButton)
-
         
         titleInfoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left).offset(5)
@@ -497,6 +655,8 @@ class EditInfoAvatarTableViewCell:UITableViewCell {
     }
 
 }
+
+
 
 class EditInfoGenderTableViewCell:UITableViewCell {
     var titleInfoLabel:UILabel!
@@ -630,3 +790,89 @@ class EditInfoTableViewCell:UITableViewCell {
         fatalError("not implemented")
     }
 }
+
+class EditInfoSelectionTableViewCell:UITableViewCell {
+    var titleInfoLabel:UILabel!
+    var detailContentLabel:UILabel!
+    var backView:UIView!
+    var detailButton:UIImageView!
+    
+    func initialize() {
+        
+        
+        contentView.backgroundColor = BACK_COLOR
+        titleInfoLabel = UILabel()
+        titleInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleInfoLabel.backgroundColor = BACK_COLOR
+        titleInfoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        titleInfoLabel.textColor = UIColor.lightGrayColor()
+        contentView.addSubview(titleInfoLabel)
+        
+        backView = UIView()
+        backView.translatesAutoresizingMaskIntoConstraints = false
+        backView.backgroundColor = UIColor.whiteColor()
+        contentView.addSubview(backView)
+        
+        backView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_left)
+            make.right.equalTo(contentView.snp_right)
+            make.top.equalTo(titleInfoLabel.snp_bottom).offset(5)
+            make.bottom.equalTo(contentView.snp_bottom)
+            backView.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
+            backView.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+            
+        }
+        
+        
+        
+        detailContentLabel = UILabel()
+        detailContentLabel?.translatesAutoresizingMaskIntoConstraints = false
+        detailContentLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        detailContentLabel?.backgroundColor = UIColor.whiteColor()
+        detailContentLabel?.tintColor = THEME_COLOR
+        backView.addSubview(detailContentLabel)
+        
+        detailButton = UIImageView(image: UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate))
+        detailButton.translatesAutoresizingMaskIntoConstraints = false
+        detailButton.tintColor = THEME_COLOR_BACK
+        backView.addSubview(detailButton)
+        
+
+        
+        titleInfoLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_left).offset(5)
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.top.equalTo(contentView.snp_top).offset(5)
+            titleInfoLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+            titleInfoLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
+        }
+        
+        detailContentLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(contentView.snp_leftMargin)
+            make.right.equalTo(contentView.snp_rightMargin)
+            make.top.equalTo(backView.snp_top)
+            make.bottom.equalTo(contentView.snp_bottom)
+            detailContentLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
+            detailContentLabel.setContentHuggingPriority(UILayoutPriorityDefaultLow, forAxis: .Vertical)
+        }
+        
+        
+        detailButton.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(backView.snp_rightMargin)
+            make.centerY.equalTo(backView.snp_centerY)
+            make.height.width.equalTo(16)
+            
+        }
+
+    }
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("not implemented")
+    }
+}
+

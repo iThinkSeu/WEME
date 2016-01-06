@@ -13,4 +13,7 @@
 #import "PersonModel.h"
 #import "TimelineModel.h"
 #import "UserImageModel.h"
+#import "CityModel.h"
+#import "UniversityModel.h"
+#import "SchoolModel.h"
 #endif /* Model_h */
