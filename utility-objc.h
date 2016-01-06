@@ -18,6 +18,8 @@
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 @end
 
-
+@interface DLLabel: UILabel
+- (void)drawTextInRect:(CGRect)rect;
+@end
 
 #endif /* utility_objc_h */

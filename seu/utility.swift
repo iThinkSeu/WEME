@@ -25,6 +25,8 @@ let EDIT_PERSONAL_INFO_URL = BASE_URL + "editprofile/editpersonalinformation"
 
 let EDIT_PREFER_INFO_URL = BASE_URL + "editprofile/editpreferinformation"
 
+let EDIT_PROFILE_INFO_URL = BASE_URL + "editprofileinfo"
+
 let GET_PROFILE_INFO_URL = BASE_URL + "getprofile"
 
 let UPLOAD_AVATAR_URL =  BASE_URL_NGINX + "uploadavatar"
@@ -111,6 +113,7 @@ let CANCEL_LIKE_ACTIVITY_URL = BASE_URL + "unlikeactivity"
 let GET_REGISTERED_USER_URL = BASE_URL + "getactivityattentuser"
 let ALLOW_USER_ACTIVITY_URL = BASE_URL + "setpassuser"
 let DENY_USER_ACTIVITY_URL = BASE_URL + "deletepassuser"
+let GET_ACTIVITY_STATISTIC_URL = BASE_URL + "getactivitystatistic"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"

@@ -7,7 +7,7 @@
 //
 
 #import "TimelineModel.h"
-#import "WE-Swift.h"
+#import "WEME-Swift.h"
 
 @implementation TimelineModel
 + (NSDictionary *)JSONKeyPathsByPropertyKey {

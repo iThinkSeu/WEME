@@ -9,7 +9,7 @@
 #import "STEmojiKeyboard.h"
 #import "STEmoji.h"
 #import "STEmojiCollectionView.h"
-#import "WE-Swift.h"
+#import "WEME-Swift.h"
 
 #define kSTEmojiKeyboardFrame CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds), 262)
 #define kSTEmojiToolBarHeight 30

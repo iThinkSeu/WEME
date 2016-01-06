@@ -34,6 +34,7 @@
              };
 }
 
+
 + (NSValueTransformer *) activityImagesJSONTransformer {
     NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
     return [MTLValueTransformer transformerUsingForwardBlock:^NSArray *(NSArray *values, BOOL *success, NSError *__autoreleasing *error) {

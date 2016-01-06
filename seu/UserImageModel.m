@@ -7,7 +7,7 @@
 //
 
 #import "UserImageModel.h"
-#import "WE-Swift.h"
+#import "WEME-Swift.h"
 
 @implementation UserImageModel
 

@@ -133,7 +133,10 @@ class SettingVC :UITableViewController {
     }
     
     func logout(sender : AnyObject) {
-
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(ID)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(TOKEN)
+        
         let cacheManager = SDImageCache.sharedImageCache()
         cacheManager.clearMemory()
         cacheManager.clearDisk()
@@ -205,18 +208,6 @@ class SettingVC :UITableViewController {
 
 
 
-class ChangeInfoVC:ActivityRegisterVC {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "修改个人信息"
-        seperator.hidden = true
-        confirmButton.hidden = true
-        infoLabel.hidden = true
-        automaticallyAdjustsScrollViewInsets = false
-        
-    }
-    
-}
 
 

@@ -106,7 +106,7 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         else {
             let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
                 if index == 0 {
-                    self.navigationController?.pushViewController(ChangeInfoVC(), animated: true)
+                    self.navigationController?.pushViewController(EditInfoVC(), animated: true)
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["修改个人信息"])
             sheet.setButtonTextColor(THEME_COLOR)
@@ -423,7 +423,7 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     private var tableView:UITableView!
     
     private let infomationSections = ["基本信息", "学校信息", "家乡信息", "联系方式","添加关注"]
-    private let sectionRows = [2, 2, 1, 2, 1]
+    private let sectionRows = [2, 3, 1, 2, 1]
     
     private var info:PersonModel?
     
@@ -439,6 +439,8 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
         view.addSubview(tableView)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "editInfo:", name: EDIT_INFO_NOTIFICATION, object: nil)
+        
         setupUI()
         configUI()
     }
@@ -447,6 +449,14 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
        
         fetchInfo()
         
+    }
+    
+    func editInfo(sender:NSNotification) {
+        fetchInfo()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func fetchInfo() {
@@ -524,6 +534,10 @@ class PersonalInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 if indexPath.row == 0 {
                     cell.infoLabel.text  = "学校"
                     cell.detailLabel.text = info?.school ?? ""
+                }
+                else if indexPath.row == 1 {
+                    cell.infoLabel.text = "学历"
+                    cell.detailLabel.text = info?.degree ?? ""
                 }
                 else {
                     cell.infoLabel.text = "专业"

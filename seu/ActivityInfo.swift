@@ -21,7 +21,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     private var activity:ActivityModel?
     
-    let sloganLabel = UILabel()
+    let sloganLabel = DLLabel()
     var visualView:UIVisualEffectView?
     
     static let TOPIC_IMAGE_WIDTH = SCREEN_WIDTH
@@ -323,7 +323,12 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
                 alertText.showInView(self.navigationController!.view)
             }
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
+            else if index == 1 {
+                let vc = ActivityStatVC()
+                vc.activityID = self.activityID
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报","更多活动信息"])
         sheet.setButtonTextColor(THEME_COLOR)
         sheet.showInView(navigationController!.view)
         

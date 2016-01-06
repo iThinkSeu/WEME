@@ -8,7 +8,7 @@
 
 #import "STInputBar.h"
 #import "STEmojiKeyboard.h"
-#import "WE-Swift.h"
+#import "WEME-Swift.h"
 
 #define kSTIBDefaultHeight 44
 #define kSTLeftButtonWidth 44

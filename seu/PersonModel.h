@@ -8,7 +8,7 @@
 
 #import <Mantle/Mantle.h>
 
-@interface PersonModel : MTLModel
+@interface PersonModel : MTLModel<MTLJSONSerializing>
 @property (nonatomic, copy) NSString *birthday;
 @property (nonatomic, copy) NSString *degree;
 @property (nonatomic, copy) NSString *enrollment;

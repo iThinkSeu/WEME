@@ -21,7 +21,7 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     
     private var activity:ActivityModel?
     
-    let sloganLabel = UILabel()
+    let sloganLabel = DLLabel()
     var visualView:UIVisualEffectView?
     
     static let TOPIC_IMAGE_WIDTH = SCREEN_WIDTH

@@ -14,6 +14,72 @@ import GMPhotoPicker
 let COMPOSE_POST_IMAGE_SIZE:CGFloat  = 80
 let COMPOSE_POST_IMAGE_SPACE:CGFloat = 10
 
+protocol ImageCollectionViewCellDelegate:class {
+    func didTapDelete(cell:ImageCollectionViewCell)
+}
+
+class ImageCollectionViewCell:UICollectionViewCell {
+    
+    lazy var imageView:UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .ScaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
+    weak var  delegate:ImageCollectionViewCellDelegate?
+    
+    lazy var overlay:UIImageView = {
+        let overlay = UIImageView()
+        overlay.contentMode = .ScaleAspectFill
+        overlay.clipsToBounds = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: "tap:" )
+        overlay.addGestureRecognizer(tapGesture)
+        return overlay
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    func tap(tapGesture:UITapGestureRecognizer) {
+        let p = tapGesture.locationInView(self)
+        if p.x >= bounds.size.width/2 && p.y <= bounds.size.height/2 {
+            delegate?.didTapDelete(self)
+        }
+    }
+    
+    func initialize() {
+        addSubview(imageView)
+        addSubview(overlay)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.image = nil
+        overlay.image = nil
+        overlay.userInteractionEnabled = false
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        imageView.frame = bounds
+        overlay.frame = bounds
+    }
+    
+    
+}
+
+
 class ComposePostVC:UIViewController {
     
     static let DID_SEND_POST_NOTIFICATION = "DID_SEND_POST_NOTIFICATION "

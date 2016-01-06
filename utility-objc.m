@@ -36,6 +36,24 @@
 @end
 
 
+@implementation DLLabel
+- (void)drawTextInRect:(CGRect)rect {
+    CGSize offset = CGSizeMake(2, -2);
+    CGFloat color[] = {0, 0, 0, .9};
+    CGContextRef currentContex = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(currentContex);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGColorRef colorRef = CGColorCreate(colorSpace, color);
+    CGContextSetShadowWithColor(currentContex, offset, 4, colorRef);
+    [super drawTextInRect:rect];
+    CGColorRelease(colorRef);
+    CGColorSpaceRelease(colorSpace);
+    CGContextRestoreGState(currentContex);
+}
+
+@end
+
+
 @implementation Utility
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {

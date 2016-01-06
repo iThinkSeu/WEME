@@ -45,7 +45,7 @@ class TopicVC:UIViewController, UITableViewDelegate, UITableViewDataSource, UISc
     
     var refreshImgs = [UIImage]()
     
-    let sloganLabel = UILabel()
+    let sloganLabel = DLLabel()
     
     var currentIndex = 0
     var animateTimer:NSTimer!
