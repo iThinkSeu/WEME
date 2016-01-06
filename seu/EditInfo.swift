@@ -274,7 +274,13 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(EditInfoAvatarTableViewCell), forIndexPath: indexPath) as! EditInfoAvatarTableViewCell
             cell.titleInfoLabel.text = sections[indexPath.row]
-            cell.avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
+            if avatar == nil {
+                cell.avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
+            }
+            else {
+                cell.avatar.image = avatar
+            }
+            
             cell.selectionStyle = .None
             return cell
         }

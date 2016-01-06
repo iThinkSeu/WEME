@@ -47,8 +47,16 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         navigationController?.navigationBar.addSubview(statusBarView!)
         
         self.scrollViewDidScroll(self._view)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "editInfo:", name: EDIT_INFO_NOTIFICATION, object: nil)
        
+    }
+    
+    func editInfo(sender:NSNotification) {
+        avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     

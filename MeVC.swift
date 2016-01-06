@@ -35,9 +35,16 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.barStyle = .Black
         tableView.separatorStyle = .None
         fetchNameInfo()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "editInfo:", name: EDIT_INFO_NOTIFICATION, object: nil)
     }
     
+    func editInfo(sender:AnyObject) {
+        fetchNameInfo()
+    }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
