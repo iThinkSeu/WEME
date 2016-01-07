@@ -436,6 +436,7 @@ class RegisterUserVC:UITableViewController {
                 cell.action.setTitle("注册", forState: .Normal)
             }
             cell.action.addTarget(self, action: "register:", forControlEvents: .TouchUpInside)
+            cell.selectionStyle = .None
             return cell
         }
         else {
@@ -447,6 +448,7 @@ class RegisterUserVC:UITableViewController {
             cell.textContentField.placeholder = placeholder[indexPath.row]
             cell.textContentField.tag = indexPath.row
             cell.textContentField.addTarget(self, action: "textChange:", forControlEvents: .EditingChanged)
+            cell.selectionStyle = .None
             return cell
         }
     }

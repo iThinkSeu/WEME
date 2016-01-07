@@ -468,16 +468,77 @@ protocol UniversityVCDelegate:class {
     func didSelectUniversity(university:String)
 }
 
-class UniversityVC:UITableViewController {
+protocol UniversitySearchVCDelegate:class {
+    func didScroll(vc:UniversitySearchVC)
+    func didSelect(university:String, vc:UniversitySearchVC)
+}
+
+class UniversitySearchVC:UITableViewController {
+    
+    private var universities = [UniversityModel]()
+    weak var delegate:UniversitySearchVCDelegate?
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.whiteColor()
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        self.edgesForExtendedLayout = .None
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return universities.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return universities[section].universities.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
+        cell.textLabel?.text = (universities[indexPath.section].universities[indexPath.row ] as! SchoolModel).name
+        cell.textLabel?.textColor = TEXT_COLOR
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return universities[section].province
+    }
+    
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.didScroll(self)
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let uni = (universities[indexPath.section].universities[indexPath.row ] as! SchoolModel).name
+        delegate?.didSelect(uni, vc: self)
+    }
+    
+}
+
+class UniversityVC:UITableViewController, UISearchControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate, UniversitySearchVCDelegate {
     private var universities = [UniversityModel]()
     
     weak var delegate:UniversityVCDelegate?
+    
+    var searchController:UISearchController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "选择大学"
         view.backgroundColor = BACK_COLOR
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        
+        let vc = UniversitySearchVC()
+        vc.delegate = self
+        searchController = UISearchController(searchResultsController: vc)
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.placeholder = "搜索大学名称或所在省份"
+        searchController.searchBar.barTintColor = BACK_COLOR
+        searchController.searchBar.tintColor =  THEME_COLOR
+        navigationController?.extendedLayoutIncludesOpaqueBars = true
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             let path = NSBundle.mainBundle().pathForResource("university", ofType: "json")!
@@ -493,6 +554,22 @@ class UniversityVC:UITableViewController {
             }
 
         }
+    }
+    
+    func didScroll(vc: UniversitySearchVC) {
+        if let text = searchController?.searchBar.text where text.characters.count > 0,
+            let s = searchController?.searchBar.isFirstResponder() where s == true{
+                searchController?.searchBar.resignFirstResponder()
+        }
+
+    }
+    
+    func didSelect(university: String, vc: UniversitySearchVC) {
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        searchController.active = false
+        navigationController?.popViewControllerAnimated(true)
+        delegate?.didSelectUniversity(university)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -517,8 +594,49 @@ class UniversityVC:UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let u = (universities[indexPath.section].universities[indexPath.row ] as! SchoolModel).name
         navigationController?.popViewControllerAnimated(true)
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
         delegate?.didSelectUniversity(u)
     }
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+       let vc =  searchController.searchResultsController as! UniversitySearchVC
+        if let text = searchController.searchBar.text where text.characters.count > 0 {
+            var uu = [UniversityModel]()
+            let predict = NSPredicate(format: "name contains[c] %@", text)
+            let provincePredict = NSPredicate(format: "SELF contains[c] %@", text)
+            for u in universities {
+                if provincePredict.evaluateWithObject(u.province) {
+                    uu.append(u)
+                    continue
+                }
+                let filtered_u = u.universities.filter{predict.evaluateWithObject($0)}
+                if filtered_u.count > 0 {
+                    let uni = UniversityModel()
+                    uni.province = u.province
+                    uni.universities = filtered_u
+                    uu.append(uni)
+                }
+            }
+            vc.universities = uu
+            vc.tableView.reloadData()
+        }
+      
+    }
+    
+    
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+
 
 }
 
@@ -526,17 +644,81 @@ protocol CityVCDelegate:class {
     func didSelectCity(city:String)
 }
 
-class CityVC:UITableViewController {
+protocol CitySearchVCDelegate:class {
+    func didScroll(vc:CitySearchVC)
+    func didSelect(city:String, vc:CitySearchVC)
+}
+
+class CitySearchVC:UITableViewController {
+    private var cities = [CityModel]()
+    weak var delegate:CitySearchVCDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.whiteColor()
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        self.edgesForExtendedLayout = .None
+
+    }
+    
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return cities.count
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cities[section].cities.count
+    }
+    
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
+        cell.textLabel?.text = cities[indexPath.section].cities[indexPath.row] as! String
+        cell.textLabel?.textColor = TEXT_COLOR
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return cities[section].state
+    }
+    
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.didScroll(self)
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let city = cities[indexPath.section].cities[indexPath.row] as! String
+        delegate?.didSelect(city, vc: self)
+    }
+    
+    
+}
+
+class CityVC:UITableViewController, CitySearchVCDelegate, UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating {
     
     private var cities = [CityModel]()
     
     weak var delegate:CityVCDelegate?
+    var searchController:UISearchController!
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "选择城市"
         view.backgroundColor = BACK_COLOR
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
+        
+        let vc = CitySearchVC()
+        vc.delegate = self
+        
+        searchController = UISearchController(searchResultsController: vc)
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.placeholder = "搜索城市或所在省份"
+        searchController.searchBar.barTintColor = BACK_COLOR
+        searchController.searchBar.tintColor =  THEME_COLOR
+        navigationController?.extendedLayoutIncludesOpaqueBars = true
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
             let path = NSBundle.mainBundle().pathForResource("city", ofType: "plist")
@@ -552,6 +734,22 @@ class CityVC:UITableViewController {
         }
 
     }
+    
+    func didScroll(vc: CitySearchVC) {
+        if let text = searchController?.searchBar.text where text.characters.count > 0,
+            let s = searchController?.searchBar.isFirstResponder() where s == true{
+                searchController?.searchBar.resignFirstResponder()
+        }
+    }
+    
+    func didSelect(city: String, vc: CitySearchVC) {
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        searchController.active = false
+        navigationController?.popViewControllerAnimated(true)
+        delegate?.didSelectCity(city)
+    }
+    
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return cities.count
@@ -575,9 +773,50 @@ class CityVC:UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let city = cities[indexPath.section].cities[indexPath.row] as! String
         navigationController?.popViewControllerAnimated(true)
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
         delegate?.didSelectCity(city)
     }
     
+    func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool {
+        UIApplication.sharedApplication().setStatusBarStyle(.Default, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+        return true
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+
+    
+    
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        let vc =  searchController.searchResultsController as! CitySearchVC
+        if let text = searchController.searchBar.text where text.characters.count > 0 {
+            var cc = [CityModel]()
+            let predict = NSPredicate(format: "SELF contains[c] %@", text)
+            for c in cities {
+                if predict.evaluateWithObject(c.state) {
+                    cc.append(c)
+                    continue
+                }
+                let filtered_c = c.cities.filter{predict.evaluateWithObject($0)}
+                if filtered_c.count > 0 {
+                    let city = CityModel()
+                    city.state = c.state
+                    city.cities = filtered_c
+                    cc.append(city)
+                }
+            }
+            vc.cities = cc
+            vc.tableView.reloadData()
+        }
+        
+    }
+    
+
     
     
     

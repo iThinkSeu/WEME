@@ -648,6 +648,7 @@ class PersonalInfoVCTableViewCell:UITableViewCell {
         detailLabel.translatesAutoresizingMaskIntoConstraints = false
         detailLabel.textAlignment = .Right
         detailLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        detailLabel.textColor = TEXT_COLOR
         contentView.addSubview(detailLabel)
         
         infoLabel.snp_makeConstraints { (make) -> Void in

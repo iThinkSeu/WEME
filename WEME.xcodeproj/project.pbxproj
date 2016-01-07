@@ -781,6 +781,15 @@
 			name = BubbleTransition;
 			sourceTree = "<group>";
 		};
+		B169C2AE1C3E7E0A002F6869 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B169C2A11C3D85FD002F6869 /* city.plist */,
+				B169C2A31C3D8621002F6869 /* university.json */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
 		B16F95311C1834F300429B47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,6 +1075,7 @@
 		B1FC43461B9FC25700133869 /* seu */ = {
 			isa = PBXGroup;
 			children = (
+				B169C2AE1C3E7E0A002F6869 /* Data */,
 				B18950221C1AFF0200645482 /* SNS */,
 				B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */,
 				B12FB2931BF9B4D100566266 /* voice */,
@@ -1075,8 +1085,6 @@
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1D37C291C33FB9C00CE42C1 /* ActivityEdit.swift */,
-				B169C2A31C3D8621002F6869 /* university.json */,
-				B169C2A11C3D85FD002F6869 /* city.plist */,
 				B162BE881C2FC7AF00136F28 /* MyActivity.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
