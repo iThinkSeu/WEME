@@ -119,6 +119,8 @@
 		B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2A61C3D8C27002F6869 /* CityModel.m */; };
 		B169C2AA1C3D91CE002F6869 /* UniversityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2A91C3D91CE002F6869 /* UniversityModel.m */; };
 		B169C2AD1C3D94D6002F6869 /* SchoolModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B169C2AC1C3D94D6002F6869 /* SchoolModel.m */; };
+		B169C2B11C3F5191002F6869 /* CardPeople.swift in Sources */ = {isa = PBXBuildFile; fileRef = B169C2B01C3F5191002F6869 /* CardPeople.swift */; };
+		B169C2B31C3F547F002F6869 /* CardFood.swift in Sources */ = {isa = PBXBuildFile; fileRef = B169C2B21C3F547F002F6869 /* CardFood.swift */; };
 		B16B6B881C3A53290081922F /* ActivityImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16B6B871C3A53290081922F /* ActivityImageUploader.swift */; };
 		B16F95341C18354A00429B47 /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B16F95331C18354A00429B47 /* ActivityModel.m */; };
 		B17B236E1C3A65E600537241 /* ActivityAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17B236D1C3A65E600537241 /* ActivityAdmin.swift */; };
@@ -385,6 +387,8 @@
 		B169C2A91C3D91CE002F6869 /* UniversityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UniversityModel.m; sourceTree = "<group>"; };
 		B169C2AB1C3D94D6002F6869 /* SchoolModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchoolModel.h; sourceTree = "<group>"; };
 		B169C2AC1C3D94D6002F6869 /* SchoolModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchoolModel.m; sourceTree = "<group>"; };
+		B169C2B01C3F5191002F6869 /* CardPeople.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPeople.swift; sourceTree = "<group>"; };
+		B169C2B21C3F547F002F6869 /* CardFood.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardFood.swift; sourceTree = "<group>"; };
 		B16B6B871C3A53290081922F /* ActivityImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityImageUploader.swift; sourceTree = "<group>"; };
 		B16F95321C18354A00429B47 /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
 		B16F95331C18354A00429B47 /* ActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModel.m; sourceTree = "<group>"; };
@@ -748,7 +752,6 @@
 				B125DBCA1C098347002E0F5C /* TopicVoice.swift */,
 				B105C9CE1C22F7DA00E946D8 /* Timeline.swift */,
 				B105C9D31C23C87800E946D8 /* UserImages.swift */,
-				B105CA461C27A1F300E946D8 /* Card.swift */,
 			);
 			name = social;
 			sourceTree = "<group>";
@@ -788,6 +791,16 @@
 				B169C2A31C3D8621002F6869 /* university.json */,
 			);
 			name = Data;
+			sourceTree = "<group>";
+		};
+		B169C2AF1C3F4861002F6869 /* Discover */ = {
+			isa = PBXGroup;
+			children = (
+				B105CA461C27A1F300E946D8 /* Card.swift */,
+				B169C2B01C3F5191002F6869 /* CardPeople.swift */,
+				B169C2B21C3F547F002F6869 /* CardFood.swift */,
+			);
+			name = Discover;
 			sourceTree = "<group>";
 		};
 		B16F95311C1834F300429B47 /* Model */ = {
@@ -1082,6 +1095,7 @@
 				B19F9A351BD8AB340008CA12 /* Utility */,
 				B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */,
 				B12FB2BB1BFAF86C00566266 /* social */,
+				B169C2AF1C3F4861002F6869 /* Discover */,
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1D37C291C33FB9C00CE42C1 /* ActivityEdit.swift */,
@@ -1296,6 +1310,7 @@
 				B1D37C2A1C33FB9C00CE42C1 /* ActivityEdit.swift in Sources */,
 				B1D03C2D1BCE59D100DF0B44 /* Alamofire.swift in Sources */,
 				B105CA381C23DB1600E946D8 /* MWGridViewController.m in Sources */,
+				B169C2B31C3F547F002F6869 /* CardFood.swift in Sources */,
 				B105CA3A1C23DB1600E946D8 /* MWPhotoBrowser.m in Sources */,
 				B10759BE1BEC518C00FEC0A0 /* SnapKit.swift in Sources */,
 				B189503A1C1B02CA00645482 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */,
@@ -1348,6 +1363,7 @@
 				B17CF8A61C05E94C0074FF3F /* STEmojiCollectionView.m in Sources */,
 				B162BE891C2FC7AF00136F28 /* MyActivity.swift in Sources */,
 				B1AE746C1BD514EC0014BE12 /* SheetCollectionViewLayout.swift in Sources */,
+				B169C2B11C3F5191002F6869 /* CardPeople.swift in Sources */,
 				B105CA491C2A4FE900E946D8 /* About.swift in Sources */,
 				B12FB2BF1C009D1C00566266 /* FloatingActionView.swift in Sources */,
 				B1D03C351BCE59D100DF0B44 /* Response.swift in Sources */,

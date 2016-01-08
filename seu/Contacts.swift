@@ -211,13 +211,6 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
 
     }
     
-//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let data = friendsData[indexPath.row]
-//        let vc = MeInfoVC()
-//        vc.id = data["id"].stringValue
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
-    
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -230,8 +223,8 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
     override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let follow = UITableViewRowAction(style: .Normal, title: "关注") { (action, indexPath) -> Void in
             //print("unfollow")
-            if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN") {
-                request(.POST, FOLLOW_URL, parameters: ["token":token, "id":self.friendsData[indexPath.row]["id"].stringValue], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
+            if let t = token{
+                request(.POST, FOLLOW_URL, parameters: ["token":t, "id":self.friendsData[indexPath.row]["id"].stringValue], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
                     //debugprint(response)
                     if let d = response.result.value {
                         let json = JSON(d)
@@ -268,7 +261,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
     
 }
 
-class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SearchResultsVCDelegate {
+class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, SearchResultsVCDelegate, ConversationTableCellDelegate {
     
     
     // private var searchVC :UISearchDisplayController!
@@ -307,6 +300,14 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
             searchController?.searchBar.resignFirstResponder()
         }
         
+    }
+    
+    func didTapAvatarAtCell(cell: ConversationTableCell) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            let vc = MeInfoVC()
+            vc.id = friendsData[indexPath.row]["id"].stringValue
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func didSelectUserID(id: String) {
@@ -368,17 +369,11 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
         refreshCont.addTarget(self, action: "pullRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         
         view.addSubview(refreshCont)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "recommendFriendsExit:", name: RecommendFriendsExitNotification, object: nil)
         loadOnePage()
     }
     
     func recommendFriendsExit(sender: AnyObject?) {
         pullRefresh(self.refreshCont)
-    }
-    
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -542,6 +537,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
             }
             cell.selectionStyle = .None
             cell.accessoryType = .DisclosureIndicator
+            cell.delegate = self
             return cell
         }
         
@@ -579,7 +575,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                navigationController?.pushViewController(RecommendedFriendsVC(), animated: true)
+                navigationController?.pushViewController(CardPeopleVC(), animated: true)
             }
             else {
                 let VC = MyFolloweeVC()
@@ -760,185 +756,5 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate 
     
 }
 
-private let RecommendFriendsExitNotification = "RecommendFriendsExitNotification"
-class RecommendedFriendsVC:UITableViewController, ConversationTableCellDelegate{
-    
-    private var friendsData = [JSON]()
-    var refreshCont:UIRefreshControl!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        title = "好友推荐"
-        setNeedsStatusBarAppearanceUpdate()
-        navigationController?.navigationBar.barStyle = UIBarStyle.Black
-        tableView.tableFooterView = UIView()
-        //let backColor = UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-        
-        tableView.backgroundColor = BACK_COLOR//backColor
-        
-        tableView.registerClass(ConversationTableCell.self, forCellReuseIdentifier: "ConversationTableCell")
-        
-        UITableViewHeaderFooterView.appearance().tintColor = BACK_COLOR//backColor
-        
-        //tableView.allowsSelection = false
-        
-        refreshCont = UIRefreshControl()
-        refreshCont.addTarget(self, action: "pullRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        tableView.addSubview(refreshCont)
-        loadFriends()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-   
-        navigationController?.navigationBar.translucent = false
-        navigationController?.navigationBar.barTintColor = THEME_COLOR
-        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.barStyle = .Black
-        navigationController?.navigationBar.alpha = 1.0
-    }
-    
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(RecommendFriendsExitNotification, object: nil)
-    }
-    
-    
-    func pullRefresh(sender:AnyObject) {
-        friendsData = [JSON]()
-        tableView.reloadData()
-        loadFriends()
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(2*Int64(NSEC_PER_SEC))), dispatch_get_main_queue()) { () -> Void in
-            self.refreshCont.endRefreshing()
-        }
-    }
 
-    
-    func loadFriends() {
-        if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN") {
-            request(.POST, GET_RECOMMENDED_FRIENDS_URL, parameters: ["token":token], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
-                //debugprint(response)
-                if let d = response.result.value {
-                    let json = JSON(d)
-                    if json["state"].stringValue == "successful" || json["state"].stringValue == "sucessful" {
-                        if let arr = json["result"].array {
-                            self.friendsData = arr
-                            self.tableView.reloadData()
-                        }
-                    }
-                }
-                
-                self.refreshCont.endRefreshing()
-            })
-            
-        }
-
-    }
-    
-//    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return self.friendsData.count > 0 ? "左滑选择关注可查看详细信息" : ""
-//    }
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friendsData.count
-    }
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 66
-    }
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ConversationTableCell", forIndexPath: indexPath) as! ConversationTableCell
-        let data = friendsData[indexPath.row]
-        let id = data["id"].stringValue
-        let url = thumbnailAvatarURLForID(id)
-        cell.avatar.sd_setImageWithURL(url, placeholderImage: UIImage(named: "avatar"))
-        cell.nameLabel.text = data["name"].string ?? " "
-        cell.infoLabel.text = data["school"].string ?? " "
-        
-        if data["gender"].stringValue == "男" {
-            cell.gender.image  = UIImage(named: "male")
-        }
-        else if data["gender"].stringValue == "女" {
-            cell.gender.image = UIImage(named: "female")
-        }
-        cell.delegate = self
-        cell.selectionStyle = .None
-        return cell
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let data = friendsData[indexPath.row]
-        let vc = MeInfoVC()
-        vc.id = data["id"].stringValue
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    
-    
-    func didTapAvatarAtCell(cell: ConversationTableCell) {
-        let indexPath = tableView.indexPathForCell(cell)
-        let id = self.friendsData[indexPath!.row]["id"].stringValue
-        let url = avatarURLForID(id)
-        let agrume = Agrume(imageURL:url)
-        agrume.showFrom(self)
-
-    }
-    
-   
-    
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-    }
-    
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let follow = UITableViewRowAction(style: .Normal, title: "关注") { (action, indexPath) -> Void in
-            //print("unfollow")
-            if let token = NSUserDefaults.standardUserDefaults().stringForKey("TOKEN") {
-                request(.POST, FOLLOW_URL, parameters: ["token":token, "id":self.friendsData[indexPath.row]["id"].stringValue], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
-                    //debugprint(response)
-                    if let d = response.result.value {
-                        let json = JSON(d)
-                        if json["state"] == "successful" || json["state"] == "sucessful" {
-                            self?.friendsData.removeAtIndex(indexPath.row)
-                            self?.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-                            
-                        }
-                        else {
-                            let alert = UIAlertController(title: "提示", message: json["reason"].stringValue, preferredStyle: .Alert)
-                            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
-                            self?.presentViewController(alert, animated: true, completion: nil)
-                            return
-                        }
-                    }
-                        
-                    else if let error = response.result.error {
-                        let alert = UIAlertController(title: "提示", message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .Alert)
-                        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
-                        self?.presentViewController(alert, animated: true, completion: nil)
-                        return
-                        
-                    }
-                    
-                }
-
-            }
-            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }
-        follow.backgroundColor = THEME_COLOR//UIColor.redColor()
-        
-        return [follow]
-    }
-    
-
-    
-}
 
