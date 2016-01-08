@@ -135,7 +135,7 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func share(sender:AnyObject) {
         let sheet = IBActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享到微信会话", "分享到微信朋友圈"])
-        sheet.showInView((UIApplication.sharedApplication().delegate?.window)!)
+        sheet.showInView((navigationController!.view))
         sheet.setButtonTextColor(THEME_COLOR)
 
     }

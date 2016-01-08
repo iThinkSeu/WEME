@@ -93,6 +93,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
         else {
             let card = CardDefaultView()
             card.imgView.image = UIImage(named: "avatar")
+            fetchRecommendPeople()
             return card
         }
         

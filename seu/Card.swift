@@ -116,7 +116,7 @@ class CardVC:UIViewController {
         actionLeft.tintColor = UIColor.whiteColor()
         actionLeft.snp_makeConstraints { (make) -> Void in
             make.centerY.equalTo(actionMid.snp_centerY)
-            make.centerX.equalTo(hostView.snp_centerX).multipliedBy(0.3)
+            make.centerX.equalTo(hostView.snp_centerX).multipliedBy(0.2)
             make.height.width.equalTo(24)
         }
         
@@ -128,7 +128,7 @@ class CardVC:UIViewController {
         actionRight.tintColor = UIColor.whiteColor()
         actionRight.snp_makeConstraints { (make) -> Void in
             make.centerY.equalTo(actionMid.snp_centerY)
-            make.centerX.equalTo(hostView.snp_centerX).multipliedBy(1.7)
+            make.centerX.equalTo(hostView.snp_centerX).multipliedBy(1.8)
             make.height.width.equalTo(24)
         }
         

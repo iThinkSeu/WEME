@@ -198,7 +198,7 @@ class SettingVC :UITableViewController {
                })
         }
         else if indexPath.item == 1{
-            navigationController?.pushViewController(AboutUSVC(), animated: true)
+            navigationController?.pushViewController(AboutVC(), animated: true)
             //let nav = UINavigationController(rootViewController: AboutVC())
             //presentViewController(nav, animated: true, completion: nil)
         }

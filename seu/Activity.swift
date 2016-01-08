@@ -273,8 +273,6 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         super.viewDidDisappear(animated)
         timer?.invalidate()
         timer = nil
-        
-        
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
