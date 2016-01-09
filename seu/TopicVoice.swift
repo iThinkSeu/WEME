@@ -30,7 +30,7 @@ class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource,
     
     var refreshImgs = [UIImage]()
     
-    let sloganLabel = UILabel()
+    let sloganLabel = DLLabel()
     
     var currentIndex = 0
     var animateTimer:NSTimer!
@@ -42,6 +42,11 @@ class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource,
     let refreshCustomizeImageView = UIImageView()
     
     let topicID:String
+    
+    private let name_arr = ["李磊", "叶庆仕", "刘历", "宋嘉冀", "刘继龙", "叶枝", "卢硕","王阳","马申斌","董嘉"]
+    
+    private let img_arr = ["ll", "yqs", "liewli", "sjj", "ljl", "yz", "ls", "wy", "msb", "dj"]
+
     
     var posts = [Post]()
     
@@ -93,21 +98,21 @@ class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 10
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10//posts.count
+        return 1//posts.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(TopicVoiceTableViewCell), forIndexPath: indexPath) as! TopicVoiceTableViewCell
-        cell.avatar.image = UIImage(named: "dev_liuli")
+        cell.avatar.image = UIImage(named: img_arr[indexPath.section % img_arr.count])
         cell.bodyLabel.text = "说出你的故事..."
-        cell.nameLabel.text = "刘历"
+        cell.nameLabel.text = name_arr[indexPath.section % name_arr.count]
         cell.infoLabel.text = "东南大学"
         cell.timeLabel.text = "1分钟前"
-        let attributedText = NSMutableAttributedString(string: "\(0) 个点赞・\(0) 条评论")
+        let attributedText = NSMutableAttributedString(string: "\(rand() % 10) 个点赞・\(rand() % 10) 条评论")
         attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.colorFromRGB(0xFF69B4) , range: NSMakeRange(0, 1))
         attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.colorFromRGB(0x32CD32), range: NSMakeRange(1+5, 1))
         cell.topicInfoLabel.attributedText = attributedText
@@ -165,8 +170,8 @@ class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource,
         sloganLabel.font = UIFont.systemFontOfSize(16)
         imgBG.addSubview(sloganLabel)
         
-        sloganLabel.text = "Stay hungry・Stay foolish・Stay cool\nAnoynomous"
-        sloganLabel.layer.appendShadow()
+        sloganLabel.text = "大声说出你的心声"
+        //sloganLabel.layer.appendShadow()
        
         sloganLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(imgBG.snp_left)
@@ -182,7 +187,7 @@ class TopicVoiceVC:UIViewController, UITableViewDelegate, UITableViewDataSource,
         initialTransform = CATransform3DTranslate(initialTransform, offset.x, offset.y, 0)
         
         
-        composeAction = FloatingActionView(center: CGPointMake(view.frame.size.width-40, view.frame.size.height-60), radius: 30, color: UIColor.colorFromRGB(0x32CD32), icon: UIImage(named: "edit")!, scrollview:tableView)
+        composeAction = FloatingActionView(center: CGPointMake(view.frame.size.width-40, view.frame.size.height-60), radius: 30, color: THEME_COLOR, icon: UIImage(named: "audio")!, scrollview:tableView)
         composeAction.hideWhileScrolling = true
         composeAction.delegate = self
         view.addSubview(composeAction)

@@ -12,8 +12,8 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items = ["好友", "私信", "活动"]
-    let imgs = ["follow", "message", "time"]
+    let items = ["好友", "私信", "活动", "心声"]
+    let imgs = ["follow", "message", "time", "audio"]
     var more = ["设置"]
     
     var personInfo:PersonModel?
@@ -128,6 +128,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
             if indexPath.section == 1 {
                 cell.icon.image = UIImage(named: imgs[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
+                cell.icon.tintColor = THEME_COLOR_BACK
                 cell.itemLabel.text = items[indexPath.row]
                 if indexPath.row == 1 {
                     if let _ = unreadMessage {
@@ -144,7 +145,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
                 
-                if indexPath.row == 2 {
+                if indexPath.row == items.count - 1 {
                     cell.seperator.hidden = true
                 }
                 
@@ -166,7 +167,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             return  1
         }
         else if section == 1{
-            return 3
+            return items.count
         }
         else {
             return 1
@@ -210,6 +211,9 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         else if indexPath.section == 1 && indexPath.row == 2 {
             navigationController?.pushViewController(MyActivityVC(), animated: true)
+        }
+        else if indexPath.section == 1 && indexPath.row == 3 {
+            navigationController?.pushViewController(TopicVoiceVC(topic:"1"), animated: true)
         }
     }
     

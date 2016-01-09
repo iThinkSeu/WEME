@@ -642,7 +642,7 @@ extension ContactsVC: UISearchControllerDelegate {
     }
 }
 
-class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate, ConversationTableCellDelegate  {
     private var tableView:UITableView!
     private var friendsData = [JSON]()
     private var page = 1
@@ -735,9 +735,17 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate 
         }
         cell.selectionStyle = .None
         cell.accessoryType = .DisclosureIndicator
-        return cell
+        cell.delegate = self
 
         return cell
+    }
+    
+    func didTapAvatarAtCell(cell: ConversationTableCell) {
+        if let indexPath = tableView.indexPathForCell(cell) {
+            let vc = MeInfoVC()
+            vc.id = friendsData[indexPath.row]["id"].stringValue
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
