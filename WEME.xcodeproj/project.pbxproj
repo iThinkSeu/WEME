@@ -15,6 +15,7 @@
 		B1019F8E1C420BFB00EBEB23 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1019F851C420BFB00EBEB23 /* Observable.swift */; };
 		B1019F8F1C420BFB00EBEB23 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1019F861C420BFB00EBEB23 /* SwiftyJSON.swift */; };
 		B1019F901C420BFB00EBEB23 /* utility-objc.m in Sources */ = {isa = PBXBuildFile; fileRef = B1019F881C420BFB00EBEB23 /* utility-objc.m */; };
+		B1019F951C43B65F00EBEB23 /* LocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1019F941C43B65F00EBEB23 /* LocationVC.swift */; };
 		B105C9CF1C22F7DA00E946D8 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105C9CE1C22F7DA00E946D8 /* Timeline.swift */; };
 		B105C9D21C22FB4A00E946D8 /* TimelineModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B105C9D11C22FB4A00E946D8 /* TimelineModel.m */; };
 		B105C9D41C23C87800E946D8 /* UserImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = B105C9D31C23C87800E946D8 /* UserImages.swift */; };
@@ -195,6 +196,8 @@
 		B1D03C391BCE59D100DF0B44 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D03C2A1BCE59D100DF0B44 /* Stream.swift */; };
 		B1D03C3A1BCE59D100DF0B44 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D03C2B1BCE59D100DF0B44 /* Upload.swift */; };
 		B1D03C3B1BCE59D100DF0B44 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D03C2C1BCE59D100DF0B44 /* Validation.swift */; };
+		B1D2084B1C43E29A008E69A9 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */; };
+		B1D2084D1C44E7D5008E69A9 /* CardFoodEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2084C1C44E7D5008E69A9 /* CardFoodEdit.swift */; };
 		B1D9706A1C09D40600F0C9E7 /* btn_expression@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D970681C09D40600F0C9E7 /* btn_expression@2x.png */; };
 		B1D9706B1C09D40600F0C9E7 /* btn_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D970691C09D40600F0C9E7 /* btn_keyboard@2x.png */; };
 		B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DBF4121C0E91F0000A6178 /* Activity.swift */; };
@@ -244,6 +247,7 @@
 		B1019F861C420BFB00EBEB23 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = seu/SwiftyJSON.swift; sourceTree = "<group>"; };
 		B1019F871C420BFB00EBEB23 /* utility-objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "utility-objc.h"; path = "seu/utility-objc.h"; sourceTree = "<group>"; };
 		B1019F881C420BFB00EBEB23 /* utility-objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "utility-objc.m"; path = "seu/utility-objc.m"; sourceTree = "<group>"; };
+		B1019F941C43B65F00EBEB23 /* LocationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationVC.swift; sourceTree = "<group>"; };
 		B105C9CE1C22F7DA00E946D8 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		B105C9D01C22FB4A00E946D8 /* TimelineModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineModel.h; sourceTree = "<group>"; };
 		B105C9D11C22FB4A00E946D8 /* TimelineModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineModel.m; sourceTree = "<group>"; };
@@ -488,6 +492,8 @@
 		B1D03C2A1BCE59D100DF0B44 /* Stream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stream.swift; sourceTree = "<group>"; };
 		B1D03C2B1BCE59D100DF0B44 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		B1D03C2C1BCE59D100DF0B44 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
+		B1D2084C1C44E7D5008E69A9 /* CardFoodEdit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardFoodEdit.swift; sourceTree = "<group>"; };
 		B1D970681C09D40600F0C9E7 /* btn_expression@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_expression@2x.png"; sourceTree = "<group>"; };
 		B1D970691C09D40600F0C9E7 /* btn_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_keyboard@2x.png"; sourceTree = "<group>"; };
 		B1DBF4121C0E91F0000A6178 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
@@ -512,6 +518,7 @@
 				B189503E1C1B036600645482 /* CoreTelephony.framework in Frameworks */,
 				B189501F1C1AF6DD00645482 /* libz.tbd in Frameworks */,
 				B189501D1C1AF6A900645482 /* libMobClickLibrary.a in Frameworks */,
+				B1D2084B1C43E29A008E69A9 /* AMapSearchKit.framework in Frameworks */,
 				B12FB2B01BF9B50F00566266 /* libopencore-amrnb.a in Frameworks */,
 				B1CC24F11C193E3900953A07 /* WebImage.framework in Frameworks */,
 				B18950281C1AFF7300645482 /* libWeChatSDK.a in Frameworks */,
@@ -534,6 +541,30 @@
 				B1019F821C420BFB00EBEB23 /* BubbleTransition.swift */,
 			);
 			name = BubbleTransition;
+			sourceTree = "<group>";
+		};
+		B1019F921C43AF5900EBEB23 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				B1019F801C420BFB00EBEB23 /* ActivityEdit.swift */,
+				B162BE881C2FC7AF00136F28 /* MyActivity.swift */,
+				B1DBF4121C0E91F0000A6178 /* Activity.swift */,
+				B16B6B871C3A53290081922F /* ActivityImageUploader.swift */,
+				B105D47B1C3247A9000CA8B0 /* ActivitySearch.swift */,
+				B105D4791C31188F000CA8B0 /* ActivityInfo.swift */,
+				B17B23741C3D092C00537241 /* ActivityStat.swift */,
+				B17B236D1C3A65E600537241 /* ActivityAdmin.swift */,
+			);
+			name = Activity;
+			sourceTree = "<group>";
+		};
+		B1019F931C43AF9500EBEB23 /* Food */ = {
+			isa = PBXGroup;
+			children = (
+				B169C2B21C3F547F002F6869 /* CardFood.swift */,
+				B1D2084C1C44E7D5008E69A9 /* CardFoodEdit.swift */,
+			);
+			name = Food;
 			sourceTree = "<group>";
 		};
 		B105C9D81C23DAD700E946D8 /* MWPhotoBrowser */ = {
@@ -767,6 +798,7 @@
 		B13DE9691BF0487F0042331A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */,
 				B1019F911C420CF200EBEB23 /* BubbleTransition */,
 				B17B23701C3D085D00537241 /* Charts.framework */,
 				B13EF4C71C2BB5FB00262116 /* BubbleTransition */,
@@ -806,7 +838,7 @@
 			children = (
 				B105CA461C27A1F300E946D8 /* Card.swift */,
 				B169C2B01C3F5191002F6869 /* CardPeople.swift */,
-				B169C2B21C3F547F002F6869 /* CardFood.swift */,
+				B1019F931C43AF9500EBEB23 /* Food */,
 			);
 			name = Discover;
 			sourceTree = "<group>";
@@ -1096,6 +1128,7 @@
 		B1FC43461B9FC25700133869 /* seu */ = {
 			isa = PBXGroup;
 			children = (
+				B1019F921C43AF5900EBEB23 /* Activity */,
 				B169C2AE1C3E7E0A002F6869 /* Data */,
 				B18950221C1AFF0200645482 /* SNS */,
 				B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */,
@@ -1106,21 +1139,14 @@
 				B169C2AF1C3F4861002F6869 /* Discover */,
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
+				B1019F941C43B65F00EBEB23 /* LocationVC.swift */,
 				B1019F841C420BFB00EBEB23 /* MeVC.swift */,
-				B1019F801C420BFB00EBEB23 /* ActivityEdit.swift */,
-				B162BE881C2FC7AF00136F28 /* MyActivity.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
 				B105CA481C2A4FE900E946D8 /* About.swift */,
 				B19F9A361BD8FC9C0008CA12 /* Contacts.swift */,
-				B1DBF4121C0E91F0000A6178 /* Activity.swift */,
-				B16B6B871C3A53290081922F /* ActivityImageUploader.swift */,
-				B105D47B1C3247A9000CA8B0 /* ActivitySearch.swift */,
 				B107599D1BEB1D5700FEC0A0 /* Message.swift */,
-				B105D4791C31188F000CA8B0 /* ActivityInfo.swift */,
-				B17B23741C3D092C00537241 /* ActivityStat.swift */,
 				B17B23761C3D35A100537241 /* EditInfo.swift */,
-				B17B236D1C3A65E600537241 /* ActivityAdmin.swift */,
 				B189504C1C1D4A6C00645482 /* MeInfo.swift */,
 				B1FC43471B9FC25700133869 /* Supporting Files */,
 				B1FC436A1BA2B9C500133869 /* Launch Screen.xib */,
@@ -1199,7 +1225,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "li liew";
 				TargetAttributes = {
 					B1FC43431B9FC25700133869 = {
@@ -1376,6 +1402,7 @@
 				B1D03C351BCE59D100DF0B44 /* Response.swift in Sources */,
 				B1019F8F1C420BFB00EBEB23 /* SwiftyJSON.swift in Sources */,
 				B10759C01BEC518C00FEC0A0 /* View+SnapKit.swift in Sources */,
+				B1019F951C43B65F00EBEB23 /* LocationVC.swift in Sources */,
 				B1D03C341BCE59D100DF0B44 /* Request.swift in Sources */,
 				B125DBE01C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m in Sources */,
 				B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */,
@@ -1391,6 +1418,7 @@
 				B18950491C1C08D000645482 /* IBActionSheet.m in Sources */,
 				B1019F901C420BFB00EBEB23 /* utility-objc.m in Sources */,
 				B17CF8A71C05E94C0074FF3F /* STEmojiKeyboard.m in Sources */,
+				B1D2084D1C44E7D5008E69A9 /* CardFoodEdit.swift in Sources */,
 				B1FC434C1B9FC25700133869 /* LoginRegister.swift in Sources */,
 				B1D03C321BCE59D100DF0B44 /* MultipartFormData.swift in Sources */,
 				B1D03C3A1BCE59D100DF0B44 /* Upload.swift in Sources */,
@@ -1542,6 +1570,7 @@
 				);
 				INFOPLIST_FILE = seuTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.liewli.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = WEME;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WEME.app/WEME";
 			};
@@ -1569,6 +1598,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1717,6 +1747,7 @@
 				);
 				INFOPLIST_FILE = seuTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.liewli.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = WEME;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WEME.app/WEME";
 			};
@@ -1733,6 +1764,7 @@
 				);
 				INFOPLIST_FILE = seuTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.liewli.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = WEME;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WEME.app/WEME";
 			};

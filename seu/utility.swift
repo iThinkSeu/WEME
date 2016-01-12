@@ -188,6 +188,7 @@ let THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)//UIColor.colorFromRGB(0x415788)
 let THEME_COLOR_BACK = UIColor(red: 197/255.0, green: 197/255.0, blue: 218/255.0, alpha: 1.0)
 let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
 let TEXT_COLOR = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)
+let PLACEHOLDER_COLOR = UIColor.colorFromRGB(0xC7C7CD)
 
 
 extension UIImage {

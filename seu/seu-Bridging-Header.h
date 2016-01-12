@@ -24,4 +24,5 @@
 #import "utility-objc.h"
 #import "IBActionSheet.h"
 #import "MWPhotoBrowser.h"
+#import <AMapSearchKit/AMapSearchKit.h>
 #endif /* seu_Bridging_Header_h */

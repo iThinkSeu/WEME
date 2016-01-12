@@ -55,6 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MobClick.setAppVersion(currentVersion)
         
         WXApi.registerApp("wx04e7630d122580c1", withDescription: "WeMe")
+        
+        AMapSearchServices.sharedServices().apiKey = "2b79be11eacfede90da2098bda7b5e04"
         return true
     }
     

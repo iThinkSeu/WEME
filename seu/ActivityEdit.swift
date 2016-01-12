@@ -433,7 +433,7 @@ protocol ActivityEditMainCellDelegate:class {
     func didTapCoverAtCell(cell:ActivityEditMainTableViewCell)
 }
 
-class ActivityEditMainTableViewCell:UITableViewCell, UITextViewDelegate {
+class ActivityEditMainTableViewCell:UITableViewCell{
     
     private var titleTextView:UITextField!
     
@@ -468,7 +468,6 @@ class ActivityEditMainTableViewCell:UITableViewCell, UITextViewDelegate {
         
         bodyTextView = UITextView()
         bodyTextView.translatesAutoresizingMaskIntoConstraints = false
-        bodyTextView.delegate = self
         contentView.addSubview(bodyTextView)
         bodyTextView.text = "活动详情(必填)..."
         bodyTextView.textColor = UIColor.colorFromRGB(0xC7C7CD)

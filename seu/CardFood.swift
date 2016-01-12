@@ -34,6 +34,20 @@ class CardFoodVC:CardVC {
         cardDetail.authorLabel.text = "By wanwan"
         return cardDetail
     }
+    
+    override func tapRight(sender: AnyObject) {
+        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            if index == 0 {
+                let nav = UINavigationController(rootViewController: CardFoodEditVC())
+                //self.navigationController?.pushViewController(nav, animated: true)
+                self.presentViewController(nav, animated: true, completion: nil)
+            }
+         
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["编辑一张美食卡片，分享吧"])
+        sheet.setButtonTextColor(THEME_COLOR)
+        sheet.showInView(navigationController!.view)
+
+    }
 }
 
 class CardFoodContentView:CardContentView {
