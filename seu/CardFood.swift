@@ -73,7 +73,7 @@ class CardFoodContentView:CardContentView {
         
         gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRectMake(0, 0, 100, 100)
-        gradientLayer.colors = [UIColor.blackColor().alpha(0.9).CGColor, UIColor.clearColor().CGColor]
+        gradientLayer.colors = [UIColor.blackColor().alpha(0.6).CGColor, UIColor.clearColor().CGColor]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
         gradientLayer.endPoint = CGPoint(x:0.5, y:0.8)
         layer.addSublayer(gradientLayer)
