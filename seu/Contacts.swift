@@ -253,7 +253,7 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
         
         
         message.backgroundColor =  data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
-        follow.backgroundColor = UIColor.redColor()
+        follow.backgroundColor = THEME_COLOR
         
         return [follow, message]
     }
@@ -515,7 +515,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = UITableViewCell()
-            cell.textLabel?.text = indexPath.row == 0 ? "好友推荐":"关注我的人"
+            cell.textLabel?.text = "关注我的人"//indexPath.row == 0 ? "好友推荐":"关注我的人"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.selectionStyle = .None
             return cell
@@ -546,7 +546,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section <= 0 {
-            return 2
+            return 1
         }
         else {
             return friendsData.count
@@ -575,13 +575,16 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
-                navigationController?.pushViewController(CardPeopleVC(), animated: true)
-            }
-            else {
+                //navigationController?.pushViewController(CardPeopleVC(), animated: true)
                 let VC = MyFolloweeVC()
                 VC.title = "关注我的人"
                 navigationController?.pushViewController(VC, animated: true)
             }
+//            else {
+//                let VC = MyFolloweeVC()
+//                VC.title = "关注我的人"
+//                navigationController?.pushViewController(VC, animated: true)
+//            }
         }
         else {
             let vc = MeInfoVC()
@@ -731,7 +734,7 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         
         message.backgroundColor =  data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
-        follow.backgroundColor = UIColor.redColor()
+        follow.backgroundColor = THEME_COLOR
         
         return [follow, message]
     }

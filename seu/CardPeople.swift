@@ -71,6 +71,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
             card.schoolLabel.text = p.school
             card.degreeLabel.text = p.degree
             card.locationLabel.text = p.hometown
+            card.likeLabel.text = "0"
             
             let placeholder = ["生日(未知)", "学校(未知)", "学历(未知)", "家乡(未知)"]
             let arr = [card.birthdayLabel,  card.schoolLabel, card.degreeLabel, card.locationLabel]
@@ -171,6 +172,9 @@ class CardPeopleContentView:CardContentView {
     var degreeLabel:UILabel!
     var location:UIImageView!
     var locationLabel:UILabel!
+    var gradientLayer:CAGradientLayer!
+    var likeButton:UIButton!
+    var likeLabel:UILabel!
     
     weak var peopleCardDelegate:CardPeopleContentViewDelegate?
     
@@ -187,6 +191,14 @@ class CardPeopleContentView:CardContentView {
         peopleCardDelegate?.didTapAvatarAtCard(self)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.bounds = imgView.bounds
+        gradientLayer.position = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(imgView.bounds))
+        
+    }
+
+    
     func initialize() {
         backgroundColor = UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1.0)
         layer.cornerRadius = 10.0
@@ -199,6 +211,37 @@ class CardPeopleContentView:CardContentView {
         imgView.addGestureRecognizer(tap)
         addSubview(imgView)
         
+        
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRectMake(0, 0, 100, 100)
+        gradientLayer.colors = [UIColor.blackColor().alpha(0.9).CGColor, UIColor.clearColor().CGColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.endPoint = CGPoint(x:0.5, y:0.8)
+        layer.addSublayer(gradientLayer)
+        
+        likeButton = UIButton()
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.setImage(UIImage(named: "like")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        likeButton.tintColor = UIColor.whiteColor()
+        addSubview(likeButton)
+        
+        likeLabel = UILabel()
+        likeLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeLabel.textColor = UIColor.whiteColor()
+        likeLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        addSubview(likeLabel)
+        
+        likeLabel.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(imgView.snp_bottom).offset(-5)
+            make.right.equalTo(imgView.snp_rightMargin)
+        }
+        
+        likeButton.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(likeLabel.snp_left).offset(-5)
+            make.centerY.equalTo(likeLabel.snp_centerY)
+            make.width.height.equalTo(14)
+        }
+
         
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

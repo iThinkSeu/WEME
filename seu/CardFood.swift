@@ -18,6 +18,7 @@ class CardFoodVC:CardVC {
         card1.titleLabel.text = "蒜泥蒸大虾"
         card1.detailIcon.image = UIImage(named: "location")
         card1.detailLabel.text = "550 M"
+        card1.likeLabel.text = "1010"
         return card1
     }
     
@@ -57,6 +58,9 @@ class CardFoodContentView:CardContentView {
     var detailIcon:UIImageView!
     var detailLabel:UILabel!
     var nextIcon:UIButton!
+    var gradientLayer:CAGradientLayer!
+    var likeButton:UIButton!
+    var likeLabel:UILabel!
     
     func initialize() {
         layer.cornerRadius = 10.0
@@ -66,6 +70,36 @@ class CardFoodContentView:CardContentView {
         imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imgView)
+        
+        gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRectMake(0, 0, 100, 100)
+        gradientLayer.colors = [UIColor.blackColor().alpha(0.9).CGColor, UIColor.clearColor().CGColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 1.0)
+        gradientLayer.endPoint = CGPoint(x:0.5, y:0.8)
+        layer.addSublayer(gradientLayer)
+        
+        likeButton = UIButton()
+        likeButton.translatesAutoresizingMaskIntoConstraints = false
+        likeButton.setImage(UIImage(named: "like")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        likeButton.tintColor = UIColor.whiteColor()
+        addSubview(likeButton)
+        
+        likeLabel = UILabel()
+        likeLabel.translatesAutoresizingMaskIntoConstraints = false
+        likeLabel.textColor = UIColor.whiteColor()
+        likeLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        addSubview(likeLabel)
+        
+        likeLabel.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(imgView.snp_bottom).offset(-5)
+            make.right.equalTo(imgView.snp_rightMargin)
+        }
+        
+        likeButton.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(likeLabel.snp_left).offset(-5)
+            make.centerY.equalTo(likeLabel.snp_centerY)
+            make.width.height.equalTo(14)
+        }
         
         avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
@@ -98,6 +132,7 @@ class CardFoodContentView:CardContentView {
         detailLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         detailLabel.textColor = THEME_COLOR_BACK
         addSubview(detailLabel)
+   
         
         nextIcon = UIButton(type: .System)
         nextIcon.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +144,7 @@ class CardFoodContentView:CardContentView {
         //        nextIcon.addGestureRecognizer(tap)
         nextIcon.addTarget(self, action: "next:", forControlEvents: .TouchUpInside)
         addSubview(nextIcon)
+        
         
         imgView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(snp_left)
@@ -155,6 +191,13 @@ class CardFoodContentView:CardContentView {
             make.centerY.equalTo(detailLabel.snp_centerY)
         }
         
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        gradientLayer.bounds = imgView.bounds
+        gradientLayer.position = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(imgView.bounds))
+       
     }
     
     func next(sender:AnyObject) {

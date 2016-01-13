@@ -400,29 +400,38 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func unregister(sender:AnyObject) {
-        if let t = token {
-            request(.POST, CANCEL_REGISTER_ACTIVITY_URL, parameters: ["token":t, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
-                debugPrint(response)
-                if let d = response.result.value, S = self {
-                    let json = JSON(d)
-                    guard json != .null && json["state"].stringValue == "successful" else {
+        let alert = UIAlertController(title: "提示", message: "确定取消报名么？", preferredStyle:.Alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: { (action) -> Void in
+            if let t = token {
+                request(.POST, CANCEL_REGISTER_ACTIVITY_URL, parameters: ["token":t, "activityid":self.activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                    debugPrint(response)
+                    if let d = response.result.value, S = self {
+                        let json = JSON(d)
+                        guard json != .null && json["state"].stringValue == "successful" else {
+                            let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                            hud.labelText = "错误"
+                            hud.detailsLabelText = "取消报名失败"
+                            hud.hide(true, afterDelay: 1)
+                            return
+                        }
+                        S.fetchActivityInfo()
                         let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
-                        hud.labelText = "错误"
-                        hud.detailsLabelText = "取消报名失败"
+                        hud.labelText = "取消报名成功"
+                        hud.mode = .CustomView
+                        hud.customView = UIImageView(image: UIImage(named: "checkmark"))
                         hud.hide(true, afterDelay: 1)
-                        return
+                        
                     }
-                    S.fetchActivityInfo()
-                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
-                    hud.labelText = "取消报名成功"
-                    hud.mode = .CustomView
-                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
-                    hud.hide(true, afterDelay: 1)
                     
-                }
+                    })
+            }
 
-            })
-        }
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: { (action) -> Void in
+            
+        }))
+        alert.view.tintColor = THEME_COLOR
+        presentViewController(alert, animated: true, completion: nil)
     }
     
     func unlike(sender:AnyObject) {

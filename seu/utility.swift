@@ -323,28 +323,33 @@ extension UIColor {
     
     var red: CGFloat {
         get {
-            let components = CGColorGetComponents(self.CGColor)
-            return components[0]
+            var v:CGFloat = 0
+            getRed(&v, green: nil, blue: nil, alpha: nil)
+            return v
         }
     }
     
     var green: CGFloat {
         get {
-            let components = CGColorGetComponents(self.CGColor)
-            return components[1]
+            var v:CGFloat = 0
+            getRed(nil, green: &v, blue: nil, alpha: nil)
+            return v
         }
     }
     
     var blue: CGFloat {
         get {
-            let components = CGColorGetComponents(self.CGColor)
-            return components[2]
+            var v:CGFloat = 0
+            getRed(nil, green: &v, blue: &v, alpha: nil)
+            return v
         }
     }
     
     var alpha: CGFloat {
         get {
-            return CGColorGetAlpha(self.CGColor)
+            var v:CGFloat = 0
+            getRed(nil, green: nil, blue: nil, alpha: &v)
+            return v
         }
     }
     
@@ -360,6 +365,7 @@ extension UIColor {
             alpha: 1.0
         )
     }
+    
     
 }
 
