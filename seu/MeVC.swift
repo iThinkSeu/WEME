@@ -12,8 +12,10 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items = ["好友", "私信", "活动", "美食", "附近", "发现"]//, "心声", "发现"]
-    let imgs = ["follow", "message", "time", "discover_food", "location", "discovery"]//, "audio", "discovery"]
+    let items1 = ["好友", "私信", "活动"]
+    let items2 = ["附近", "发现", "美食"]//, "心声", "发现"]
+    let imgs1 = ["follow", "message", "time"]
+    let imgs2 = [ "location", "discovery","discover_food"]//, "audio", "discovery"]
     var more = ["设置"]
     
     var personInfo:PersonModel?
@@ -111,7 +113,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -123,13 +125,13 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             cell.selectionStyle = .None
             return cell
         }
-        else {
+        else if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
-            if indexPath.section == 1 {
-                cell.icon.image = UIImage(named: imgs[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
+            
+                cell.icon.image = UIImage(named: imgs1[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
                 cell.icon.tintColor = THEME_COLOR_BACK
-                cell.itemLabel.text = items[indexPath.row]
+                cell.itemLabel.text = items1[indexPath.row]
                 if indexPath.row == 1 {
                     if let _ = unreadMessage {
                         if let num = Int(unreadMessage!) where num > 0 {
@@ -145,16 +147,38 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
                 
-                if indexPath.row == items.count - 1 {
+                if indexPath.row == items1.count - 1 {
                     cell.seperator.hidden = true
                 }
+            cell.accessoryType = .DisclosureIndicator
+            cell.selectionStyle = .None
+            cell.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
+            
+            return cell
                 
-            }
-            else {
-                cell.icon.image = UIImage(named: "setting")?.imageWithRenderingMode(.AlwaysTemplate)
-                cell.itemLabel.text = "设置"
+        }
+        else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
+            
+            cell.icon.image = UIImage(named: imgs2[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
+            cell.icon.tintColor = THEME_COLOR_BACK
+            cell.itemLabel.text = items2[indexPath.row]
+            if indexPath.row == items2.count - 1 {
                 cell.seperator.hidden = true
             }
+            cell.accessoryType = .DisclosureIndicator
+            cell.selectionStyle = .None
+            cell.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
+            
+            return cell
+
+        }
+        else {
+             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
+              cell.icon.image = UIImage(named: "setting")?.imageWithRenderingMode(.AlwaysTemplate)
+               cell.itemLabel.text = "设置"
+                cell.seperator.hidden = true
+            
             cell.accessoryType = .DisclosureIndicator
             cell.selectionStyle = .None
             cell.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
@@ -167,7 +191,10 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             return  1
         }
         else if section == 1{
-            return items.count
+            return items1.count
+        }
+        else if section == 2{
+            return items2.count
         }
         else {
             return 1
@@ -183,7 +210,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section < 2 ? 20 : 1
+        return section < 3 ? 20 : 1
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -200,7 +227,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
-        else if indexPath.section == 2 {
+        else if indexPath.section == 3 {
             navigationController?.pushViewController(SettingVC(), animated: true)
         }
         else if indexPath.section == 1 && indexPath.row == 0 {
@@ -212,14 +239,14 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else if indexPath.section == 1 && indexPath.row == 2 {
             navigationController?.pushViewController(MyActivityVC(), animated: true)
         }
-        else if indexPath.section == 1 && indexPath.row == 3 {
-            navigationController?.pushViewController(CardFoodVC(), animated: true)
+        else if indexPath.section == 2 && indexPath.row == 0{
+            navigationController?.pushViewController(CardPeopleVC(), animated: true)
         }
-        else if indexPath.section == 1 && indexPath.row == 4 {
+        else if indexPath.section == 2 && indexPath.row == 1 {
             navigationController?.pushViewController(NearByVC(), animated: true)
         }
-        else if indexPath.section == 1 && indexPath.row == 5 {
-            navigationController?.pushViewController(CardPeopleVC(), animated: true)
+        else if indexPath.section == 2 && indexPath.row == 2 {
+            navigationController?.pushViewController(CardFoodVC(), animated: true)
         }
     }
     
