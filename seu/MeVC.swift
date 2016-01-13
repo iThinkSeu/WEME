@@ -240,10 +240,10 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(MyActivityVC(), animated: true)
         }
         else if indexPath.section == 2 && indexPath.row == 0{
-            navigationController?.pushViewController(CardPeopleVC(), animated: true)
+            navigationController?.pushViewController(NearByVC(), animated: true)
         }
         else if indexPath.section == 2 && indexPath.row == 1 {
-            navigationController?.pushViewController(NearByVC(), animated: true)
+            navigationController?.pushViewController(CardPeopleVC(), animated: true)
         }
         else if indexPath.section == 2 && indexPath.row == 2 {
             navigationController?.pushViewController(CardFoodVC(), animated: true)
