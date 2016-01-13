@@ -12,8 +12,8 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items = ["好友", "私信", "活动", "美食"]//, "心声", "发现"]
-    let imgs = ["follow", "message", "time", "discover_food"]//, "audio", "discovery"]
+    let items = ["好友", "私信", "活动", "美食", "附近", "发现"]//, "心声", "发现"]
+    let imgs = ["follow", "message", "time", "discover_food", "location", "discovery"]//, "audio", "discovery"]
     var more = ["设置"]
     
     var personInfo:PersonModel?
@@ -215,9 +215,12 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else if indexPath.section == 1 && indexPath.row == 3 {
             navigationController?.pushViewController(CardFoodVC(), animated: true)
         }
-//        else if indexPath.section == 1 && indexPath.row == 4 {
-//            navigationController?.pushViewController(CardFoodVC(), animated: true)
-//        }
+        else if indexPath.section == 1 && indexPath.row == 4 {
+            navigationController?.pushViewController(NearByVC(), animated: true)
+        }
+        else if indexPath.section == 1 && indexPath.row == 5 {
+            navigationController?.pushViewController(CardPeopleVC(), animated: true)
+        }
     }
     
 }

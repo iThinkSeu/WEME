@@ -190,6 +190,9 @@ let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0,
 let TEXT_COLOR = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)
 let PLACEHOLDER_COLOR = UIColor.colorFromRGB(0xC7C7CD)
 
+let FEMALE_COLOR = UIColor.colorFromRGB(0xff6b8e)
+let MALE_COLOR = UIColor.colorFromRGB(0x4dc3ff)
+
 
 extension UIImage {
     func crop(rect:CGRect) -> UIImage{
@@ -215,54 +218,7 @@ extension UIImage {
     }
 }
 
-extension UIImageView {
-    
-    func setImageWithURL(url:NSURL, placeholder:UIImage? = nil, animated:Bool = true, isAvatar:Bool = true, completion:((image:UIImage?, flag:Bool)->Void)? = nil) {
-        if let p = placeholder {
-            self.image = p
-        }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self]() -> Void in
-            if let data = NSData(contentsOfURL: url) {
-                dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
-                    if let S = self {
-                        if animated {
-                        UIView.transitionWithView(S, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                            S.image = UIImage(data: data) ?? (isAvatar ? (placeholder ?? UIImage(named: "avatar")) : (placeholder ?? UIImage(named: "profile_background")))
-                            }, completion: nil)
-                        }
-                        else {
-                            S.image = UIImage(data: data) ?? (isAvatar ? (placeholder ?? UIImage(named: "avatar")) : (placeholder ?? UIImage(named: "profile_background")))
-                        }
-                        
-                        completion?(image:S.image, flag:true)
-                    }
-                
 
-                })
-                
-                
-            }
-            else {
-                dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
-                    if let S = self {
-                        if animated {
-                            UIView.transitionWithView(S, duration: 0.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-                                S.image = isAvatar ? (placeholder ?? UIImage(named: "avatar")) :(placeholder ?? UIImage(named: "profile_background"))
-                                }, completion: nil)
-                        }
-                        else {
-                            S.image = isAvatar ? (placeholder ?? UIImage(named: "avatar")) : (placeholder ?? UIImage(named: "profile_background"))
-                        }
-                        
-                        completion?(image:S.image, flag:false)
-                    }
-                    
-                })
-
-            }
-        }
-    }
-}
 
 extension UITextView {
     func resizeHeightToFit(heightConstraint: NSLayoutConstraint) {

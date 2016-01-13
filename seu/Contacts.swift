@@ -18,7 +18,6 @@ class ConversationTableCell:UITableViewCell {
     var avatar :UIImageView!
     var nameLabel:UILabel!
     var infoLabel:UILabel!
-   // var timeLabel:UILabel!
     var gender:UIImageView!
     var delegate:ConversationTableCellDelegate?
     
@@ -52,12 +51,6 @@ class ConversationTableCell:UITableViewCell {
         infoLabel.textColor = UIColor.lightGrayColor()
         addSubview(infoLabel)
         
-//        timeLabel = UILabel()
-//        timeLabel.translatesAutoresizingMaskIntoConstraints = false
-//        timeLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-//        timeLabel.textColor = UIColor.lightGrayColor()
-//        addSubview(timeLabel)
-        
         gender = UIImageView()
         gender.translatesAutoresizingMaskIntoConstraints = false
         addSubview(gender)
@@ -70,7 +63,6 @@ class ConversationTableCell:UITableViewCell {
         
         addConstraints(constraints)
         addConstraint(constraint)
-        //constraints = NSLayoutConstraint.constraintsWithVisualFormat("V:|-5-[avatar(44)]", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
         constraint = NSLayoutConstraint(item: avatar, attribute: NSLayoutAttribute.CenterY, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.CenterY, multiplier: 1.0, constant: 0)
         
         addConstraint(constraint)
@@ -88,34 +80,23 @@ class ConversationTableCell:UITableViewCell {
         
         constraint = NSLayoutConstraint(item: infoLabel, attribute: NSLayoutAttribute.Left, relatedBy: NSLayoutRelation.Equal, toItem: nameLabel, attribute: NSLayoutAttribute.Left, multiplier: 1.0, constant: 0)
         addConstraint(constraint)
-        
-//        
-//        constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[nameLabel]-5-[gender]-|", options: NSLayoutFormatOptions.AlignAllCenterY, metrics: nil, views: viewDict)
-//        addConstraints(constraints)
-//        constraint = NSLayoutConstraint(item: gender, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.NotAnAttribute, multiplier: 16, constant: 0)
-//        addConstraint(constraint)
-        
+
         gender.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(nameLabel.snp_right).offset(5)
             make.centerY.equalTo(nameLabel.snp_centerY)
             make.height.equalTo(18)
             make.width.equalTo(16)
         }
-//        
+        
         constraints = NSLayoutConstraint.constraintsWithVisualFormat("H:[infoLabel]-5-|", options: NSLayoutFormatOptions.AlignAllBaseline, metrics: nil, views: viewDict)
         addConstraints(constraints)
-        
-        //        let backColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 250/255.0, alpha: 1.0)
-        //
-        //        backgroundColor = backColor
-        
+
         layoutMargins = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 0)
         
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        //avatar.image = nil
         nameLabel.text = ""
         infoLabel.text = ""
     }
@@ -254,9 +235,27 @@ class SearchResultsVC:UITableViewController, ConversationTableCellDelegate {
             }
             //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-        follow.backgroundColor = THEME_COLOR//UIColor.redColor()
+        let data = friendsData[indexPath.row]
+        follow.backgroundColor = data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
         
-        return [follow]
+        let message = UITableViewRowAction(style: .Normal, title: "私信") { (action, indexPath) -> Void in
+            let data = self.friendsData[indexPath.row]
+            let id = data["id"].stringValue
+            
+            let vc = ComposeMessageVC()
+            vc.recvID = id
+            
+            let nav = UINavigationController(rootViewController: vc)
+            self.presentViewController(nav, animated: true, completion: { () -> Void in
+                
+            });
+        }
+        
+        
+        message.backgroundColor =  data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
+        follow.backgroundColor = UIColor.redColor()
+        
+        return [follow, message]
     }
     
 }
@@ -495,8 +494,10 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
                 
             });
         }
-        message.backgroundColor =  UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
-        unfollow.backgroundColor = THEME_COLOR//UIColor.redColor()
+        let data = friendsData[indexPath.row]
+        
+        message.backgroundColor =  data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
+        unfollow.backgroundColor = UIColor.redColor()
         
         return indexPath.section == 1 ? [unfollow, message] : nil
     }
@@ -536,7 +537,6 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
                 cell.gender.image = UIImage(named: "female")
             }
             cell.selectionStyle = .None
-            cell.accessoryType = .DisclosureIndicator
             cell.delegate = self
             return cell
         }
@@ -670,6 +670,74 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate,
         
     }
     
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+    }
+    
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let follow = UITableViewRowAction(style: .Normal, title: "关注") { (action, indexPath) -> Void in
+            //print("unfollow")
+            if let t = token{
+                request(.POST, FOLLOW_URL, parameters: ["token":t, "id":self.friendsData[indexPath.row]["id"].stringValue], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
+                    //debugprint(response)
+                    if let d = response.result.value {
+                        let json = JSON(d)
+                        if json["state"] == "successful" || json["state"] == "sucessful" {
+                            self?.friendsData.removeAtIndex(indexPath.row)
+                            self?.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                            
+                        }
+                        else {
+                            let alert = UIAlertController(title: "提示", message: json["reason"].stringValue, preferredStyle: .Alert)
+                            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                            self?.presentViewController(alert, animated: true, completion: nil)
+                            return
+                        }
+                    }
+                        
+                    else if let error = response.result.error {
+                        let alert = UIAlertController(title: "提示", message: error.localizedFailureReason ?? error.localizedDescription, preferredStyle: .Alert)
+                        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: nil))
+                        self?.presentViewController(alert, animated: true, completion: nil)
+                        return
+                        
+                    }
+                    
+                }
+                
+            }
+            //tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        let data = friendsData[indexPath.row]
+        follow.backgroundColor = data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
+        
+        let message = UITableViewRowAction(style: .Normal, title: "私信") { (action, indexPath) -> Void in
+            let data = self.friendsData[indexPath.row]
+            let id = data["id"].stringValue
+            
+            let vc = ComposeMessageVC()
+            vc.recvID = id
+            
+            let nav = UINavigationController(rootViewController: vc)
+            self.presentViewController(nav, animated: true, completion: { () -> Void in
+                
+            });
+        }
+        
+        
+        message.backgroundColor =  data["gender"].stringValue == "男" ? MALE_COLOR : (data["gender"].stringValue == "女" ? FEMALE_COLOR : THEME_COLOR)
+        follow.backgroundColor = UIColor.redColor()
+        
+        return [follow, message]
+    }
+    
+
+    
     func loadOnePage() {
         if let t = token {
             request(.POST, GET_FOLLOWERS_URL, parameters: ["token":t, "page":"\(page)", "direction":"followers"], encoding: .JSON, headers: nil).responseJSON(completionHandler: { (response) -> Void in
@@ -734,7 +802,6 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate,
             cell.gender.image = UIImage(named: "female")
         }
         cell.selectionStyle = .None
-        cell.accessoryType = .DisclosureIndicator
         cell.delegate = self
 
         return cell

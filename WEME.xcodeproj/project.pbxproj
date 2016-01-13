@@ -201,6 +201,11 @@
 		B1D9706A1C09D40600F0C9E7 /* btn_expression@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D970681C09D40600F0C9E7 /* btn_expression@2x.png */; };
 		B1D9706B1C09D40600F0C9E7 /* btn_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D970691C09D40600F0C9E7 /* btn_keyboard@2x.png */; };
 		B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DBF4121C0E91F0000A6178 /* Activity.swift */; };
+		B1EA38431C45324000D0B5B2 /* Discover.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA38421C45324000D0B5B2 /* Discover.swift */; };
+		B1EA38451C45341300D0B5B2 /* Persei.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; };
+		B1EA38461C4534EA00D0B5B2 /* Persei.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; };
+		B1EA38471C4534EA00D0B5B2 /* Persei.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B1EA38491C45FDD600D0B5B2 /* NearBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA38481C45FDD600D0B5B2 /* NearBy.swift */; };
 		B1FC434A1B9FC25700133869 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC43491B9FC25700133869 /* AppDelegate.swift */; };
 		B1FC434C1B9FC25700133869 /* LoginRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC434B1B9FC25700133869 /* LoginRegister.swift */; };
 		B1FC43601B9FC25700133869 /* seuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC435F1B9FC25700133869 /* seuTests.swift */; };
@@ -227,6 +232,7 @@
 			files = (
 				B1CC24F01C193D4900953A07 /* MBProgressHUD.framework in Embed Frameworks */,
 				B120C14D1BF452410099F78A /* RSKImageCropper.framework in Embed Frameworks */,
+				B1EA38471C4534EA00D0B5B2 /* Persei.framework in Embed Frameworks */,
 				B120C1511BF452410099F78A /* GMPhotoPicker.framework in Embed Frameworks */,
 				B17B23731C3D086700537241 /* Charts.framework in Embed Frameworks */,
 				B1CC24F21C193E3900953A07 /* WebImage.framework in Embed Frameworks */,
@@ -497,6 +503,9 @@
 		B1D970681C09D40600F0C9E7 /* btn_expression@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_expression@2x.png"; sourceTree = "<group>"; };
 		B1D970691C09D40600F0C9E7 /* btn_keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn_keyboard@2x.png"; sourceTree = "<group>"; };
 		B1DBF4121C0E91F0000A6178 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		B1EA38421C45324000D0B5B2 /* Discover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Discover.swift; sourceTree = "<group>"; };
+		B1EA38441C45341300D0B5B2 /* Persei.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Persei.framework; sourceTree = "<group>"; };
+		B1EA38481C45FDD600D0B5B2 /* NearBy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NearBy.swift; sourceTree = "<group>"; };
 		B1FC43441B9FC25700133869 /* WEME.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WEME.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1FC43481B9FC25700133869 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B1FC43491B9FC25700133869 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -513,6 +522,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1EA38461C4534EA00D0B5B2 /* Persei.framework in Frameworks */,
+				B1EA38451C45341300D0B5B2 /* Persei.framework in Frameworks */,
 				B18950421C1B03BA00645482 /* libsqlite3.0.tbd in Frameworks */,
 				B18950401C1B039400645482 /* SystemConfiguration.framework in Frameworks */,
 				B189503E1C1B036600645482 /* CoreTelephony.framework in Frameworks */,
@@ -798,6 +809,7 @@
 		B13DE9691BF0487F0042331A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1EA38441C45341300D0B5B2 /* Persei.framework */,
 				B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */,
 				B1019F911C420CF200EBEB23 /* BubbleTransition */,
 				B17B23701C3D085D00537241 /* Charts.framework */,
@@ -836,9 +848,11 @@
 		B169C2AF1C3F4861002F6869 /* Discover */ = {
 			isa = PBXGroup;
 			children = (
+				B1019F941C43B65F00EBEB23 /* LocationVC.swift */,
 				B105CA461C27A1F300E946D8 /* Card.swift */,
 				B169C2B01C3F5191002F6869 /* CardPeople.swift */,
 				B1019F931C43AF9500EBEB23 /* Food */,
+				B1EA38481C45FDD600D0B5B2 /* NearBy.swift */,
 			);
 			name = Discover;
 			sourceTree = "<group>";
@@ -1139,10 +1153,10 @@
 				B169C2AF1C3F4861002F6869 /* Discover */,
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
-				B1019F941C43B65F00EBEB23 /* LocationVC.swift */,
 				B1019F841C420BFB00EBEB23 /* MeVC.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
+				B1EA38421C45324000D0B5B2 /* Discover.swift */,
 				B105CA481C2A4FE900E946D8 /* About.swift */,
 				B19F9A361BD8FC9C0008CA12 /* Contacts.swift */,
 				B107599D1BEB1D5700FEC0A0 /* Message.swift */,
@@ -1360,6 +1374,7 @@
 				B1A4E9661BDA041E00EF0CD1 /* UIViewExtensions.swift in Sources */,
 				B105D47A1C31188F000CA8B0 /* ActivityInfo.swift in Sources */,
 				B18950321C1B025B00645482 /* WXApiResponseHandler.m in Sources */,
+				B1EA38431C45324000D0B5B2 /* Discover.swift in Sources */,
 				B189503C1C1B02CA00645482 /* WXMediaMessage+messageConstruct.m in Sources */,
 				B1019F8E1C420BFB00EBEB23 /* Observable.swift in Sources */,
 				B17B23771C3D35A100537241 /* EditInfo.swift in Sources */,
@@ -1376,6 +1391,7 @@
 				B125DBC91C06EF68002E0F5C /* ReplyPost.swift in Sources */,
 				B1019F8C1C420BFB00EBEB23 /* CAPSPageMenu.swift in Sources */,
 				B125DBDE1C09844A002E0F5C /* JSQMessagesBubbleImage.m in Sources */,
+				B1EA38491C45FDD600D0B5B2 /* NearBy.swift in Sources */,
 				B10759BD1BEC518C00FEC0A0 /* LayoutConstraint.swift in Sources */,
 				B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */,
 				B125DBE31C09844A002E0F5C /* UIColor+JSQMessages.m in Sources */,

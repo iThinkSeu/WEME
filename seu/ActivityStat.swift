@@ -112,7 +112,7 @@ class ActivityStatVC:UIViewController, ChartViewDelegate {
         let x = ["历史关注", "今日关注", "历史报名", "今日报名"]
         let y = [BarChartDataEntry(value: Double(totalLike), xIndex: 0), BarChartDataEntry(value: Double(todayLike), xIndex: 1), BarChartDataEntry(value: Double(totalRegister), xIndex: 2), BarChartDataEntry(value: Double(todayRegister), xIndex: 3)]
         let dataSet = BarChartDataSet(yVals: y, label: activityName)
-       dataSet.setColor(THEME_COLOR)
+        dataSet.setColor(THEME_COLOR)
         dataSet.valueFormatter = NSNumberFormatter()
         dataSet.valueFormatter?.minimumSignificantDigits = 0
         let data = BarChartData(xVals: x, dataSet: dataSet)

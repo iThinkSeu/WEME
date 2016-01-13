@@ -51,10 +51,10 @@ class HomeVC: UITabBarController {
         let navHand = UINavigationController(rootViewController: ActivityVC())
         let navSocial = UINavigationController(rootViewController: SocialVC())
         let Me =  UINavigationController(rootViewController: ProfileVC())
-       // let food = CardVC()
+        let discover = UINavigationController(rootViewController: DiscoverVC())
 
         
-        setViewControllers([navHand, navSocial, Me], animated: true)
+        setViewControllers([navHand, navSocial,discover, Me], animated: true)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR_BACK], forState: UIControlState.Normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR], forState: UIControlState.Selected)
         tabBar.tintColor = THEME_COLOR
@@ -72,7 +72,7 @@ class HomeVC: UITabBarController {
         
         Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysTemplate))
 
-      //  food.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
+        discover.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
 
         
     }
