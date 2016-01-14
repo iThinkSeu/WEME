@@ -98,6 +98,16 @@
 		B125DBE41C09844A002E0F5C /* UIImage+JSQMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBDC1C09844A002E0F5C /* UIImage+JSQMessages.m */; };
 		B125DBE81C098510002E0F5C /* JSQMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBE61C098510002E0F5C /* JSQMediaItem.m */; };
 		B1279AC81C17E8D000E14D08 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = B1279AC71C17E8D000E14D08 /* KxMenu.m */; };
+		B12CB2611C478E75003A191F /* QRCodeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25A1C478E74003A191F /* QRCodeReader.swift */; };
+		B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */; };
+		B12CB2631C478E75003A191F /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25C1C478E74003A191F /* QRCodeViewController.swift */; };
+		B12CB2641C478E75003A191F /* QRCodeViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25D1C478E74003A191F /* QRCodeViewControllerBuilder.swift */; };
+		B12CB2651C478E75003A191F /* ReaderOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25E1C478E74003A191F /* ReaderOverlayView.swift */; };
+		B12CB2661C478E75003A191F /* SwitchCameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25F1C478E74003A191F /* SwitchCameraButton.swift */; };
+		B12CB2671C478E75003A191F /* ToggleTorchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2601C478E75003A191F /* ToggleTorchButton.swift */; };
+		B12CB2691C4795C4003A191F /* MyQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2681C4795C4003A191F /* MyQRCode.swift */; };
+		B12CB26B1C47A517003A191F /* QRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12CB26A1C47A517003A191F /* QRCode.framework */; };
+		B12CB26D1C47A524003A191F /* QRCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B12CB26A1C47A517003A191F /* QRCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B12FB29D1BF9B50000566266 /* aio_voice_button_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */; };
 		B12FB29E1BF9B50000566266 /* aio_voice_button_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */; };
 		B12FB29F1BF9B50000566266 /* aio_voice_button_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */; };
@@ -202,7 +212,6 @@
 		B1D9706B1C09D40600F0C9E7 /* btn_keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B1D970691C09D40600F0C9E7 /* btn_keyboard@2x.png */; };
 		B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1DBF4121C0E91F0000A6178 /* Activity.swift */; };
 		B1EA38431C45324000D0B5B2 /* Discover.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA38421C45324000D0B5B2 /* Discover.swift */; };
-		B1EA38451C45341300D0B5B2 /* Persei.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; };
 		B1EA38461C4534EA00D0B5B2 /* Persei.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; };
 		B1EA38471C4534EA00D0B5B2 /* Persei.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1EA38441C45341300D0B5B2 /* Persei.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1EA38491C45FDD600D0B5B2 /* NearBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA38481C45FDD600D0B5B2 /* NearBy.swift */; };
@@ -232,6 +241,7 @@
 			files = (
 				B1CC24F01C193D4900953A07 /* MBProgressHUD.framework in Embed Frameworks */,
 				B120C14D1BF452410099F78A /* RSKImageCropper.framework in Embed Frameworks */,
+				B12CB26D1C47A524003A191F /* QRCode.framework in Embed Frameworks */,
 				B1EA38471C4534EA00D0B5B2 /* Persei.framework in Embed Frameworks */,
 				B120C1511BF452410099F78A /* GMPhotoPicker.framework in Embed Frameworks */,
 				B17B23731C3D086700537241 /* Charts.framework in Embed Frameworks */,
@@ -366,6 +376,15 @@
 		B125DBEB1C0986F3002E0F5C /* JSQMessageBubbleImageDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSQMessageBubbleImageDataSource.h; sourceTree = "<group>"; };
 		B1279AC61C17E8D000E14D08 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		B1279AC71C17E8D000E14D08 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
+		B12CB25A1C478E74003A191F /* QRCodeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReader.swift; sourceTree = "<group>"; };
+		B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderResult.swift; sourceTree = "<group>"; };
+		B12CB25C1C478E74003A191F /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
+		B12CB25D1C478E74003A191F /* QRCodeViewControllerBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerBuilder.swift; sourceTree = "<group>"; };
+		B12CB25E1C478E74003A191F /* ReaderOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderOverlayView.swift; sourceTree = "<group>"; };
+		B12CB25F1C478E74003A191F /* SwitchCameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCameraButton.swift; sourceTree = "<group>"; };
+		B12CB2601C478E75003A191F /* ToggleTorchButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleTorchButton.swift; sourceTree = "<group>"; };
+		B12CB2681C4795C4003A191F /* MyQRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyQRCode.swift; sourceTree = "<group>"; };
+		B12CB26A1C47A517003A191F /* QRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QRCode.framework; sourceTree = "<group>"; };
 		B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_icon@3x.png"; sourceTree = "<group>"; };
 		B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_nor@3x.png"; sourceTree = "<group>"; };
 		B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_press@3x.png"; sourceTree = "<group>"; };
@@ -523,11 +542,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1EA38461C4534EA00D0B5B2 /* Persei.framework in Frameworks */,
-				B1EA38451C45341300D0B5B2 /* Persei.framework in Frameworks */,
 				B18950421C1B03BA00645482 /* libsqlite3.0.tbd in Frameworks */,
 				B18950401C1B039400645482 /* SystemConfiguration.framework in Frameworks */,
 				B189503E1C1B036600645482 /* CoreTelephony.framework in Frameworks */,
 				B189501F1C1AF6DD00645482 /* libz.tbd in Frameworks */,
+				B12CB26B1C47A517003A191F /* QRCode.framework in Frameworks */,
 				B189501D1C1AF6A900645482 /* libMobClickLibrary.a in Frameworks */,
 				B1D2084B1C43E29A008E69A9 /* AMapSearchKit.framework in Frameworks */,
 				B12FB2B01BF9B50F00566266 /* libopencore-amrnb.a in Frameworks */,
@@ -753,6 +772,20 @@
 			name = kxMenu;
 			sourceTree = "<group>";
 		};
+		B12CB2591C478E74003A191F /* QRCodeReader */ = {
+			isa = PBXGroup;
+			children = (
+				B12CB25A1C478E74003A191F /* QRCodeReader.swift */,
+				B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */,
+				B12CB25C1C478E74003A191F /* QRCodeViewController.swift */,
+				B12CB25D1C478E74003A191F /* QRCodeViewControllerBuilder.swift */,
+				B12CB25E1C478E74003A191F /* ReaderOverlayView.swift */,
+				B12CB25F1C478E74003A191F /* SwitchCameraButton.swift */,
+				B12CB2601C478E75003A191F /* ToggleTorchButton.swift */,
+			);
+			path = QRCodeReader;
+			sourceTree = "<group>";
+		};
 		B12FB2931BF9B4D100566266 /* voice */ = {
 			isa = PBXGroup;
 			children = (
@@ -809,6 +842,8 @@
 		B13DE9691BF0487F0042331A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B12CB26A1C47A517003A191F /* QRCode.framework */,
+				B12CB2591C478E74003A191F /* QRCodeReader */,
 				B1EA38441C45341300D0B5B2 /* Persei.framework */,
 				B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */,
 				B1019F911C420CF200EBEB23 /* BubbleTransition */,
@@ -1162,6 +1197,7 @@
 				B107599D1BEB1D5700FEC0A0 /* Message.swift */,
 				B17B23761C3D35A100537241 /* EditInfo.swift */,
 				B189504C1C1D4A6C00645482 /* MeInfo.swift */,
+				B12CB2681C4795C4003A191F /* MyQRCode.swift */,
 				B1FC43471B9FC25700133869 /* Supporting Files */,
 				B1FC436A1BA2B9C500133869 /* Launch Screen.xib */,
 			);
@@ -1355,6 +1391,7 @@
 				B18950501C1D754500645482 /* PersonModel.m in Sources */,
 				B1D03BFB1BCE557A00DF0B44 /* utility.swift in Sources */,
 				B105D47C1C3247A9000CA8B0 /* ActivitySearch.swift in Sources */,
+				B12CB2651C478E75003A191F /* ReaderOverlayView.swift in Sources */,
 				B1D03C2D1BCE59D100DF0B44 /* Alamofire.swift in Sources */,
 				B1019F891C420BFB00EBEB23 /* ActivityEdit.swift in Sources */,
 				B105CA381C23DB1600E946D8 /* MWGridViewController.m in Sources */,
@@ -1383,6 +1420,7 @@
 				B17CF8921C05E93B0074FF3F /* STInputBar.m in Sources */,
 				B16B6B881C3A53290081922F /* ActivityImageUploader.swift in Sources */,
 				B125DBE21C09844A002E0F5C /* NSBundle+JSQMessages.m in Sources */,
+				B12CB2641C478E75003A191F /* QRCodeViewControllerBuilder.swift in Sources */,
 				B1AE746A1BD514EC0014BE12 /* SheetActionCollectionViewCell.swift in Sources */,
 				B10759B61BEC518C00FEC0A0 /* ConstraintDescription.swift in Sources */,
 				B10759B51BEC518C00FEC0A0 /* ConstraintAttributes.swift in Sources */,
@@ -1408,6 +1446,9 @@
 				B10759B91BEC518C00FEC0A0 /* ConstraintRelation.swift in Sources */,
 				B105CA3C1C23DB1600E946D8 /* MWTapDetectingView.m in Sources */,
 				B1A4E9631BDA041E00EF0CD1 /* AgrumeCell.swift in Sources */,
+				B12CB2631C478E75003A191F /* QRCodeViewController.swift in Sources */,
+				B12CB2671C478E75003A191F /* ToggleTorchButton.swift in Sources */,
+				B12CB2691C4795C4003A191F /* MyQRCode.swift in Sources */,
 				B105CA451C23DC1900E946D8 /* DALabeledCircularProgressView.m in Sources */,
 				B17CF8A61C05E94C0074FF3F /* STEmojiCollectionView.m in Sources */,
 				B162BE891C2FC7AF00136F28 /* MyActivity.swift in Sources */,
@@ -1421,10 +1462,12 @@
 				B1019F951C43B65F00EBEB23 /* LocationVC.swift in Sources */,
 				B1D03C341BCE59D100DF0B44 /* Request.swift in Sources */,
 				B125DBE01C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m in Sources */,
+				B12CB2611C478E75003A191F /* QRCodeReader.swift in Sources */,
 				B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */,
 				B12FB2B11BF9B50F00566266 /* WavAmrCodec.cpp in Sources */,
 				B1D03C311BCE59D100DF0B44 /* Manager.swift in Sources */,
 				B19F9A371BD8FC9C0008CA12 /* Contacts.swift in Sources */,
+				B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */,
 				B1D03C2E1BCE59D100DF0B44 /* Download.swift in Sources */,
 				B1AE746E1BD514EC0014BE12 /* SheetPreviewCollectionViewCell.swift in Sources */,
 				B12FB2CD1C00FC2A00566266 /* Topic.swift in Sources */,
@@ -1442,6 +1485,7 @@
 				B10759C11BEC518C00FEC0A0 /* ViewController+SnapKit.swift in Sources */,
 				B19A9ABA1BF072F000EE58DB /* BadgeStyle.m in Sources */,
 				B105C9D71C23CB3700E946D8 /* UserImageModel.m in Sources */,
+				B12CB2661C478E75003A191F /* SwitchCameraButton.swift in Sources */,
 				B1AE74631BD514EC0014BE12 /* ImagePickerSheetController.swift in Sources */,
 				B1D03C2F1BCE59D100DF0B44 /* Error.swift in Sources */,
 				B1019F8B1C420BFB00EBEB23 /* BubbleTransition.swift in Sources */,

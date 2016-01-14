@@ -114,6 +114,7 @@ let GET_REGISTERED_USER_URL = BASE_URL + "getactivityattentuser"
 let ALLOW_USER_ACTIVITY_URL = BASE_URL + "setpassuser"
 let DENY_USER_ACTIVITY_URL = BASE_URL + "deletepassuser"
 let GET_ACTIVITY_STATISTIC_URL = BASE_URL + "getactivitystatistic"
+let VALIDATE_ACTIVITY_USER_URL = BASE_URL + "validateactivityuser"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"

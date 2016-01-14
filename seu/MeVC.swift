@@ -28,6 +28,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationItem.title = "个人"
         tableView = UITableView(frame: view.frame)
         view.addSubview(tableView)
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 60, 0)
         tableView.registerClass(MeTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(MeTableViewCell))
         tableView.registerClass(MeItemTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(MeItemTableViewCell))
         tableView.dataSource = self
@@ -39,6 +40,10 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         fetchNameInfo()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "editInfo:", name: EDIT_INFO_NOTIFICATION, object: nil)
     }
+    
+
+    
+   
     
     func editInfo(sender:AnyObject) {
         fetchNameInfo()

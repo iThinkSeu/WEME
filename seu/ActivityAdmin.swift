@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
+class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, QRCodeReaderViewControllerDelegate  {
     
     var activityID:String!
     private var tableView:UITableView!
@@ -28,6 +28,15 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     static let TOPIC_IMAGE_HEIGHT = SCREEN_WIDTH * 1/2
     let imgBG = UIImageView(frame: CGRectMake(0, -ActivityInfoVC.TOPIC_IMAGE_HEIGHT, ActivityInfoVC.TOPIC_IMAGE_WIDTH, ActivityInfoVC.TOPIC_IMAGE_HEIGHT))
     
+    lazy var reader: QRCodeReaderViewController = {
+        let builder = QRCodeViewControllerBuilder { builder in
+            builder.reader          = QRCodeReader(metadataObjectTypes: [AVMetadataObjectTypeQRCode])
+            builder.showTorchButton = true
+        }
+        
+        return QRCodeReaderViewController(builder: builder)
+    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,9 +70,9 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
             make.bottom.equalTo(imgBG.snp_bottom).offset(-20)
         }
         
-//        let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
-//        action.tintColor = UIColor.whiteColor()
-//        navigationItem.rightBarButtonItem = action
+        let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
+        action.tintColor = UIColor.whiteColor()
+        navigationItem.rightBarButtonItem = action
         
         
         fetchActivityInfo()
@@ -256,17 +265,79 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func action(sender:AnyObject) {
-        
         let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
-                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
-                alertText.showInView(self.navigationController!.view)
+                if QRCodeReader.supportsMetadataObjectTypes() {
+                    self.reader.modalPresentationStyle = .FormSheet
+                    self.reader.delegate               = self
+                    
+                    self.reader.completionBlock = { (result: QRCodeReaderResult?) in
+                        if let result = result {
+                            print("Completion with result: \(result.value) of type \(result.metadataType)")
+                        }
+                    }
+                    
+                    self.presentViewController(self.reader, animated: true, completion: nil)
+                }
+                else {
+                    let alert = UIAlertController(title: "提示", message: "这台设备不支持二维码扫描", preferredStyle: .Alert)
+                    alert.addAction(UIAlertAction(title: "确定", style: .Cancel, handler: nil))
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+
             }
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["扫描二维码验证参与活动用户"])
         sheet.setButtonTextColor(THEME_COLOR)
         sheet.showInView(navigationController!.view)
         
     }
+    
+    func valid() {
+        messageAlert("已获得活动邀请")
+    }
+    
+    func invalid() {
+        messageAlert("未获得活动邀请")
+    }
+    
+    func validateUser(id:String){
+        if let t = token {
+            request(.POST, VALIDATE_ACTIVITY_USER_URL, parameters: ["token":t, "userid":id, "activityid":activityID], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" && json["result"].stringValue == "1" else {
+                        S.invalid()
+                        return
+                    }
+                    S.valid()
+                }
+            })
+        }
+    }
+    
+    func reader(reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+        self.dismissViewControllerAnimated(true, completion: { [weak self] in
+            if let url = NSURL(string: result.value) where url.scheme == "weme"{
+                if let h = url.host where h == "user",
+                    let com = url.pathComponents where com.count == 2 {
+                    self?.validateUser(com[1])
+                }
+                else {
+                    self?.messageAlert("无效WEME用户二维码")
+                }
+            }
+            else {
+                self?.messageAlert("无效WEME用户二维码")
+            }
+        })
+        
+    }
+    
+    func readerDidCancel(reader: QRCodeReaderViewController) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     
 }
 

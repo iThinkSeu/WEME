@@ -114,9 +114,12 @@ class MeInfoVC:UIViewController, UINavigationControllerDelegate {
         else {
             let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
                 if index == 0 {
+                     self.navigationController?.pushViewController(MyQRCodeVC(), animated: true)
+                }
+                else if index == 1 {
                     self.navigationController?.pushViewController(EditInfoVC(), animated: true)
                 }
-                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["修改个人信息"])
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息"])
             sheet.setButtonTextColor(THEME_COLOR)
             sheet.showInView(navigationController!.view)
         }
