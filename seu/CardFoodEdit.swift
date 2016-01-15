@@ -54,6 +54,79 @@ class CardFoodEditVC:UITableViewController,UITextViewDelegate, CardFoodEditTable
             messageAlert("美食照片不能为空哦")
             return
         }
+        if let t = token {
+            let dict = ["token":t,
+                        "title":fTitle ?? "",
+                        "location":fLocationName ?? "",
+                        "longitude":"\(fLocation!.longitude)",
+                        "latitude":"\(fLocation!.latitude)",
+                        "price":fPrice ?? "",
+                        "comment":fComment ?? ""]
+            request(.POST, PUBLISH_FOOD_CARD_URL, parameters: dict, encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        S.messageAlert("提交卡片失败")
+                        return
+                    }
+                    
+                    let id = json["id"].stringValue
+                    let img = S.fCoverImg!
+                    upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
+                        let dd = "{\"token\":\"\(t)\", \"type\":\"-11\", \"foodcardid\":\"\(id)\"}"
+                        print(dd)
+                        let jsonData = dd.dataUsingEncoding(NSUTF8StringEncoding)
+                        let data = UIImageJPEGRepresentation(img, 0.75)
+                        multipartFormData.appendBodyPart(data:jsonData!, name:"json")
+                        multipartFormData.appendBodyPart(data:data!, name:"avatar", fileName:"avatar.jpg", mimeType:"image/jpeg")
+                        
+                        }, encodingCompletion: { encodingResult in
+                            switch encodingResult {
+                            case .Success(let upload, _ , _):
+                                upload.responseJSON { response in
+                                    debugPrint(response)
+                                    if let d = response.result.value {
+                                        let j = JSON(d)
+                                        if j != .null && j["state"].stringValue  == "successful" {
+                        
+                                            let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                                            hud.mode = .CustomView
+                                            hud.customView = UIImageView(image: UIImage(named:"checkmark"))
+                                            hud.labelText = "提交成功，等待审核"
+                                            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+                                            dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+                                                S.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                                            }
+
+                                        }
+                                        else {
+                                            print(j["reason"].stringValue)
+                                            S.messageAlert("上载活动图片失败")
+                                            return
+                                            
+                                        }
+                                    }
+                                    else if let _ = response.result.error {
+                                        S.messageAlert("上载活动图片失败")
+                                        return
+                                        
+                                    }
+                                }
+                                
+                            case .Failure:
+                                S.messageAlert("上载活动图片失败")
+                                return
+                                
+                            }
+                        }
+                        
+                    )
+
+                    
+
+                }
+            })
+        }
         
     }
     
@@ -128,6 +201,10 @@ class CardFoodEditVC:UITableViewController,UITextViewDelegate, CardFoodEditTable
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
+    }
+    
+    func textViewDidChange(textView: UITextView) {
+        fComment = textView.text
     }
     
     func didSelectLocation(location: LocationAnnotation) {

@@ -100,7 +100,7 @@ let VISIT_URL = BASE_URL + "visit"
 
 let PROFILE = "PROFILE_KEY"
 
-//Activity
+//MARK: Activity
 let GET_TOP_ACTIVITY_URL = BASE_URL + "activitytopofficial"
 let GET_ACTIVITY_DETAIL_URL = BASE_URL + "getactivitydetail"
 let GET_LIKED_ACTIVITY_URL = BASE_URL + "getlikeactivity"
@@ -115,6 +115,11 @@ let ALLOW_USER_ACTIVITY_URL = BASE_URL + "setpassuser"
 let DENY_USER_ACTIVITY_URL = BASE_URL + "deletepassuser"
 let GET_ACTIVITY_STATISTIC_URL = BASE_URL + "getactivitystatistic"
 let VALIDATE_ACTIVITY_USER_URL = BASE_URL + "validateactivityuser"
+
+//MARK: Food
+let GET_RECOMMENDED_FOOD_URL = BASE_URL + "getfoodcard"
+let PUBLISH_FOOD_CARD_URL = BASE_URL + "publishcard"
+let LIKE_FOOD_URL = BASE_URL + "likefoodcard"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"

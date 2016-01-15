@@ -179,7 +179,7 @@ class ActivityCell:UITableViewCell {
     }
 }
 
-class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, ActivitySearchVCDelegate{
+class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, ActivitySearchVCDelegate, QRCodeReaderViewControllerDelegate{
     static let BOARD_SCROLLVIEW_HEIGHT:CGFloat = (SCREEN_WIDTH)/2
     
     var tableView:UITableView!
@@ -204,6 +204,17 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
     var timer:NSTimer?
     
     var scrolling = false
+    
+    lazy var reader: QRCodeReaderViewController = {
+        let builder = QRCodeViewControllerBuilder { builder in
+            builder.reader          = QRCodeReader(metadataObjectTypes: [AVMetadataObjectTypeQRCode])
+            builder.showTorchButton = true
+        }
+        
+        return QRCodeReaderViewController(builder: builder)
+    }()
+    
+
     
     func moveToNext(sender:AnyObject?) {
         if !scrolling  && pageControl.numberOfPages > 0{
@@ -488,16 +499,54 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         let search = UIImage(named: "search")?.imageWithRenderingMode(.AlwaysTemplate)
         let searchItem = KxMenuItem("搜索活动",image: search, target:self, action:"search:")
         searchItem.foreColor = UIColor.whiteColor()
+        
         let more = UIImage(named: "publish")?.imageWithRenderingMode(.AlwaysTemplate)
         let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"editActivity:")
         publishItem.foreColor = UIColor.whiteColor()
+        
+        let qrcode = UIImage(named: "qrcode")?.imageWithRenderingMode(.AlwaysTemplate)
+        let qrcodeItem = KxMenuItem("扫二维码",image: qrcode, target:self, action:"scanQRCode:")
+        qrcodeItem.foreColor = UIColor.whiteColor()
+        
         let v = moreButton.valueForKey("view") as! UIView
         let vv = navigationController!.view
         let rect = (navigationController?.navigationBar.convertRect(v.frame, toView: vv))!
         KxMenu.setTintColor(THEME_COLOR)
         KxMenu.setMenuIconTintColor(UIColor.whiteColor())
-        KxMenu.showMenuInView(vv, fromRect: rect , menuItems: [searchItem, publishItem])
+        KxMenu.showMenuInView(vv, fromRect: rect , menuItems: [searchItem, publishItem, qrcodeItem])
         
+    }
+    
+    //MARK - QRCode
+    
+    func reader(reader: QRCodeReaderViewController, didScanResult result: QRCodeReaderResult) {
+        self.dismissViewControllerAnimated(true, completion: { [weak self] in
+            if let url = NSURL(string: result.value) where url.scheme == "weme"{
+                if let h = url.host where h == "activity",
+                    let com = url.pathComponents where com.count == 2 {
+                       let vc = ActivityInfoVC()
+                        vc.activityID = com[1]
+                        self?.navigationController?.pushViewController(vc, animated: true)
+                }
+                else {
+                    self?.messageAlert("无效WEME活动二维码")
+                }
+            }
+            else {
+                self?.messageAlert("无效WEME活动二维码")
+            }
+            })
+        
+    }
+    
+    func readerDidCancel(reader: QRCodeReaderViewController) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
+    func scanQRCode(sender:AnyObject) {
+        reader.delegate = self
+        presentViewController(reader, animated: true, completion: nil)
     }
     
     func search(sender:AnyObject) {

@@ -223,7 +223,7 @@ class CardVC:UIViewController {
             })
 
 
-        case .NoneEmpty:
+        case .NoneEmpty, .Flipped:
             state  = .Animating
             let cardDefault = CardDefaultView(frame: cardView.bounds)
             cardDefault.imgView.image = UIImage(named: "spade")
@@ -252,7 +252,7 @@ class CardVC:UIViewController {
                 })
 
             }
-        case .Animating, .Flipped:
+        case .Animating:
             break
 
         }

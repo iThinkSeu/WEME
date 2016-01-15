@@ -8,7 +8,7 @@
 
 #import <Mantle/Mantle.h>
 
-@interface CityModel:MTLModel
+@interface CityModel:MTLModel<MTLJSONSerializing>
 @property (nonatomic, copy) NSString *state;
 @property (nonatomic, strong) NSArray *cities;
 @end

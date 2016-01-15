@@ -16,4 +16,5 @@
 #import "CityModel.h"
 #import "UniversityModel.h"
 #import "SchoolModel.h"
+#import "FoodModel.h"
 #endif /* Model_h */

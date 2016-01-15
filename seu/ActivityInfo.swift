@@ -324,11 +324,16 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 alertText.showInView(self.navigationController!.view)
             }
             else if index == 1 {
+                let vc = ActivityQRCodeVC()
+                vc.info = self.activity
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+            else if index == 2 {
                 let vc = ActivityStatVC()
                 vc.activityID = self.activityID
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报","更多活动信息"])
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报","活动二维码","更多活动信息"])
         sheet.setButtonTextColor(THEME_COLOR)
         sheet.showInView(navigationController!.view)
         

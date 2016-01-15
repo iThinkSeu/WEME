@@ -108,6 +108,9 @@
 		B12CB2691C4795C4003A191F /* MyQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2681C4795C4003A191F /* MyQRCode.swift */; };
 		B12CB26B1C47A517003A191F /* QRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12CB26A1C47A517003A191F /* QRCode.framework */; };
 		B12CB26D1C47A524003A191F /* QRCode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B12CB26A1C47A517003A191F /* QRCode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B12CB26F1C48C2B8003A191F /* ActivityQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB26E1C48C2B8003A191F /* ActivityQRCode.swift */; };
+		B12CB2721C48C973003A191F /* FoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2711C48C973003A191F /* FoodModel.m */; };
+		B12CB2741C4901A9003A191F /* LocationRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2731C4901A9003A191F /* LocationRoute.swift */; };
 		B12FB29D1BF9B50000566266 /* aio_voice_button_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */; };
 		B12FB29E1BF9B50000566266 /* aio_voice_button_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */; };
 		B12FB29F1BF9B50000566266 /* aio_voice_button_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */; };
@@ -385,6 +388,10 @@
 		B12CB2601C478E75003A191F /* ToggleTorchButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToggleTorchButton.swift; sourceTree = "<group>"; };
 		B12CB2681C4795C4003A191F /* MyQRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyQRCode.swift; sourceTree = "<group>"; };
 		B12CB26A1C47A517003A191F /* QRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QRCode.framework; sourceTree = "<group>"; };
+		B12CB26E1C48C2B8003A191F /* ActivityQRCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityQRCode.swift; sourceTree = "<group>"; };
+		B12CB2701C48C973003A191F /* FoodModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodModel.h; sourceTree = "<group>"; };
+		B12CB2711C48C973003A191F /* FoodModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodModel.m; sourceTree = "<group>"; };
+		B12CB2731C4901A9003A191F /* LocationRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRoute.swift; sourceTree = "<group>"; };
 		B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_icon@3x.png"; sourceTree = "<group>"; };
 		B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_nor@3x.png"; sourceTree = "<group>"; };
 		B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_press@3x.png"; sourceTree = "<group>"; };
@@ -584,6 +591,7 @@
 				B105D4791C31188F000CA8B0 /* ActivityInfo.swift */,
 				B17B23741C3D092C00537241 /* ActivityStat.swift */,
 				B17B236D1C3A65E600537241 /* ActivityAdmin.swift */,
+				B12CB26E1C48C2B8003A191F /* ActivityQRCode.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -884,6 +892,7 @@
 			isa = PBXGroup;
 			children = (
 				B1019F941C43B65F00EBEB23 /* LocationVC.swift */,
+				B12CB2731C4901A9003A191F /* LocationRoute.swift */,
 				B105CA461C27A1F300E946D8 /* Card.swift */,
 				B169C2B01C3F5191002F6869 /* CardPeople.swift */,
 				B1019F931C43AF9500EBEB23 /* Food */,
@@ -910,6 +919,8 @@
 				B105C9D61C23CB3700E946D8 /* UserImageModel.m */,
 				B169C2A51C3D8C27002F6869 /* CityModel.h */,
 				B169C2A61C3D8C27002F6869 /* CityModel.m */,
+				B12CB2701C48C973003A191F /* FoodModel.h */,
+				B12CB2711C48C973003A191F /* FoodModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1397,6 +1408,7 @@
 				B105CA381C23DB1600E946D8 /* MWGridViewController.m in Sources */,
 				B169C2B31C3F547F002F6869 /* CardFood.swift in Sources */,
 				B105CA3A1C23DB1600E946D8 /* MWPhotoBrowser.m in Sources */,
+				B12CB2741C4901A9003A191F /* LocationRoute.swift in Sources */,
 				B10759BE1BEC518C00FEC0A0 /* SnapKit.swift in Sources */,
 				B189503A1C1B02CA00645482 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */,
 				B189502C1C1B013400645482 /* WXApiManager.m in Sources */,
@@ -1430,6 +1442,7 @@
 				B1019F8C1C420BFB00EBEB23 /* CAPSPageMenu.swift in Sources */,
 				B125DBDE1C09844A002E0F5C /* JSQMessagesBubbleImage.m in Sources */,
 				B1EA38491C45FDD600D0B5B2 /* NearBy.swift in Sources */,
+				B12CB2721C48C973003A191F /* FoodModel.m in Sources */,
 				B10759BD1BEC518C00FEC0A0 /* LayoutConstraint.swift in Sources */,
 				B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */,
 				B125DBE31C09844A002E0F5C /* UIColor+JSQMessages.m in Sources */,
@@ -1468,6 +1481,7 @@
 				B1D03C311BCE59D100DF0B44 /* Manager.swift in Sources */,
 				B19F9A371BD8FC9C0008CA12 /* Contacts.swift in Sources */,
 				B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */,
+				B12CB26F1C48C2B8003A191F /* ActivityQRCode.swift in Sources */,
 				B1D03C2E1BCE59D100DF0B44 /* Download.swift in Sources */,
 				B1AE746E1BD514EC0014BE12 /* SheetPreviewCollectionViewCell.swift in Sources */,
 				B12FB2CD1C00FC2A00566266 /* Topic.swift in Sources */,

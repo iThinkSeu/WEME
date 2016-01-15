@@ -53,6 +53,7 @@ class LocationVC:UIViewController, MKMapViewDelegate, AMapSearchDelegate, UISear
         title = "地点"
         view.backgroundColor = UIColor.whiteColor()
         mapView = MKMapView()
+        mapView.delegate = self
         tableView = UITableView()
         tableView.registerClass(LocationTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(LocationTableViewCell))
         tableView.tableFooterView = UIView()
@@ -82,7 +83,6 @@ class LocationVC:UIViewController, MKMapViewDelegate, AMapSearchDelegate, UISear
         self.navigationController?.definesPresentationContext = true
         
         setupUI()
-        mapView.delegate = self
         
     }
     
@@ -118,6 +118,7 @@ class LocationVC:UIViewController, MKMapViewDelegate, AMapSearchDelegate, UISear
         let p = places[indexPath.row]
         let location = LocationAnnotation(title: p.name, locationName: p.address, geoPoint: p.location)
         navigationController?.popViewControllerAnimated(true)
+        print(location.coordinate)
         delegate?.didSelectLocation(location)
     }
     

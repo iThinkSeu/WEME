@@ -8,6 +8,6 @@
 
 #import <Mantle/Mantle.h>
 
-@interface SchoolModel :MTLModel
+@interface SchoolModel :MTLModel<MTLJSONSerializing>
 @property (nonatomic, copy) NSString *name;
 @end

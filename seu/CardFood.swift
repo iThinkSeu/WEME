@@ -7,33 +7,160 @@
 //
 
 import UIKit
+import CoreLocation
 
 
-class CardFoodVC:CardVC {
-    override func nextCard() -> CardContentView {
-        let card1 = CardFoodContentView(frame: CGRectZero)
-        card1.imgView.image = UIImage(named: "food")
-        card1.avatar.image = UIImage(named: "dj")
-        card1.infoLabel.text = "wanwan 推荐"
-        card1.titleLabel.text = "蒜泥蒸大虾"
-        card1.detailIcon.image = UIImage(named: "location")
-        card1.detailLabel.text = "550 M"
-        card1.likeLabel.text = "1010"
-        return card1
+class CardFoodVC:CardVC,  CardFoodContentViewDelegate, CardFoodDetailViewDelegate, CLLocationManagerDelegate{
+    var recommendFood = [FoodModel]()
+    var currentIndex = 0
+    var currentFood:FoodModel?
+    var currentCard:CardFoodContentView?
+    var locationManager:CLLocationManager!
+    var currentCoordinate:CLLocationCoordinate2D?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        checkAuthorizationStatus()
+        locationManager.distanceFilter = CLLocationDistance(1000)
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        fetchRecommendFood()
     }
     
+    func checkAuthorizationStatus() {
+        if CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+        }
+        else {
+            locationManager.requestWhenInUseAuthorization()
+        }
+    }
+
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if locations.count == 0 {
+            return
+        }
+        currentCoordinate = locations[0].coordinate
+    }
+    
+    func didTapLocationAtCard(card: CardFoodDetailView) {
+        let vc = LocationRouteVC()
+        vc.food = currentFood
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+
+    override func nextCard() -> CardContentView {
+        if recommendFood.count > 0 {
+            let card = CardFoodContentView()
+            let f = recommendFood[currentIndex % recommendFood.count]
+            currentIndex = (++currentIndex) % recommendFood.count
+            if currentIndex == 0 {
+                fetchRecommendFood()
+            }
+            currentFood = f
+            card.imgView.sd_setImageWithURL(f.imageURL, placeholderImage: nil, completed: { [weak self](image, error, cacheType, url) -> Void in
+                if image != nil && error == nil {
+                    if let S = self {
+                        S.refreshBackground(image)
+                    }
+                    
+                }
+                })
+            
+            card.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(f.authorid), placeholderImage: UIImage(named: "avatar"))
+            card.infoLabel.text = "\(f.author) 推荐"
+            card.titleLabel.text = f.title
+            if let coord = currentCoordinate {
+                let c1 = CLLocation(latitude: f.latitude, longitude: f.longitude)
+                let c2 = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
+                let d = c1.distanceFromLocation(c2)
+                card.detailLabel.text = "\(Double(Int(d)/10)/100) KM"
+            }
+            else {
+                card.detailLabel.text = "距离(未知)"
+            }
+          
+            card.likeLabel.text = "\(f.likeNumber)"
+            card.likeButton.setImage(f.likeflag ? UIImage(named: "liked")?.imageWithRenderingMode(.AlwaysTemplate) : UIImage(named: "like")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+            card.cardFoodDelegate = self
+            currentCard = card
+            return card
+        }
+        else {
+            let card = CardDefaultView()
+            card.imgView.image = UIImage(named: "avatar")
+            fetchRecommendFood()
+            return card
+        }
+        
+    }
+
+    
+    func fetchRecommendFood() {
+        if let t = token {
+            request(.POST, GET_RECOMMENDED_FOOD_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        return
+                    }
+                    
+                    do {
+                        let food = try MTLJSONAdapter.modelsOfClass(FoodModel.self, fromJSONArray: json["result"].arrayObject) as? [FoodModel]
+                        if let t = food where t.count > 0 {
+                            S.recommendFood = t
+                            S.currentIndex = 0
+                        }
+                    }
+                    catch {
+                        print(error)
+                    }
+                }
+                })
+        }
+    }
+    
+
+    
     override func detailViewForCurrentCard() -> CardDetailView? {
-        let cardDetail = CardFoodDetailView(frame: CGRectZero)
-        cardDetail.imgView.image = UIImage(named: "food")
-        cardDetail.locationLabel.text = "晋家门・艾尚天地店"
-        cardDetail.infoLabel.text = "人均 70 RMB"
-        let text = "“艾尚天地店，环境好，适合聚会。虾很新鲜，味道也比较清淡...”"
-        let attributedText = NSMutableAttributedString(string: text)
-        attributedText.addAttributes([NSFontAttributeName:UIFont.boldSystemFontOfSize(20), NSForegroundColorAttributeName:UIColor.lightGrayColor()], range: NSMakeRange(0, 1))
-        attributedText.addAttributes([NSFontAttributeName:UIFont.boldSystemFontOfSize(20), NSForegroundColorAttributeName:UIColor.lightGrayColor()], range: NSMakeRange(text.characters.count-1, 1))
-        cardDetail.commentLabel.attributedText = attributedText
-        cardDetail.authorLabel.text = "By wanwan"
-        return cardDetail
+        if let f = currentFood {
+            let cardDetail = CardFoodDetailView(frame: CGRectZero)
+            cardDetail.imgView.sd_setImageWithURL(f.imageURL)
+            cardDetail.locationLabel.text = f.location
+            cardDetail.infoLabel.text = "人均 \(f.price) RMB"
+            let text = "\"\(f.comment)\""
+            let attributedText = NSMutableAttributedString(string: text)
+            attributedText.addAttributes([NSFontAttributeName:UIFont.boldSystemFontOfSize(20), NSForegroundColorAttributeName:UIColor.lightGrayColor()], range: NSMakeRange(0, 1))
+            attributedText.addAttributes([NSFontAttributeName:UIFont.boldSystemFontOfSize(20), NSForegroundColorAttributeName:UIColor.lightGrayColor()], range: NSMakeRange(text.characters.count-1, 1))
+            cardDetail.commentLabel.attributedText = attributedText
+            cardDetail.authorLabel.text = "By \(f.author)"
+            cardDetail.cardFoodDetailDelegate = self
+            return cardDetail
+        }
+        else {
+            return nil
+        }
+    }
+    
+    func didTapLikeAtCard(card: CardFoodContentView) {
+        if let t = token, f = currentFood {
+            request(.POST, LIKE_FOOD_URL, parameters: ["token":t, "foodcardid":f.ID], encoding: .JSON).responseJSON(completionHandler: { [weak self]    (response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        return
+                    }
+                    if let ff = S.currentFood where ff.ID == f.ID {
+                        S.currentCard?.likeLabel.text = "\(f.likeNumber + 1)"
+                        S.currentCard?.likeButton.setImage(UIImage(named: "liked")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+                    }
+                }
+            })
+        }
     }
     
     override func tapRight(sender: AnyObject) {
@@ -51,6 +178,10 @@ class CardFoodVC:CardVC {
     }
 }
 
+protocol CardFoodContentViewDelegate :class {
+    func didTapLikeAtCard(card:CardFoodContentView)
+}
+
 class CardFoodContentView:CardContentView {
     var avatar:UIImageView!
     var infoLabel:UILabel!
@@ -61,6 +192,8 @@ class CardFoodContentView:CardContentView {
     var gradientLayer:CAGradientLayer!
     var likeButton:UIButton!
     var likeLabel:UILabel!
+    
+    weak var cardFoodDelegate:CardFoodContentViewDelegate?
     
     func initialize() {
         layer.cornerRadius = 10.0
@@ -82,6 +215,7 @@ class CardFoodContentView:CardContentView {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.setImage(UIImage(named: "like")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
         likeButton.tintColor = UIColor.whiteColor()
+        likeButton.addTarget(self, action: "like:", forControlEvents: .TouchUpInside)
         addSubview(likeButton)
         
         likeLabel = UILabel()
@@ -98,7 +232,7 @@ class CardFoodContentView:CardContentView {
         likeButton.snp_makeConstraints { (make) -> Void in
             make.right.equalTo(likeLabel.snp_left).offset(-5)
             make.centerY.equalTo(likeLabel.snp_centerY)
-            make.width.height.equalTo(14)
+            make.width.height.equalTo(20)
         }
         
         avatar = UIImageView()
@@ -125,6 +259,7 @@ class CardFoodContentView:CardContentView {
         
         detailIcon = UIImageView()
         detailIcon.translatesAutoresizingMaskIntoConstraints = false
+        detailIcon.image = UIImage(named: "location")
         addSubview(detailIcon)
         
         detailLabel = UILabel()
@@ -193,6 +328,10 @@ class CardFoodContentView:CardContentView {
         
     }
     
+    func like(sender:AnyObject) {
+        cardFoodDelegate?.didTapLikeAtCard(self)
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         gradientLayer.bounds = imgView.bounds
@@ -214,7 +353,9 @@ class CardFoodContentView:CardContentView {
     }
 }
 
-
+protocol CardFoodDetailViewDelegate:class {
+    func didTapLocationAtCard(card:CardFoodDetailView)
+}
 
 class CardFoodDetailView:CardDetailView {
     
@@ -223,6 +364,8 @@ class CardFoodDetailView:CardDetailView {
     var infoLabel:UILabel!
     var commentLabel:UILabel!
     var authorLabel:UILabel!
+    
+    weak var cardFoodDetailDelegate:CardFoodDetailViewDelegate?
     
     func initialize() {
         backgroundColor = UIColor(red: 239/255.0, green: 239/255.0, blue: 244/255.0, alpha: 1.0)
@@ -244,6 +387,8 @@ class CardFoodDetailView:CardDetailView {
         locationBack.translatesAutoresizingMaskIntoConstraints = false
         locationBack.layer.cornerRadius = 2.0
         locationBack.layer.masksToBounds = true
+        let tap = UITapGestureRecognizer(target: self, action: "tapLocation:")
+        locationBack.addGestureRecognizer(tap)
         addSubview(locationBack)
         
         locationBack.snp_makeConstraints { (make) -> Void in
@@ -271,8 +416,19 @@ class CardFoodDetailView:CardDetailView {
         locationBack.addSubview(locationLabel)
         locationLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(locationIcon.snp_right).offset(5)
-            make.right.equalTo(locationBack.snp_right)
             make.centerY.equalTo(locationBack.snp_centerY)
+        }
+        
+        let locationForward = UIImageView(image:UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate))
+        locationForward.tintColor =  UIColor.colorFromRGB(0x9fa0af)
+        locationForward.translatesAutoresizingMaskIntoConstraints = false
+        locationBack.addSubview(locationForward)
+        
+        locationForward.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(locationLabel.snp_right)
+            make.right.equalTo(locationBack.snp_rightMargin)
+            make.centerY.equalTo(locationBack.snp_centerY)
+            make.width.height.equalTo(16)
         }
         
         let infoBack = UIView()
@@ -358,6 +514,10 @@ class CardFoodDetailView:CardDetailView {
             make.bottom.equalTo(snp_bottom).offset(-20)
         }
         
+    }
+    
+    func tapLocation(sender:AnyObject) {
+        cardFoodDetailDelegate?.didTapLocationAtCard(self)
     }
     
     func back(sender:AnyObject) {

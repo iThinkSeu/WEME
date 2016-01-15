@@ -7,7 +7,7 @@
 //
 #import <Mantle/Mantle.h>
 
-@interface UniversityModel : MTLModel
+@interface UniversityModel : MTLModel<MTLJSONSerializing>
 @property (nonatomic, copy) NSString *province;
 @property (nonatomic, strong)NSArray *universities;
 @end
