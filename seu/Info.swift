@@ -50,6 +50,19 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        if statusBarView != nil {
+            statusBarView?.removeFromSuperview()
+        }
+        navigationController?.navigationBar.translucent = true
+        navigationController?.navigationBar.backgroundColor = UIColor.clearColor()
+        //statusBarView?.alpha = 0
+        navigationController?.navigationBar.alpha = 1.0
+        statusBarView?.backgroundColor = UIColor.clearColor()
+        
+    }
+    
     func editInfo(sender:NSNotification) {
         if let ID = myId where ID == id {
             headerView.avatar.sd_setImageWithURL(thumbnailAvatarURL(), placeholderImage: UIImage(named: "avatar"))
@@ -431,6 +444,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             else {
                 let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
                 let addFriendButton = UIButton()
+                cell.backgroundColor = BACK_COLOR
                 addFriendButton.translatesAutoresizingMaskIntoConstraints = false
                 cell.contentView.addSubview(addFriendButton)
                 addFriendButton.snp_makeConstraints(closure: { (make) -> Void in
@@ -730,7 +744,7 @@ class MenuBarView:UIView {
         addSubview(leftButton)
         leftButton.backgroundColor = UIColor.whiteColor()
         leftButton.setTitle("个人资料", forState: .Normal)
-        leftButton.setTitleColor(TEXT_COLOR, forState: .Normal)
+        leftButton.setTitleColor(THEME_COLOR, forState: .Normal)
         leftButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         leftButton.addTarget(self, action: "tapButton:", forControlEvents: .TouchUpInside)
         leftButton.tag = 0
