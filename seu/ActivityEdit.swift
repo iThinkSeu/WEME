@@ -32,6 +32,63 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    var controller:ImagePickerSheetController {
+        get {
+            let presentImagePickerController: UIImagePickerControllerSourceType -> () = { [weak self] source in
+                if source == .Camera {
+                    let controller = UIImagePickerController()
+                    controller.delegate = self
+                    var sourceType = source
+                    if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
+                        sourceType = .PhotoLibrary
+                    }
+                    controller.sourceType = sourceType
+                    self?.presentViewController(controller, animated: true, completion: nil)
+                    
+                }
+                else {
+                    let controller = UIImagePickerController()
+                    controller.delegate = self
+                    controller.sourceType = .PhotoLibrary
+                    self?.presentViewController(controller, animated: true, completion: nil)
+                }
+            }
+            
+            
+            let controller = ImagePickerSheetController(mediaType: .Image)
+            controller.view.tintColor = THEME_COLOR
+            controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
+                presentImagePickerController(.Camera)
+                }, secondaryHandler: { _, numberOfPhotos in
+                    presentImagePickerController(.Camera)
+            }))
+            controller.addAction(ImagePickerAction(title: "从相册选择", secondaryTitle:{
+                NSString(format: "确定选择这%lu张照片", $0) as String
+                }, handler: { _ in
+                    presentImagePickerController(.PhotoLibrary)
+                }, secondaryHandler: {[weak self] _, numberOfPhotos in
+                    if let StrongSelf = self {
+                        let asset = controller.selectedImageAssets[0]
+                        controller.imageManager.requestImageDataForAsset(asset, options: nil, resultHandler: { (imageData, dataUTI, orientation, info) -> Void in
+                            let image = UIImage(data: imageData!)
+                            let cropper = RSKImageCropViewController(image: image, cropMode:.Custom)
+                            cropper.delegate = self
+                            cropper.dataSource = self
+                            StrongSelf.presentViewController(cropper, animated: true, completion: nil)
+                        })
+                        
+                    }
+                }))
+            controller.addAction(ImagePickerAction(title:"取消", style: .Cancel, handler: { _ in
+            }))
+            
+            controller.maximumSelection = 1
+            
+            return controller
+            
+        }}
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "发布活动"
@@ -294,12 +351,7 @@ class ActivityEditVC:UITableViewController, ActivityEditMainCellDelegate, UIText
     }
     
     func didTapCoverAtCell(cell: ActivityEditMainTableViewCell) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.navigationBar.barStyle = .Black
-        imagePicker.sourceType = .PhotoLibrary
-        imagePicker.delegate = self
-        self.presentViewController(imagePicker, animated: true, completion: nil)
-
+        self.presentViewController(controller, animated: true, completion: nil)
     }
     
     func textViewDidChange(textView: UITextView) {

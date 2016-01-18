@@ -46,61 +46,62 @@ class ComposeMessageVC:UIViewController {
     }()
     
     
-    var controller:ImagePickerSheetController {get {
-        let presentImagePickerController: UIImagePickerControllerSourceType -> () = { [weak self] source in
-            if source == .Camera {
-                let controller = UIImagePickerController()
-                controller.delegate = self
-                var sourceType = source
-                if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
-                    sourceType = .PhotoLibrary
-                    //print("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
-                }
-                controller.sourceType = sourceType
-                self?.presentViewController(controller, animated: true, completion: nil)
-                
-            }
-            else {
-                let controller = GMImagePickerController()
-                controller.delegate = self
-                controller.mediaTypes = [PHAssetMediaType.Image.rawValue]
-                
-                self?.presentViewController(controller, animated: true, completion: nil)
-            }
-        }
-        
-        
-        let controller = ImagePickerSheetController(mediaType: .Image)
-        controller.view.tintColor = THEME_COLOR//UIColor.redColor()
-        controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
-            presentImagePickerController(.Camera)
-            }, secondaryHandler: {[weak self]_, numberOfPhotos in
-                presentImagePickerController(.Camera)
-            }))
-        controller.addAction(ImagePickerAction(title: "从相册选择", secondaryTitle:{
-            NSString(format: "确定选择这%lu张照片", $0) as String
-            }, handler: { _ in
-                presentImagePickerController(.PhotoLibrary)
-            }, secondaryHandler: {[weak self] _, numberOfPhotos in
-                if let StrongSelf = self {
-                    var indexPaths = [NSIndexPath]()
-                    for asset in controller.selectedImageAssets{
-                        StrongSelf.images.append(asset)
-                        let k = StrongSelf.images.count-1
-                        indexPaths.append(NSIndexPath(forItem: k, inSection: 0))
+    var controller:ImagePickerSheetController {
+        get {
+            let presentImagePickerController: UIImagePickerControllerSourceType -> () = { [weak self] source in
+                if source == .Camera {
+                    let controller = UIImagePickerController()
+                    controller.delegate = self
+                    var sourceType = source
+                    if (!UIImagePickerController.isSourceTypeAvailable(sourceType)) {
+                        sourceType = .PhotoLibrary
+                        //print("Fallback to camera roll as a source since the simulator doesn't support taking pictures")
                     }
-                    //StrongSelf.resizeImageColletionView()
-                    //self?.imageCollectionView.reloadData()
-                    StrongSelf.imageCollectionView.insertItemsAtIndexPaths(indexPaths)
-                    StrongSelf.view.setNeedsLayout()
+                    controller.sourceType = sourceType
+                    self?.presentViewController(controller, animated: true, completion: nil)
+                    
                 }
+                else {
+                    let controller = GMImagePickerController()
+                    controller.delegate = self
+                    controller.mediaTypes = [PHAssetMediaType.Image.rawValue]
+                    
+                    self?.presentViewController(controller, animated: true, completion: nil)
+                }
+            }
+            
+            
+            let controller = ImagePickerSheetController(mediaType: .Image)
+            controller.view.tintColor = THEME_COLOR//UIColor.redColor()
+            controller.addAction(ImagePickerAction(title: "拍摄", secondaryTitle: "拍摄", handler: { _ in
+                presentImagePickerController(.Camera)
+                }, secondaryHandler: {[weak self]_, numberOfPhotos in
+                    presentImagePickerController(.Camera)
+                }))
+            controller.addAction(ImagePickerAction(title: "从相册选择", secondaryTitle:{
+                NSString(format: "确定选择这%lu张照片", $0) as String
+                }, handler: { _ in
+                    presentImagePickerController(.PhotoLibrary)
+                }, secondaryHandler: {[weak self] _, numberOfPhotos in
+                    if let StrongSelf = self {
+                        var indexPaths = [NSIndexPath]()
+                        for asset in controller.selectedImageAssets{
+                            StrongSelf.images.append(asset)
+                            let k = StrongSelf.images.count-1
+                            indexPaths.append(NSIndexPath(forItem: k, inSection: 0))
+                        }
+                        //StrongSelf.resizeImageColletionView()
+                        //self?.imageCollectionView.reloadData()
+                        StrongSelf.imageCollectionView.insertItemsAtIndexPaths(indexPaths)
+                        StrongSelf.view.setNeedsLayout()
+                    }
+                }))
+            controller.addAction(ImagePickerAction(title:"取消", style: .Cancel, handler: { _ in
+                //print("Cancelled")
             }))
-        controller.addAction(ImagePickerAction(title:"取消", style: .Cancel, handler: { _ in
-            //print("Cancelled")
-        }))
-        
-        return controller
-        
+            
+            return controller
+            
         }}
     
     private(set) var images = [AnyObject]()

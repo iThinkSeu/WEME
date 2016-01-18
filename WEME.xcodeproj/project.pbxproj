@@ -111,6 +111,7 @@
 		B12CB26F1C48C2B8003A191F /* ActivityQRCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB26E1C48C2B8003A191F /* ActivityQRCode.swift */; };
 		B12CB2721C48C973003A191F /* FoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2711C48C973003A191F /* FoodModel.m */; };
 		B12CB2741C4901A9003A191F /* LocationRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2731C4901A9003A191F /* LocationRoute.swift */; };
+		B12CB2781C4A1256003A191F /* contract.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B12CB2771C4A1256003A191F /* contract.rtf */; };
 		B12FB29D1BF9B50000566266 /* aio_voice_button_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */; };
 		B12FB29E1BF9B50000566266 /* aio_voice_button_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */; };
 		B12FB29F1BF9B50000566266 /* aio_voice_button_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */; };
@@ -392,6 +393,7 @@
 		B12CB2701C48C973003A191F /* FoodModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoodModel.h; sourceTree = "<group>"; };
 		B12CB2711C48C973003A191F /* FoodModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodModel.m; sourceTree = "<group>"; };
 		B12CB2731C4901A9003A191F /* LocationRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRoute.swift; sourceTree = "<group>"; };
+		B12CB2771C4A1256003A191F /* contract.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = contract.rtf; sourceTree = "<group>"; };
 		B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_icon@3x.png"; sourceTree = "<group>"; };
 		B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_nor@3x.png"; sourceTree = "<group>"; };
 		B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_press@3x.png"; sourceTree = "<group>"; };
@@ -1080,6 +1082,7 @@
 				B1019F881C420BFB00EBEB23 /* utility-objc.m */,
 				B1019F871C420BFB00EBEB23 /* utility-objc.h */,
 				B1D03BFA1BCE557A00DF0B44 /* utility.swift */,
+				B12CB2771C4A1256003A191F /* contract.rtf */,
 			);
 			name = Utility;
 			path = ..;
@@ -1370,6 +1373,7 @@
 				B12FB2A11BF9B50000566266 /* aio_voice_operate_delete_press@3x.png in Resources */,
 				B105CA1B1C23DB1600E946D8 /* ImageSelectedOn@2x.png in Resources */,
 				B1D9706A1C09D40600F0C9E7 /* btn_expression@2x.png in Resources */,
+				B12CB2781C4A1256003A191F /* contract.rtf in Resources */,
 				B105CA261C23DB1600E946D8 /* PlayButtonOverlayLargeTap.png in Resources */,
 				B105CA2E1C23DB1600E946D8 /* UIBarButtonItemArrowRight@3x.png in Resources */,
 				B17CF8A01C05E94C0074FF3F /* emoji.json in Resources */,

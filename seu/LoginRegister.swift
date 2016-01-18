@@ -185,14 +185,14 @@ class LoginRegisterVC: UIViewController {
         contentView.addSubview(registerButton)
         
         accountBack.snp_makeConstraints { (make) -> Void in
-            make.bottom.equalTo(contentView.snp_centerY)
+            make.bottom.equalTo(contentView.snp_centerY).offset(-20)
             make.centerX.equalTo(contentView.snp_centerX)
             make.height.equalTo(44)
             make.width.equalTo(contentView.snp_width).multipliedBy(2/3.0)
         }
         
         passwordBack.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(contentView.snp_centerY).offset(1)
+            make.top.equalTo(accountBack.snp_bottom).offset(1)
             make.centerX.equalTo(contentView.snp_centerX)
             make.height.equalTo(accountBack.snp_height)
             make.width.equalTo(accountBack.snp_width)
@@ -360,9 +360,56 @@ class LoginRegisterVC: UIViewController {
 }
 
 
+class ContractVC:UIViewController {
+    
+    var textContentView:UITextView!
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
+        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.whiteColor()
+        title = "用户协议"
+        let left = UIBarButtonItem(title: "关闭", style: .Plain, target: self, action: "close:")
+        navigationItem.leftBarButtonItem = left
+        automaticallyAdjustsScrollViewInsets = false
+        setupUI()
+        
+        let contract = NSBundle.mainBundle().URLForResource("contract", withExtension: "rtf")!
+        if let attributedtext = try? NSAttributedString(fileURL: contract, options: [NSDocumentTypeDocumentAttribute : NSRTFTextDocumentType], documentAttributes: nil) {
+            textContentView.attributedText = attributedtext
+        }
+    }
+    
+    func close(sender:AnyObject) {
+        self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func setupUI() {
+        textContentView = UITextView()
+        textContentView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(textContentView)
+        textContentView.editable = false
+        textContentView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(view.snp_left)
+            make.right.equalTo(view.snp_right)
+            make.top.equalTo(snp_topLayoutGuideBottom)
+            make.bottom.equalTo(view.snp_bottom)
+        }
+    }
+}
+
 class RegisterUserVC:UITableViewController {
     
-    let sections = ["用户名", "密码", "确认密码", "注册"]
+    let sections = ["用户名", "密码", "确认密码", "用户协议", "注册"]
     let placeholder = ["登陆账号(英文)", "密码(至少6位)", "再次输入密码"]
     
     var account = ""
@@ -387,6 +434,7 @@ class RegisterUserVC:UITableViewController {
         view.backgroundColor = BACK_COLOR
         tableView.registerClass(RegisterTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(RegisterTableViewCell))
         tableView.registerClass(RegisterTableActionViewCell.self, forCellReuseIdentifier: NSStringFromClass(RegisterTableActionViewCell))
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .None
         title = "注册\(APP)用户"
@@ -439,6 +487,19 @@ class RegisterUserVC:UITableViewController {
             cell.selectionStyle = .None
             return cell
         }
+        else if indexPath.row == sections.count - 2 {
+            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell), forIndexPath: indexPath)
+            let button = UIButton(frame: CGRectMake(0, 0, tableView.frame.size.width, 30))
+            button.setTitle("注册表示您同意 \"WEME用户协议\", 请先阅读 >>", forState: .Normal)
+            button.titleLabel?.textAlignment = .Center
+            button.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+            button.setTitleColor(THEME_COLOR, forState: .Normal)
+            button.addTarget(self, action: "contract:", forControlEvents: .TouchUpInside)
+            cell.accessoryView = button
+            cell.backgroundColor = BACK_COLOR
+            cell.selectionStyle = .None
+            return cell
+        }
         else {
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(RegisterTableViewCell), forIndexPath: indexPath) as! RegisterTableViewCell
             cell.titleInfoLabel.text = sections[indexPath.row]
@@ -453,9 +514,17 @@ class RegisterUserVC:UITableViewController {
         }
     }
     
+    func contract(sender:AnyObject) {
+        let vc = UINavigationController(rootViewController: ContractVC())
+        presentViewController(vc, animated: true, completion: nil)
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.row == sections.count - 1 {
-            return 80
+            return 60
+        }
+        else if indexPath.row == sections.count - 2 {
+            return 30
         }
         else {
             return 70
