@@ -1654,7 +1654,7 @@ extension MessageConversationVC:MessageConversationCellDelegate {
         if let indexPath = tableView.indexPathForCell(cell) {
             let data = conversations[indexPath.section]
             let id = data["SendId"].stringValue
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = id
             navigationController?.pushViewController(vc, animated: true)
         }

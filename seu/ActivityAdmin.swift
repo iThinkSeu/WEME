@@ -525,7 +525,7 @@ class ActivityAdminUserVC:UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let u = users[indexPath.section]
-        let vc = MeInfoVC()
+        let vc = InfoVC()
         vc.id = u.ID
         navigationController?.pushViewController(vc, animated: true)
     }

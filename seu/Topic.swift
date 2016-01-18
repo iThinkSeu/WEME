@@ -539,7 +539,7 @@ extension TopicVC: TopicTableViewCellDelegate {
     func didTapAvatarAtCell(cell: TopicTableViewCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
             //if let id = myId {
-                let vc = MeInfoVC()
+                let vc = InfoVC()
                 let data = posts[indexPath.section]
                 vc.id = data.userid
                 //if id != vc.id {
@@ -554,7 +554,7 @@ extension TopicVC:TopicTableViewPureTextCellDelegate {
     func didTapAvatarAtPureTextCell(cell: TopicTableViewPureTextCell) {
         if let indexPath = tableView.indexPathForCell(cell) where indexPath.section < posts.count {
             //if let id = myId {
-                let vc = MeInfoVC()
+                let vc = InfoVC()
                 let data = posts[indexPath.section]
                 vc.id = data.userid
               //  if id != vc.id {

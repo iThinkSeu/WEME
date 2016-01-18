@@ -71,7 +71,7 @@ class PostLikeVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let vc = MeInfoVC()
+        let vc = InfoVC()
         vc.id = users[indexPath.row].id
         navigationController?.pushViewController(vc, animated: true)
     }

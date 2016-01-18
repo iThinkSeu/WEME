@@ -303,14 +303,14 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     
     func didTapAvatarAtCell(cell: ConversationTableCell) {
         if let indexPath = tableView.indexPathForCell(cell) {
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = friendsData[indexPath.row]["id"].stringValue
             navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     func didSelectUserID(id: String) {
-        let vc = MeInfoVC()
+        let vc = InfoVC()
         vc.id = id
         searchController?.active = false
         UIApplication.sharedApplication().setStatusBarStyle(.LightContent, animated: true)
@@ -587,7 +587,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
 //            }
         }
         else {
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = friendsData[indexPath.row]["id"].stringValue
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -812,7 +812,7 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func didTapAvatarAtCell(cell: ConversationTableCell) {
         if let indexPath = tableView.indexPathForCell(cell) {
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = friendsData[indexPath.row]["id"].stringValue
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -820,7 +820,7 @@ class MyFolloweeVC:UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
      
-        let vc = MeInfoVC()
+        let vc = InfoVC()
         vc.id = friendsData[indexPath.row]["id"].stringValue
         navigationController?.pushViewController(vc, animated: true)
 

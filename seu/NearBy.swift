@@ -168,7 +168,7 @@ class NearByVC: UITableViewController,MKMapViewDelegate, AMapSearchDelegate,CLLo
     
     func visitInfoForId(id:String?) {
         if let ID = id {
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = ID
             navigationController?.pushViewController(vc, animated: true)
         }

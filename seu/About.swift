@@ -288,7 +288,7 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
         print("called")
         let index  = pageControl.currentPage
         if index >= 0  && index < name_arr.count {
-           let vc = MeInfoVC()
+           let vc = InfoVC()
             vc.id = id_arr[index]
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -570,7 +570,7 @@ class AboutUSVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         let infoAction = UITableViewRowAction(style: .Default, title: "了解更多") { (action, indexPath) -> Void in
             let id = self.id_arr[indexPath.row]
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = id
             self.navigationController?.pushViewController(vc, animated: true)
         }

@@ -695,7 +695,7 @@ extension PostVC : PostArticleTableViewCellDelegate {
     
     func showProfileFor(id:String) {
         //if let Id = myId where Id != id{
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = id
             navigationController?.pushViewController(vc, animated: true)
         //}

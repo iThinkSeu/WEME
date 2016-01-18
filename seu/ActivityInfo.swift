@@ -309,7 +309,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if let a = activity{
-                let vc = MeInfoVC()
+                let vc = InfoVC()
                 vc.id = a.authorID
                 navigationController?.pushViewController(vc, animated: true)
             }

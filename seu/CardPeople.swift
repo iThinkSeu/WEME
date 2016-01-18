@@ -11,10 +11,20 @@ import UIKit
 class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
     var recommendPeople = [PersonModel]()
     var currentIndex = 0
-    var currentPeople:PersonModel?
+    var currentPeople:PersonModel? {
+        didSet {
+            if currentPeople == nil {
+                actionRight.enabled = false
+            }
+            else {
+                actionRight.enabled = true
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        currentPeople = nil
         fetchRecommendPeople()
     }
     
@@ -106,7 +116,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
     
     func didTapAvatarAtCard(card: CardPeopleContentView) {
         if let p = currentPeople {
-            let vc = MeInfoVC()
+            let vc = InfoVC()
             vc.id = p.ID
             navigationController?.pushViewController(vc, animated: true)
         }

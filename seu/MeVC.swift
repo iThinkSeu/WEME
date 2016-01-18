@@ -227,7 +227,9 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0  {
             if let id = myId {
-                let vc = MeInfoVC()
+//                let vc = MeInfoVC()
+//                vc.id = id
+                let vc = InfoVC()
                 vc.id = id
                 navigationController?.pushViewController(vc, animated: true)
             }
