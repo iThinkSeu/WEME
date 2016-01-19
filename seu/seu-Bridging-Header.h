@@ -14,7 +14,6 @@
 #import "CustomBadge.h"
 #import <WebImage/WebImage.h>
 #import "STInputBar.h"
-#import "JSQAudioBubble.h"
 #import "KxMenu.h"
 #import "Model.h"
 #import <MBProgressHUD/MBProgressHUD.h>

@@ -736,12 +736,45 @@ extension PostVC : PostArticleTableViewCellDelegate {
         let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.tag = 0
+                alertText.delegate = self
                 alertText.showInView(self.navigationController!.view)
             }
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
         sheet.setButtonTextColor(THEME_COLOR)
         sheet.showInView(navigationController!.view)
         
+    }
+}
+
+extension PostVC:AlertTextViewDelegate {
+    func alertTextView(alertView: AlertTextView, doneWithText text: String?) {
+        var type:String? = nil
+        var typeid:String? = nil
+        if alertView.tag == 0 {
+            type = "post"
+            typeid = self.postID
+        }
+        else {
+            type = "comment"
+            typeid = comments[alertView.tag - 1].id
+        }
+        
+        if let t = token,  s = text , type = type, typeid = typeid where s.characters.count > 0{
+            request(.POST, REPORT_URL, parameters: ["token":t, "body": s, "type":type, "typeid": typeid], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        return
+                    }
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.labelText = "举报成功"
+                    hud.hide(true, afterDelay: 1.0)
+                }
+            })
+        }
     }
 }
 
@@ -807,9 +840,14 @@ extension PostVC:CommentFooterViewDelegate {
     
     func didTapMoreAtFooterView(footer: CommentFooterView) {
         //MARK: -tapMoreAtFooter
+        guard footer.tag > 0 && footer.tag <= comments.count else {
+            return
+        }
         let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.tag = footer.tag
+                alertText.delegate = self
                 alertText.showInView(self.navigationController!.view)
             }
 

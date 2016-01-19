@@ -11,7 +11,7 @@ import UIKit
 
 protocol AlertTextViewDelegate:class{
 
-    func didTapDone(text:String?)
+    func alertTextView(alertView:AlertTextView, doneWithText:String?)
 }
 
 class AlertTextView:UIView, UITextViewDelegate {
@@ -183,7 +183,7 @@ class AlertTextView:UIView, UITextViewDelegate {
     
     func done(sender:AnyObject?) {
         dismiss()
-        delegate?.didTapDone(self.textView.text)
+        delegate?.alertTextView(self, doneWithText: self.textView.text)
     }
     
     func showInView(theView:UIView) {

@@ -480,11 +480,6 @@ extension SocialVC:UICollectionViewDataSource, UICollectionViewDelegate, UIColle
             vc.title = data.theme
             navigationController?.pushViewController(vc, animated: true)
         }
-        else {
-            let vc = TopicVoiceVC(topic: "")
-            vc.title = "魔音"
-            navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 

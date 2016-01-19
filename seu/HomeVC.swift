@@ -88,7 +88,7 @@ class HomeVC: UITabBarController {
 
 
 class SettingVC :UITableViewController {
-    private let setting = ["清除缓存", "关于\(APP)"]
+    private let setting = ["清除缓存", "允许推荐你给其他用户","关于\(APP)"]
     override func viewDidLoad() {
         super.viewDidLoad()
         //tableView.separatorStyle = UITableViewCellSeparatorStyle.None
@@ -161,10 +161,10 @@ class SettingVC :UITableViewController {
 
         cell.textLabel?.text = setting[indexPath.row]
         cell.textLabel?.textColor = UIColor.colorFromRGB(0x636363)
-        if indexPath.row != 0 {
+        if indexPath.row == 2 {
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         }
-        else {
+        else if indexPath.row == 0 {
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
             label.textAlignment = .Right
             label.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
@@ -172,8 +172,56 @@ class SettingVC :UITableViewController {
             label.text = "\(Double(SDImageCache.sharedImageCache().getSize()/10000)/100.0)M"
             cell.accessoryView = label
         }
+        else {
+            let toggle = UISwitch(frame: CGRectZero)
+            toggle.onTintColor = THEME_COLOR
+            cell.accessoryView = toggle
+            toggle.setOn(true, animated: false)
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                if let v = NSUserDefaults.standardUserDefaults().stringForKey(CARD_SETTING_KEY) {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if v == "yes" {
+                            toggle.on = true
+                        }
+                        else if v == "no" {
+                            toggle.on = false
+                        }
+
+                    })
+                }
+                
+            })
+            toggle.addTarget(self, action: "changeCardSetting:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.accessoryView = toggle
+        }
         cell.selectionStyle = .None
         return cell
+    }
+    
+    func changeCardSetting(sender:UISwitch) {
+        let v = sender.on ? "0" : "1"
+        if let t = token {
+            request(.POST, EDIT_CARD_SETTING_URL, parameters: ["token":t, "cardflag":v], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                       // S.messageAlert("修改设定失败")
+                        return
+                    }
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+                        NSUserDefaults.standardUserDefaults().setValue(v == "0" ? "yes" : "no", forKey: CARD_SETTING_KEY)
+                        NSUserDefaults.standardUserDefaults().synchronize()
+                    })
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.labelText = (v == "0" ? "您将出现在发现列表中" : "您将不会出现在发现列表中" )
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.hide(true, afterDelay: 1)
+
+                }
+            })
+        }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -197,10 +245,8 @@ class SettingVC :UITableViewController {
                 })
                })
         }
-        else if indexPath.item == 1{
+        else if indexPath.item == 2{
             navigationController?.pushViewController(AboutVC(), animated: true)
-            //let nav = UINavigationController(rootViewController: AboutVC())
-            //presentViewController(nav, animated: true, completion: nil)
         }
         
     }

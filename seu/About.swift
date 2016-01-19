@@ -343,26 +343,35 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
     
     func tapRight(sender:AnyObject) {
         if WXApi.isWXAppInstalled() {
-            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
-                if index == 0 {
-                    self.shareToWeChat(0)
-                }
-                else if index == 1 {
-                     self.shareToWeChat(1)
-                }
-                else if index == 2 {
-                    let alertText = AlertTextView(title: "联系我们", placeHolder: "有什么想说的，告诉我们吧╮(╯▽╰)╭")
-                    alertText.showInView(self.navigationController!.view)
+            let sheet = IBActionSheet(title: nil, callback: { [weak self](sheet, index) -> Void in
+                if let S = self {
+                    if index == 0 {
+                        S.shareToWeChat(0)
+                    }
+                    else if index == 1 {
+                         S.shareToWeChat(1)
+                    }
+                    else if index == 2 {
+                        let vc = ComposeMessageVC()
+                        vc.recvID = "2"
+                        let nav = UINavigationController(rootViewController: vc)
+                        S.presentViewController(nav, animated: true, completion: nil)
+
+                    }
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享WEME到微信会话", "分享WEME到微信朋友圈", "联系我们"])
             sheet.setButtonTextColor(THEME_COLOR)
             sheet.showInView(self.navigationController!.view)
         }
         else {
-            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
-                if index == 0 {
-                    let alertText = AlertTextView(title: "联系我们", placeHolder: "有什么想说的，告诉我们吧╮(╯▽╰)╭")
-                    alertText.showInView(self.navigationController!.view)
+            let sheet = IBActionSheet(title: nil, callback: { [weak self](sheet, index) -> Void in
+                if let S = self {
+                    if index == 0 {
+                        let vc = ComposeMessageVC()
+                        vc.recvID = "2"
+                        let nav = UINavigationController(rootViewController: vc)
+                       S.presentViewController(nav, animated: true, completion: nil)
+                    }
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["联系我们"])
             sheet.setButtonTextColor(THEME_COLOR)

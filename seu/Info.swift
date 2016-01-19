@@ -9,6 +9,11 @@
 import UIKit
 import RSKImageCropper
 
+enum MenuBarState {
+    case dock(CGFloat, CGFloat, CGFloat)
+    case float(CGFloat)
+}
+
 class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var coverImageView:UIImageView!
@@ -37,6 +42,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var images = [UserImageModel]()
     private var imageCurrentPage = 1
     
+    var currentMenuBarState:MenuBarState = .float(0)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let action = UIBarButtonItem(image: UIImage(named: "more")?.imageWithRenderingMode(.AlwaysTemplate), style: .Plain, target: self, action: "action:")
@@ -44,8 +51,19 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationItem.rightBarButtonItem = action
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "editInfo:", name: EDIT_INFO_NOTIFICATION, object: nil)
         setupUI()
+        visit()
         configUI()
     }
+    
+    
+    func visit() {
+        if let t = token, id = id {
+            request(.POST, VISIT_URL, parameters: ["token":t, "userid":id], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
+                
+            })
+        }
+    }
+
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
@@ -75,12 +93,14 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
                 if index == 0 {
                     let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                    alertText.delegate = self
                     alertText.showInView(self.navigationController!.view)
                 }
                 else if index == 1 {
                     let vc = ComposeMessageVC()
                     vc.recvID = self.id
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    let nav = UINavigationController(rootViewController: vc)
+                    self.navigationController?.pushViewController(nav, animated: true)
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报", "私信"])
             sheet.setButtonTextColor(THEME_COLOR)
@@ -127,6 +147,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         statusBarView?.backgroundColor = UIColor.clearColor()
         navigationController?.navigationBar.addSubview(statusBarView!)
         
+        scrollViewDidScroll(tableView)
+        
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -140,14 +162,33 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else {
             coverImageView.frame = CGRectMake(0,  -SCREEN_WIDTH + SCREEN_WIDTH * 2 / 3 - yOffset, SCREEN_WIDTH, SCREEN_WIDTH )
         }
+     
         
         if yOffset <= SCREEN_WIDTH*2/3 - 60 {
+            title = ""
             menuBar.frame = CGRectMake(0, SCREEN_WIDTH * 2 / 3  - yOffset, SCREEN_WIDTH, 40)
+            currentMenuBarState = .float(yOffset)
         }
         else {
+            title = info?.name ?? ""
             menuBar.frame = CGRectMake(0, 60, SCREEN_WIDTH, 40)
+            if case .float(_) = currentMenuBarState {
+                currentMenuBarState = .dock(yOffset, yOffset, yOffset)
+            }
+            else if case let .dock(left, mid, right) = currentMenuBarState {
+                if currentIndex == 0 {
+                    currentMenuBarState = .dock(yOffset, mid, right)
+                }
+                else if currentIndex == 1 {
+                    currentMenuBarState = .dock(left, yOffset, right)
+                }
+                else if currentIndex == 2 {
+                    currentMenuBarState = .dock(left, mid, yOffset)
+                }
+            }
 
         }
+        
        
         
         if yOffset <= 10 {
@@ -256,7 +297,6 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     do {
                         let events = try MTLJSONAdapter.modelsOfClass(TimelineModel.self, fromJSONArray: json["result"].arrayObject) as! [TimelineModel]
-                        
                         if events.count > 0 {
                             S.timelineCurrentPage++
                             var k = S.events.count
@@ -267,6 +307,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                             S.events.appendContentsOf(events)
                             if S.currentIndex == 1 {
                                 S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
+
                             }
                         }
                     }
@@ -281,6 +322,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     func fetchImages() {
         if let t = token {
             request(.POST, GET_USER_TIMELINE_IMAGES, parameters: ["token":t, "userid":id, "page":"\(imageCurrentPage)"], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
                 if let d = response.result.value, S = self {
                     let json = JSON(d)
                     guard json != .null && json["state"].stringValue == "successful" else {
@@ -339,7 +381,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         fetchVisitInfo()
         fetchInfo()
         //fetchEvents()
-        coverImageView.sd_setImageWithURL(profileBackgroundURLForID(id), placeholderImage: UIImage(named: "profile_backgrdound"))
+        coverImageView.sd_setImageWithURL(profileBackgroundURLForID(id), placeholderImage: UIImage(named: "info_default"))
         headerView.avatar.sd_setImageWithURL(thumbnailAvatarURLForID(id), placeholderImage: UIImage(named: "avatar"))
     }
     
@@ -359,7 +401,10 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if currentIndex == 0 {
             let rect = ("历" as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.width, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
-            return ( indexPath.row == 0 || indexPath.row == 2 || indexPath.row == 5 || indexPath.row == 6 ) ? rect.height + 40 : 40
+            return ( indexPath.row == 0 || indexPath.row == 2 || indexPath.row == 5 || indexPath.row == 6) ? rect.height + 40 : 40
+        }
+        else if currentIndex == 1 {
+            return 120
         }
         else {
             return (SCREEN_WIDTH-20) / 3
@@ -368,7 +413,14 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if currentIndex == 1 {
-            fetchEvents()
+            if indexPath.section == events.count - 1{
+                fetchEvents()
+            }
+        }
+        else if currentIndex == 2 {
+            if indexPath.row == ((images.count + 2)/3) - 1 {
+                fetchImages()
+            }
         }
     }
     
@@ -504,6 +556,27 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension InfoVC:AlertTextViewDelegate {
+    func alertTextView(alertView: AlertTextView, doneWithText text: String?) {
+        if let t = token, s = text where s.characters.count > 0 {
+            request(.POST, REPORT_URL, parameters: ["token":t, "body": s , "type":"user", "typeid": id], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        return
+                    }
+                    let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                    hud.mode = .CustomView
+                    hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                    hud.labelText = "举报成功"
+                    hud.hide(true, afterDelay: 1.0)
+                }
+                })
+
+        }
+    }
+}
+
 extension InfoVC:ThreeImageTableViewCellDelegate {
     func didTapImageAtThreeImageTableViewCell(cell: ThreeImageTableViewCell, atIndex idx: Int) {
         if currentIndex == 2 {
@@ -522,18 +595,45 @@ extension InfoVC:MenuBarViewDelegate {
     func didSelectButtonAtIndex(index: Int) {
         if index == 0 {
             currentIndex = 0
+            
+            if case let .float(yOffset) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, yOffset), animated: false)
+            }
+            else if case let .dock(left, _, _) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, left), animated: false)
+            }
             tableView.reloadData()
+
             fetchInfo()
         }
         else if index == 1 {
             currentIndex = 1
+            
+            if case let .float(yOffset) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, yOffset), animated: false)
+            }
+            else if case let .dock(_, mid, _) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, mid), animated: false)
+            }
             tableView.reloadData()
-            fetchEvents()
+            if events.count == 0 {
+                fetchEvents()
+            }
         }
-        else {
+        else if index == 2 {
             currentIndex = 2
+            
+            
+            if case let .float(yOffset) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, yOffset), animated: false)
+            }
+            else if case let .dock(_, _,right) = currentMenuBarState {
+                tableView.setContentOffset(CGPointMake(0, right), animated: false)
+            }
             tableView.reloadData()
-            fetchImages()
+            if images.count == 0 {
+                fetchImages()
+            }
         }
     }
 }
@@ -675,7 +775,7 @@ protocol PersonalHeaderViewDelegate:class {
 class PersonalHeaderView:UIView {
     
     var avatar:UIImageView!
-    var infoLabel:UILabel!
+    var infoLabel:DLLabel!
     weak var delegate:PersonalHeaderViewDelegate?
     func initialize() {
         backgroundColor = UIColor.clearColor()
@@ -686,7 +786,7 @@ class PersonalHeaderView:UIView {
         avatar.addGestureRecognizer(tap)
         addSubview(avatar)
         
-        infoLabel = UILabel()
+        infoLabel = DLLabel()
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(infoLabel)
         infoLabel.textColor = UIColor.whiteColor()
@@ -892,8 +992,10 @@ class ThreeImageTableViewCell:UITableViewCell {
     }
     
     func tapImg(tap:UITapGestureRecognizer) {
-        if let v = tap.view {
-            delegate?.didTapImageAtThreeImageTableViewCell(self, atIndex: v.tag)
+        if let v = tap.view as? UIImageView{
+            if v.image != nil {
+                delegate?.didTapImageAtThreeImageTableViewCell(self, atIndex: v.tag)
+            }
         }
     }
     
@@ -979,7 +1081,7 @@ class InfoTableViewCell:UITableViewCell {
 
 class TimelineTableViewCell:UITableViewCell {
     var infoLabel:UILabel!
-    var moreAction:UIImageView!
+   // var moreAction:UIImageView!
     var thumbnail:UIImageView!
     var titleLabel:UILabel!
     var bodyLabel:UILabel!
@@ -990,9 +1092,9 @@ class TimelineTableViewCell:UITableViewCell {
         infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
         contentView.addSubview(infoLabel)
         
-        moreAction = UIImageView(image: UIImage(named: "more"))
-        moreAction.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(moreAction)
+//        moreAction = UIImageView(image: UIImage(named: "more"))
+//        moreAction.translatesAutoresizingMaskIntoConstraints = false
+//        contentView.addSubview(moreAction)
         
         thumbnail = UIImageView()
         thumbnail.translatesAutoresizingMaskIntoConstraints = false
@@ -1016,12 +1118,12 @@ class TimelineTableViewCell:UITableViewCell {
             make.top.equalTo(contentView.snp_topMargin)
         }
         
-        moreAction.snp_makeConstraints { (make) -> Void in
-            make.width.height.equalTo(24)
-            make.right.equalTo(contentView.snp_rightMargin)
-            make.left.equalTo(infoLabel.snp_right)
-            make.centerY.equalTo(infoLabel.snp_centerY)
-        }
+//        moreAction.snp_makeConstraints { (make) -> Void in
+//            make.width.height.equalTo(24)
+//            make.right.equalTo(contentView.snp_rightMargin)
+//            make.left.equalTo(infoLabel.snp_right)
+//            make.centerY.equalTo(infoLabel.snp_centerY)
+//        }
         
         thumbnail.snp_makeConstraints { (make) -> Void in
             make.width.height.equalTo(60)

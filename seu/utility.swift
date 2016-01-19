@@ -25,6 +25,8 @@ let EDIT_PERSONAL_INFO_URL = BASE_URL + "editprofile/editpersonalinformation"
 
 let EDIT_PREFER_INFO_URL = BASE_URL + "editprofile/editpreferinformation"
 
+let EDIT_CARD_SETTING_URL = BASE_URL + "editprofile/editcardsetting"
+
 let EDIT_PROFILE_INFO_URL = BASE_URL + "editprofileinfo"
 
 let GET_PROFILE_INFO_URL = BASE_URL + "getprofile"
@@ -120,6 +122,10 @@ let VALIDATE_ACTIVITY_USER_URL = BASE_URL + "validateactivityuser"
 let GET_RECOMMENDED_FOOD_URL = BASE_URL + "getfoodcard"
 let PUBLISH_FOOD_CARD_URL = BASE_URL + "publishcard"
 let LIKE_FOOD_URL = BASE_URL + "likefoodcard"
+
+let REPORT_URL = BASE_URL + "publishreport"
+
+let CARD_SETTING_KEY = "CARD_SETTING_KEY"
 //MARK - Cache File
 
 let PROFILE_CACHE_FILE = "profile"

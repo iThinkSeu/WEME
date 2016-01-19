@@ -87,16 +87,6 @@
 		B120C1511BF452410099F78A /* GMPhotoPicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B120C1461BF4522D0099F78A /* GMPhotoPicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B125DBC51C06C46B002E0F5C /* PostLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125DBC41C06C46B002E0F5C /* PostLike.swift */; };
 		B125DBC91C06EF68002E0F5C /* ReplyPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125DBC81C06EF68002E0F5C /* ReplyPost.swift */; };
-		B125DBCB1C098348002E0F5C /* TopicVoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125DBCA1C098347002E0F5C /* TopicVoice.swift */; };
-		B125DBDD1C09844A002E0F5C /* JSQMessagesAssets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B125DBCE1C09844A002E0F5C /* JSQMessagesAssets.bundle */; };
-		B125DBDE1C09844A002E0F5C /* JSQMessagesBubbleImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBD01C09844A002E0F5C /* JSQMessagesBubbleImage.m */; };
-		B125DBDF1C09844A002E0F5C /* JSQMessagesBubbleImageFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBD21C09844A002E0F5C /* JSQMessagesBubbleImageFactory.m */; };
-		B125DBE01C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBD41C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m */; };
-		B125DBE11C09844A002E0F5C /* JSQVoiceAudioMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBD61C09844A002E0F5C /* JSQVoiceAudioMediaItem.m */; };
-		B125DBE21C09844A002E0F5C /* NSBundle+JSQMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBD71C09844A002E0F5C /* NSBundle+JSQMessages.m */; };
-		B125DBE31C09844A002E0F5C /* UIColor+JSQMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBDA1C09844A002E0F5C /* UIColor+JSQMessages.m */; };
-		B125DBE41C09844A002E0F5C /* UIImage+JSQMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBDC1C09844A002E0F5C /* UIImage+JSQMessages.m */; };
-		B125DBE81C098510002E0F5C /* JSQMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B125DBE61C098510002E0F5C /* JSQMediaItem.m */; };
 		B1279AC81C17E8D000E14D08 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = B1279AC71C17E8D000E14D08 /* KxMenu.m */; };
 		B12CB2611C478E75003A191F /* QRCodeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25A1C478E74003A191F /* QRCodeReader.swift */; };
 		B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */; };
@@ -112,20 +102,6 @@
 		B12CB2721C48C973003A191F /* FoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2711C48C973003A191F /* FoodModel.m */; };
 		B12CB2741C4901A9003A191F /* LocationRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB2731C4901A9003A191F /* LocationRoute.swift */; };
 		B12CB2781C4A1256003A191F /* contract.rtf in Resources */ = {isa = PBXBuildFile; fileRef = B12CB2771C4A1256003A191F /* contract.rtf */; };
-		B12FB29D1BF9B50000566266 /* aio_voice_button_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */; };
-		B12FB29E1BF9B50000566266 /* aio_voice_button_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */; };
-		B12FB29F1BF9B50000566266 /* aio_voice_button_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */; };
-		B12FB2A01BF9B50000566266 /* aio_voice_operate_delete_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2971BF9B50000566266 /* aio_voice_operate_delete_nor@3x.png */; };
-		B12FB2A11BF9B50000566266 /* aio_voice_operate_delete_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2981BF9B50000566266 /* aio_voice_operate_delete_press@3x.png */; };
-		B12FB2A21BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2991BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png */; };
-		B12FB2A31BF9B50000566266 /* aio_voice_operate_listen_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB29A1BF9B50000566266 /* aio_voice_operate_listen_press@3x.png */; };
-		B12FB2A41BF9B50000566266 /* aio_voice_operate_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB29B1BF9B50000566266 /* aio_voice_operate_nor@3x.png */; };
-		B12FB2A51BF9B50000566266 /* aio_voice_operate_press@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B12FB29C1BF9B50000566266 /* aio_voice_operate_press@3x.png */; };
-		B12FB2B01BF9B50F00566266 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B12FB2A91BF9B50F00566266 /* libopencore-amrnb.a */; };
-		B12FB2B11BF9B50F00566266 /* WavAmrCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2AA1BF9B50F00566266 /* WavAmrCodec.cpp */; };
-		B12FB2B21BF9B50F00566266 /* wavreader.c in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2AC1BF9B50F00566266 /* wavreader.c */; };
-		B12FB2B31BF9B50F00566266 /* wavwriter.c in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2AE1BF9B50F00566266 /* wavwriter.c */; };
-		B12FB2B61BF9B52C00566266 /* DLVoiceRecorderViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2B51BF9B52C00566266 /* DLVoiceRecorderViewController.mm */; };
 		B12FB2B81BFA14C800566266 /* Social.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2B71BFA14C800566266 /* Social.swift */; };
 		B12FB2BD1BFEF67500566266 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2BC1BFEF67500566266 /* PostVC.swift */; };
 		B12FB2BF1C009D1C00566266 /* FloatingActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2BE1C009D1C00566266 /* FloatingActionView.swift */; };
@@ -189,6 +165,10 @@
 		B1AE746C1BD514EC0014BE12 /* SheetCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE745E1BD514EC0014BE12 /* SheetCollectionViewLayout.swift */; };
 		B1AE746D1BD514EC0014BE12 /* SheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE745F1BD514EC0014BE12 /* SheetController.swift */; };
 		B1AE746E1BD514EC0014BE12 /* SheetPreviewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74601BD514EC0014BE12 /* SheetPreviewCollectionViewCell.swift */; };
+		B1CA3C801C4E05690015E69E /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1CA3C7F1C4E05690015E69E /* libopencore-amrnb.a */; };
+		B1CA3C891C4E05960015E69E /* WavAmrCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3C831C4E05960015E69E /* WavAmrCodec.cpp */; };
+		B1CA3C8A1C4E05960015E69E /* wavreader.c in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3C851C4E05960015E69E /* wavreader.c */; };
+		B1CA3C8B1C4E05960015E69E /* wavwriter.c in Sources */ = {isa = PBXBuildFile; fileRef = B1CA3C871C4E05960015E69E /* wavwriter.c */; };
 		B1CC24EC1C1843D900953A07 /* Mantle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1CC24E91C1843C800953A07 /* Mantle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1CC24F01C193D4900953A07 /* MBProgressHUD.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B1CC24ED1C19346700953A07 /* MBProgressHUD.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B1CC24F11C193E3900953A07 /* WebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B12FB38A1C042F5300566266 /* WebImage.framework */; };
@@ -350,28 +330,6 @@
 		B120C1461BF4522D0099F78A /* GMPhotoPicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GMPhotoPicker.framework; path = seu/GMPhotoPicker.framework; sourceTree = "<group>"; };
 		B125DBC41C06C46B002E0F5C /* PostLike.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostLike.swift; sourceTree = "<group>"; };
 		B125DBC81C06EF68002E0F5C /* ReplyPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyPost.swift; sourceTree = "<group>"; };
-		B125DBCA1C098347002E0F5C /* TopicVoice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicVoice.swift; sourceTree = "<group>"; };
-		B125DBCE1C09844A002E0F5C /* JSQMessagesAssets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = JSQMessagesAssets.bundle; sourceTree = "<group>"; };
-		B125DBCF1C09844A002E0F5C /* JSQMessagesBubbleImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMessagesBubbleImage.h; sourceTree = "<group>"; };
-		B125DBD01C09844A002E0F5C /* JSQMessagesBubbleImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesBubbleImage.m; sourceTree = "<group>"; };
-		B125DBD11C09844A002E0F5C /* JSQMessagesBubbleImageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMessagesBubbleImageFactory.h; sourceTree = "<group>"; };
-		B125DBD21C09844A002E0F5C /* JSQMessagesBubbleImageFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesBubbleImageFactory.m; sourceTree = "<group>"; };
-		B125DBD31C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMessagesMediaViewBubbleImageMasker.h; sourceTree = "<group>"; };
-		B125DBD41C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMessagesMediaViewBubbleImageMasker.m; sourceTree = "<group>"; };
-		B125DBD51C09844A002E0F5C /* JSQVoiceAudioMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQVoiceAudioMediaItem.h; sourceTree = "<group>"; };
-		B125DBD61C09844A002E0F5C /* JSQVoiceAudioMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQVoiceAudioMediaItem.m; sourceTree = "<group>"; };
-		B125DBD71C09844A002E0F5C /* NSBundle+JSQMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+JSQMessages.m"; sourceTree = "<group>"; };
-		B125DBD81C09844A002E0F5C /* NSString+JSQMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSQMessages.h"; sourceTree = "<group>"; };
-		B125DBD91C09844A002E0F5C /* UIColor+JSQMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+JSQMessages.h"; sourceTree = "<group>"; };
-		B125DBDA1C09844A002E0F5C /* UIColor+JSQMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+JSQMessages.m"; sourceTree = "<group>"; };
-		B125DBDB1C09844A002E0F5C /* UIImage+JSQMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+JSQMessages.h"; sourceTree = "<group>"; };
-		B125DBDC1C09844A002E0F5C /* UIImage+JSQMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+JSQMessages.m"; sourceTree = "<group>"; };
-		B125DBE51C098510002E0F5C /* JSQMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMediaItem.h; sourceTree = "<group>"; };
-		B125DBE61C098510002E0F5C /* JSQMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSQMediaItem.m; sourceTree = "<group>"; };
-		B125DBE71C098510002E0F5C /* JSQMessageMediaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSQMessageMediaData.h; sourceTree = "<group>"; };
-		B125DBE91C09854E002E0F5C /* JSQAudioBubble.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSQAudioBubble.h; sourceTree = "<group>"; };
-		B125DBEA1C0985CF002E0F5C /* NSBundle+JSQMessages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+JSQMessages.h"; sourceTree = "<group>"; };
-		B125DBEB1C0986F3002E0F5C /* JSQMessageBubbleImageDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSQMessageBubbleImageDataSource.h; sourceTree = "<group>"; };
 		B1279AC61C17E8D000E14D08 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		B1279AC71C17E8D000E14D08 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		B12CB25A1C478E74003A191F /* QRCodeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReader.swift; sourceTree = "<group>"; };
@@ -388,26 +346,6 @@
 		B12CB2711C48C973003A191F /* FoodModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoodModel.m; sourceTree = "<group>"; };
 		B12CB2731C4901A9003A191F /* LocationRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationRoute.swift; sourceTree = "<group>"; };
 		B12CB2771C4A1256003A191F /* contract.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = contract.rtf; sourceTree = "<group>"; };
-		B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_icon@3x.png"; sourceTree = "<group>"; };
-		B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_nor@3x.png"; sourceTree = "<group>"; };
-		B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_button_press@3x.png"; sourceTree = "<group>"; };
-		B12FB2971BF9B50000566266 /* aio_voice_operate_delete_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_delete_nor@3x.png"; sourceTree = "<group>"; };
-		B12FB2981BF9B50000566266 /* aio_voice_operate_delete_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_delete_press@3x.png"; sourceTree = "<group>"; };
-		B12FB2991BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_listen_nor@3x.png"; sourceTree = "<group>"; };
-		B12FB29A1BF9B50000566266 /* aio_voice_operate_listen_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_listen_press@3x.png"; sourceTree = "<group>"; };
-		B12FB29B1BF9B50000566266 /* aio_voice_operate_nor@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_nor@3x.png"; sourceTree = "<group>"; };
-		B12FB29C1BF9B50000566266 /* aio_voice_operate_press@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aio_voice_operate_press@3x.png"; sourceTree = "<group>"; };
-		B12FB2A71BF9B50F00566266 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
-		B12FB2A81BF9B50F00566266 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
-		B12FB2A91BF9B50F00566266 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		B12FB2AA1BF9B50F00566266 /* WavAmrCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavAmrCodec.cpp; sourceTree = "<group>"; };
-		B12FB2AB1BF9B50F00566266 /* WavAmrCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavAmrCodec.h; sourceTree = "<group>"; };
-		B12FB2AC1BF9B50F00566266 /* wavreader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wavreader.c; sourceTree = "<group>"; };
-		B12FB2AD1BF9B50F00566266 /* wavreader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavreader.h; sourceTree = "<group>"; };
-		B12FB2AE1BF9B50F00566266 /* wavwriter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wavwriter.c; sourceTree = "<group>"; };
-		B12FB2AF1BF9B50F00566266 /* wavwriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavwriter.h; sourceTree = "<group>"; };
-		B12FB2B41BF9B52C00566266 /* DLVoiceRecorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLVoiceRecorderViewController.h; path = "opencore-amrnb/DLVoiceRecorderViewController.h"; sourceTree = "<group>"; };
-		B12FB2B51BF9B52C00566266 /* DLVoiceRecorderViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DLVoiceRecorderViewController.mm; path = "opencore-amrnb/DLVoiceRecorderViewController.mm"; sourceTree = "<group>"; };
 		B12FB2B71BFA14C800566266 /* Social.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Social.swift; sourceTree = "<group>"; };
 		B12FB2BC1BFEF67500566266 /* PostVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
 		B12FB2BE1C009D1C00566266 /* FloatingActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingActionView.swift; sourceTree = "<group>"; };
@@ -499,6 +437,15 @@
 		B1AE745E1BD514EC0014BE12 /* SheetCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetCollectionViewLayout.swift; sourceTree = "<group>"; };
 		B1AE745F1BD514EC0014BE12 /* SheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetController.swift; sourceTree = "<group>"; };
 		B1AE74601BD514EC0014BE12 /* SheetPreviewCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetPreviewCollectionViewCell.swift; sourceTree = "<group>"; };
+		B1CA3C7F1C4E05690015E69E /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		B1CA3C811C4E057E0015E69E /* interf_dec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		B1CA3C821C4E057E0015E69E /* interf_enc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		B1CA3C831C4E05960015E69E /* WavAmrCodec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavAmrCodec.cpp; sourceTree = "<group>"; };
+		B1CA3C841C4E05960015E69E /* WavAmrCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavAmrCodec.h; sourceTree = "<group>"; };
+		B1CA3C851C4E05960015E69E /* wavreader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wavreader.c; sourceTree = "<group>"; };
+		B1CA3C861C4E05960015E69E /* wavreader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavreader.h; sourceTree = "<group>"; };
+		B1CA3C871C4E05960015E69E /* wavwriter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = wavwriter.c; sourceTree = "<group>"; };
+		B1CA3C881C4E05960015E69E /* wavwriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wavwriter.h; sourceTree = "<group>"; };
 		B1CC24E91C1843C800953A07 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mantle.framework; sourceTree = "<group>"; };
 		B1CC24ED1C19346700953A07 /* MBProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MBProgressHUD.framework; sourceTree = "<group>"; };
 		B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "seu-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -543,11 +490,11 @@
 				B18950421C1B03BA00645482 /* libsqlite3.0.tbd in Frameworks */,
 				B18950401C1B039400645482 /* SystemConfiguration.framework in Frameworks */,
 				B189503E1C1B036600645482 /* CoreTelephony.framework in Frameworks */,
+				B1CA3C801C4E05690015E69E /* libopencore-amrnb.a in Frameworks */,
 				B189501F1C1AF6DD00645482 /* libz.tbd in Frameworks */,
 				B12CB26B1C47A517003A191F /* QRCode.framework in Frameworks */,
 				B189501D1C1AF6A900645482 /* libMobClickLibrary.a in Frameworks */,
 				B1D2084B1C43E29A008E69A9 /* AMapSearchKit.framework in Frameworks */,
-				B12FB2B01BF9B50F00566266 /* libopencore-amrnb.a in Frameworks */,
 				B1CC24F11C193E3900953A07 /* WebImage.framework in Frameworks */,
 				B18950281C1AFF7300645482 /* libWeChatSDK.a in Frameworks */,
 			);
@@ -726,42 +673,6 @@
 			path = SnapKit;
 			sourceTree = "<group>";
 		};
-		B125DBCC1C09835E002E0F5C /* Voice */ = {
-			isa = PBXGroup;
-			children = (
-				B125DBCD1C09836B002E0F5C /* JSQAudioBubble */,
-			);
-			name = Voice;
-			sourceTree = "<group>";
-		};
-		B125DBCD1C09836B002E0F5C /* JSQAudioBubble */ = {
-			isa = PBXGroup;
-			children = (
-				B125DBCE1C09844A002E0F5C /* JSQMessagesAssets.bundle */,
-				B125DBE51C098510002E0F5C /* JSQMediaItem.h */,
-				B125DBE61C098510002E0F5C /* JSQMediaItem.m */,
-				B125DBEB1C0986F3002E0F5C /* JSQMessageBubbleImageDataSource.h */,
-				B125DBE71C098510002E0F5C /* JSQMessageMediaData.h */,
-				B125DBCF1C09844A002E0F5C /* JSQMessagesBubbleImage.h */,
-				B125DBD01C09844A002E0F5C /* JSQMessagesBubbleImage.m */,
-				B125DBD11C09844A002E0F5C /* JSQMessagesBubbleImageFactory.h */,
-				B125DBD21C09844A002E0F5C /* JSQMessagesBubbleImageFactory.m */,
-				B125DBD31C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.h */,
-				B125DBD41C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m */,
-				B125DBD51C09844A002E0F5C /* JSQVoiceAudioMediaItem.h */,
-				B125DBD61C09844A002E0F5C /* JSQVoiceAudioMediaItem.m */,
-				B125DBEA1C0985CF002E0F5C /* NSBundle+JSQMessages.h */,
-				B125DBD71C09844A002E0F5C /* NSBundle+JSQMessages.m */,
-				B125DBD81C09844A002E0F5C /* NSString+JSQMessages.h */,
-				B125DBD91C09844A002E0F5C /* UIColor+JSQMessages.h */,
-				B125DBDA1C09844A002E0F5C /* UIColor+JSQMessages.m */,
-				B125DBDB1C09844A002E0F5C /* UIImage+JSQMessages.h */,
-				B125DBDC1C09844A002E0F5C /* UIImage+JSQMessages.m */,
-				B125DBE91C09854E002E0F5C /* JSQAudioBubble.h */,
-			);
-			name = JSQAudioBubble;
-			sourceTree = "<group>";
-		};
 		B1279AC51C17E88800E14D08 /* kxMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -785,45 +696,9 @@
 			path = QRCodeReader;
 			sourceTree = "<group>";
 		};
-		B12FB2931BF9B4D100566266 /* voice */ = {
-			isa = PBXGroup;
-			children = (
-				B12FB2B41BF9B52C00566266 /* DLVoiceRecorderViewController.h */,
-				B12FB2B51BF9B52C00566266 /* DLVoiceRecorderViewController.mm */,
-				B12FB2A61BF9B50F00566266 /* opencore-amrnb */,
-				B12FB2941BF9B50000566266 /* aio_voice_button_icon@3x.png */,
-				B12FB2951BF9B50000566266 /* aio_voice_button_nor@3x.png */,
-				B12FB2961BF9B50000566266 /* aio_voice_button_press@3x.png */,
-				B12FB2971BF9B50000566266 /* aio_voice_operate_delete_nor@3x.png */,
-				B12FB2981BF9B50000566266 /* aio_voice_operate_delete_press@3x.png */,
-				B12FB2991BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png */,
-				B12FB29A1BF9B50000566266 /* aio_voice_operate_listen_press@3x.png */,
-				B12FB29B1BF9B50000566266 /* aio_voice_operate_nor@3x.png */,
-				B12FB29C1BF9B50000566266 /* aio_voice_operate_press@3x.png */,
-			);
-			name = voice;
-			sourceTree = "<group>";
-		};
-		B12FB2A61BF9B50F00566266 /* opencore-amrnb */ = {
-			isa = PBXGroup;
-			children = (
-				B12FB2A71BF9B50F00566266 /* interf_dec.h */,
-				B12FB2A81BF9B50F00566266 /* interf_enc.h */,
-				B12FB2A91BF9B50F00566266 /* libopencore-amrnb.a */,
-				B12FB2AA1BF9B50F00566266 /* WavAmrCodec.cpp */,
-				B12FB2AB1BF9B50F00566266 /* WavAmrCodec.h */,
-				B12FB2AC1BF9B50F00566266 /* wavreader.c */,
-				B12FB2AD1BF9B50F00566266 /* wavreader.h */,
-				B12FB2AE1BF9B50F00566266 /* wavwriter.c */,
-				B12FB2AF1BF9B50F00566266 /* wavwriter.h */,
-			);
-			path = "opencore-amrnb";
-			sourceTree = "<group>";
-		};
 		B12FB2BB1BFAF86C00566266 /* social */ = {
 			isa = PBXGroup;
 			children = (
-				B125DBCC1C09835E002E0F5C /* Voice */,
 				B12FB2B71BFA14C800566266 /* Social.swift */,
 				B12FB2CC1C00FC2A00566266 /* Topic.swift */,
 				B12FB2BC1BFEF67500566266 /* PostVC.swift */,
@@ -831,7 +706,6 @@
 				B12FB3921C04849200566266 /* ComposePost.swift */,
 				B125DBC81C06EF68002E0F5C /* ReplyPost.swift */,
 				B12FB2BE1C009D1C00566266 /* FloatingActionView.swift */,
-				B125DBCA1C098347002E0F5C /* TopicVoice.swift */,
 			);
 			name = social;
 			sourceTree = "<group>";
@@ -839,6 +713,7 @@
 		B13DE9691BF0487F0042331A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B1CA3C8C1C4E059A0015E69E /* AMR */,
 				B12CB26A1C47A517003A191F /* QRCode.framework */,
 				B12CB2591C478E74003A191F /* QRCodeReader */,
 				B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */,
@@ -1130,6 +1005,22 @@
 			name = SwiftlyJSON;
 			sourceTree = "<group>";
 		};
+		B1CA3C8C1C4E059A0015E69E /* AMR */ = {
+			isa = PBXGroup;
+			children = (
+				B1CA3C7F1C4E05690015E69E /* libopencore-amrnb.a */,
+				B1CA3C821C4E057E0015E69E /* interf_enc.h */,
+				B1CA3C811C4E057E0015E69E /* interf_dec.h */,
+				B1CA3C881C4E05960015E69E /* wavwriter.h */,
+				B1CA3C871C4E05960015E69E /* wavwriter.c */,
+				B1CA3C861C4E05960015E69E /* wavreader.h */,
+				B1CA3C851C4E05960015E69E /* wavreader.c */,
+				B1CA3C841C4E05960015E69E /* WavAmrCodec.h */,
+				B1CA3C831C4E05960015E69E /* WavAmrCodec.cpp */,
+			);
+			name = AMR;
+			sourceTree = "<group>";
+		};
 		B1D03C1C1BCE59D100DF0B44 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
@@ -1181,7 +1072,6 @@
 				B169C2AE1C3E7E0A002F6869 /* Data */,
 				B18950221C1AFF0200645482 /* SNS */,
 				B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */,
-				B12FB2931BF9B4D100566266 /* voice */,
 				B19F9A351BD8AB340008CA12 /* Utility */,
 				B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */,
 				B12FB2BB1BFAF86C00566266 /* social */,
@@ -1312,10 +1202,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B12FB2A31BF9B50000566266 /* aio_voice_operate_listen_press@3x.png in Resources */,
 				B105CA2B1C23DB1600E946D8 /* UIBarButtonItemArrowLeft@3x.png in Resources */,
 				B105CA241C23DB1600E946D8 /* PlayButtonOverlayLarge@2x.png in Resources */,
-				B12FB2A21BF9B50000566266 /* aio_voice_operate_listen_nor@3x.png in Resources */,
 				B169C2A41C3D8621002F6869 /* university.json in Resources */,
 				B17CF8A21C05E94C0074FF3F /* keyboard_btn_delete@3x.png in Resources */,
 				B105CA211C23DB1600E946D8 /* ImageSelectedSmallOn@2x.png in Resources */,
@@ -1329,8 +1217,6 @@
 				B105CA271C23DB1600E946D8 /* PlayButtonOverlayLargeTap@2x.png in Resources */,
 				B10759BC1BEC518C00FEC0A0 /* Info.plist in Resources */,
 				B105CA311C23DB1600E946D8 /* UIBarButtonItemGrid@3x.png in Resources */,
-				B12FB2A41BF9B50000566266 /* aio_voice_operate_nor@3x.png in Resources */,
-				B125DBDD1C09844A002E0F5C /* JSQMessagesAssets.bundle in Resources */,
 				B17CF8A11C05E94C0074FF3F /* keyboard_btn_delete@2x.png in Resources */,
 				B105CA321C23DB1600E946D8 /* VideoOverlay.png in Resources */,
 				B17CF8A31C05E94C0074FF3F /* keyboard_preview_bg@2x.png in Resources */,
@@ -1341,20 +1227,15 @@
 				B105CA181C23DB1600E946D8 /* ImageSelectedOff@2x.png in Resources */,
 				B1D9706B1C09D40600F0C9E7 /* btn_keyboard@2x.png in Resources */,
 				B105CA2C1C23DB1600E946D8 /* UIBarButtonItemArrowRight.png in Resources */,
-				B12FB29E1BF9B50000566266 /* aio_voice_button_nor@3x.png in Resources */,
 				B105CA171C23DB1600E946D8 /* ImageSelectedOff.png in Resources */,
-				B12FB2A01BF9B50000566266 /* aio_voice_operate_delete_nor@3x.png in Resources */,
 				B105CA1F1C23DB1600E946D8 /* ImageSelectedSmallOff@3x.png in Resources */,
-				B12FB29F1BF9B50000566266 /* aio_voice_button_press@3x.png in Resources */,
 				B105CA2F1C23DB1600E946D8 /* UIBarButtonItemGrid.png in Resources */,
 				B105CA251C23DB1600E946D8 /* PlayButtonOverlayLarge@3x.png in Resources */,
 				B105CA281C23DB1600E946D8 /* PlayButtonOverlayLargeTap@3x.png in Resources */,
-				B12FB2A51BF9B50000566266 /* aio_voice_operate_press@3x.png in Resources */,
 				B169C2A21C3D85FD002F6869 /* city.plist in Resources */,
 				B12FB2CB1C00FB5C00566266 /* RefreshContents.bundle in Resources */,
 				B105CA291C23DB1600E946D8 /* UIBarButtonItemArrowLeft.png in Resources */,
 				B105CA2A1C23DB1600E946D8 /* UIBarButtonItemArrowLeft@2x.png in Resources */,
-				B12FB2A11BF9B50000566266 /* aio_voice_operate_delete_press@3x.png in Resources */,
 				B105CA1B1C23DB1600E946D8 /* ImageSelectedOn@2x.png in Resources */,
 				B1D9706A1C09D40600F0C9E7 /* btn_expression@2x.png in Resources */,
 				B12CB2781C4A1256003A191F /* contract.rtf in Resources */,
@@ -1362,7 +1243,6 @@
 				B105CA2E1C23DB1600E946D8 /* UIBarButtonItemArrowRight@3x.png in Resources */,
 				B17CF8A01C05E94C0074FF3F /* emoji.json in Resources */,
 				B105CA191C23DB1600E946D8 /* ImageSelectedOff@3x.png in Resources */,
-				B12FB29D1BF9B50000566266 /* aio_voice_button_icon@3x.png in Resources */,
 				B105CA341C23DB1600E946D8 /* VideoOverlay@3x.png in Resources */,
 				B105CA141C23DB1600E946D8 /* ImageError.png in Resources */,
 				B105CA1C1C23DB1600E946D8 /* ImageSelectedOn@3x.png in Resources */,
@@ -1400,14 +1280,11 @@
 				B10759BE1BEC518C00FEC0A0 /* SnapKit.swift in Sources */,
 				B189503A1C1B02CA00645482 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */,
 				B189502C1C1B013400645482 /* WXApiManager.m in Sources */,
-				B12FB2B21BF9B50F00566266 /* wavreader.c in Sources */,
-				B125DBCB1C098348002E0F5C /* TopicVoice.swift in Sources */,
 				B1D03C331BCE59D100DF0B44 /* ParameterEncoding.swift in Sources */,
-				B125DBE81C098510002E0F5C /* JSQMediaItem.m in Sources */,
 				B1AE746D1BD514EC0014BE12 /* SheetController.swift in Sources */,
-				B12FB2B31BF9B50F00566266 /* wavwriter.c in Sources */,
 				B105CA3E1C23DB1600E946D8 /* UIImage+MWPhotoBrowser.m in Sources */,
 				B1A4E9661BDA041E00EF0CD1 /* UIViewExtensions.swift in Sources */,
+				B1CA3C8B1C4E05960015E69E /* wavwriter.c in Sources */,
 				B105D47A1C31188F000CA8B0 /* ActivityInfo.swift in Sources */,
 				B18950321C1B025B00645482 /* WXApiResponseHandler.m in Sources */,
 				B189503C1C1B02CA00645482 /* WXMediaMessage+messageConstruct.m in Sources */,
@@ -1417,7 +1294,6 @@
 				B107599E1BEB1D5700FEC0A0 /* Message.swift in Sources */,
 				B17CF8921C05E93B0074FF3F /* STInputBar.m in Sources */,
 				B16B6B881C3A53290081922F /* ActivityImageUploader.swift in Sources */,
-				B125DBE21C09844A002E0F5C /* NSBundle+JSQMessages.m in Sources */,
 				B12CB2641C478E75003A191F /* QRCodeViewControllerBuilder.swift in Sources */,
 				B1AE746A1BD514EC0014BE12 /* SheetActionCollectionViewCell.swift in Sources */,
 				B10759B61BEC518C00FEC0A0 /* ConstraintDescription.swift in Sources */,
@@ -1426,12 +1302,10 @@
 				B10759B81BEC518C00FEC0A0 /* ConstraintMaker.swift in Sources */,
 				B125DBC91C06EF68002E0F5C /* ReplyPost.swift in Sources */,
 				B1019F8C1C420BFB00EBEB23 /* CAPSPageMenu.swift in Sources */,
-				B125DBDE1C09844A002E0F5C /* JSQMessagesBubbleImage.m in Sources */,
 				B1EA38491C45FDD600D0B5B2 /* NearBy.swift in Sources */,
 				B12CB2721C48C973003A191F /* FoodModel.m in Sources */,
 				B10759BD1BEC518C00FEC0A0 /* LayoutConstraint.swift in Sources */,
 				B1DBF4131C0E91F0000A6178 /* Activity.swift in Sources */,
-				B125DBE31C09844A002E0F5C /* UIColor+JSQMessages.m in Sources */,
 				B1AE74671BD514EC0014BE12 /* PreviewCollectionViewCell.swift in Sources */,
 				B1D03C391BCE59D100DF0B44 /* Stream.swift in Sources */,
 				B1D03C3B1BCE59D100DF0B44 /* Validation.swift in Sources */,
@@ -1441,6 +1315,7 @@
 				B1D03C371BCE59D100DF0B44 /* Result.swift in Sources */,
 				B17B23751C3D092C00537241 /* ActivityStat.swift in Sources */,
 				B169C2AD1C3D94D6002F6869 /* SchoolModel.m in Sources */,
+				B1CA3C8A1C4E05960015E69E /* wavreader.c in Sources */,
 				B1019F8A1C420BFB00EBEB23 /* AlertTextView.swift in Sources */,
 				B10759B91BEC518C00FEC0A0 /* ConstraintRelation.swift in Sources */,
 				B105CA3C1C23DB1600E946D8 /* MWTapDetectingView.m in Sources */,
@@ -1460,10 +1335,8 @@
 				B10759C01BEC518C00FEC0A0 /* View+SnapKit.swift in Sources */,
 				B1019F951C43B65F00EBEB23 /* LocationVC.swift in Sources */,
 				B1D03C341BCE59D100DF0B44 /* Request.swift in Sources */,
-				B125DBE01C09844A002E0F5C /* JSQMessagesMediaViewBubbleImageMasker.m in Sources */,
 				B12CB2611C478E75003A191F /* QRCodeReader.swift in Sources */,
 				B169C2A71C3D8C27002F6869 /* CityModel.m in Sources */,
-				B12FB2B11BF9B50F00566266 /* WavAmrCodec.cpp in Sources */,
 				B1D03C311BCE59D100DF0B44 /* Manager.swift in Sources */,
 				B19F9A371BD8FC9C0008CA12 /* Contacts.swift in Sources */,
 				B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */,
@@ -1473,7 +1346,6 @@
 				B12FB2CD1C00FC2A00566266 /* Topic.swift in Sources */,
 				B125DBC51C06C46B002E0F5C /* PostLike.swift in Sources */,
 				B10759B41BEC518C00FEC0A0 /* Constraint.swift in Sources */,
-				B125DBDF1C09844A002E0F5C /* JSQMessagesBubbleImageFactory.m in Sources */,
 				B18950491C1C08D000645482 /* IBActionSheet.m in Sources */,
 				B1019F901C420BFB00EBEB23 /* utility-objc.m in Sources */,
 				B17CF8A71C05E94C0074FF3F /* STEmojiKeyboard.m in Sources */,
@@ -1489,6 +1361,7 @@
 				B1AE74631BD514EC0014BE12 /* ImagePickerSheetController.swift in Sources */,
 				B1D03C2F1BCE59D100DF0B44 /* Error.swift in Sources */,
 				B1019F8B1C420BFB00EBEB23 /* BubbleTransition.swift in Sources */,
+				B1CA3C891C4E05960015E69E /* WavAmrCodec.cpp in Sources */,
 				B1AE746B1BD514EC0014BE12 /* SheetCollectionViewCell.swift in Sources */,
 				B189503B1C1B02CA00645482 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */,
 				B1D03C381BCE59D100DF0B44 /* ServerTrustPolicy.swift in Sources */,
@@ -1510,9 +1383,7 @@
 				B10759BA1BEC518C00FEC0A0 /* Debugging.swift in Sources */,
 				B1AE74691BD514EC0014BE12 /* PreviewSupplementaryView.swift in Sources */,
 				B105CA371C23DB1600E946D8 /* MWGridCell.m in Sources */,
-				B125DBE11C09844A002E0F5C /* JSQVoiceAudioMediaItem.m in Sources */,
 				B12FB3931C04849200566266 /* ComposePost.swift in Sources */,
-				B12FB2B61BF9B52C00566266 /* DLVoiceRecorderViewController.mm in Sources */,
 				B1019F8D1C420BFB00EBEB23 /* MeVC.swift in Sources */,
 				B105CA3D1C23DB1600E946D8 /* MWZoomingScrollView.m in Sources */,
 				B1FC434A1B9FC25700133869 /* AppDelegate.swift in Sources */,
@@ -1521,7 +1392,6 @@
 				B16F95341C18354A00429B47 /* ActivityModel.m in Sources */,
 				B105CA391C23DB1600E946D8 /* MWPhoto.m in Sources */,
 				B12FB2BD1BFEF67500566266 /* PostVC.swift in Sources */,
-				B125DBE41C09844A002E0F5C /* UIImage+JSQMessages.m in Sources */,
 				B1AE74661BD514EC0014BE12 /* PreviewCollectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1609,6 +1479,7 @@
 					"$(PROJECT_DIR)/seu/UMSocial_Sdk_4.4/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/seu/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/seu/WeChatSDK",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.liewli.seu;
@@ -1746,6 +1617,7 @@
 					"$(PROJECT_DIR)/seu/UMSocial_Sdk_4.4/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/seu/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/seu/WeChatSDK",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.liewli.seu;
@@ -1782,6 +1654,7 @@
 					"$(PROJECT_DIR)/seu/UMSocial_Sdk_4.4/UMSocial_Sdk_Extra_Frameworks/Wechat",
 					"$(PROJECT_DIR)/seu/UMAnalytics_Sdk_3.6.6",
 					"$(PROJECT_DIR)/seu/WeChatSDK",
+					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.liewli.seu;
