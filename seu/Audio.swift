@@ -89,6 +89,14 @@ class AudioRecordVC:UIViewController {
         controlButton.setBackgroundImage(UIImage(named: "audio_record")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
         audioPlot.clear()
         audioPlot.resumeDrawing()
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try session.setActive(true)
+        }
+        catch {
+            print(error)
+        }
     }
     
     func setupUI() {
