@@ -108,11 +108,10 @@
 		B12FB2CB1C00FB5C00566266 /* RefreshContents.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */; };
 		B12FB2CD1C00FC2A00566266 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB2CC1C00FC2A00566266 /* Topic.swift */; };
 		B12FB3931C04849200566266 /* ComposePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12FB3921C04849200566266 /* ComposePost.swift */; };
-		B15F68DC1C4F5A9100804D85 /* EZAudioiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68DA1C4F5A7500804D85 /* EZAudioiOS.framework */; };
-		B15F68DD1C4F5A9100804D85 /* EZAudioiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68DA1C4F5A7500804D85 /* EZAudioiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B15F68DF1C4F5B8F00804D85 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68DE1C4F5B8F00804D85 /* AudioToolbox.framework */; };
 		B15F68E11C4F5B9600804D85 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68E01C4F5B9600804D85 /* Accelerate.framework */; };
 		B15F68E31C4F5BA500804D85 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68E21C4F5BA500804D85 /* GLKit.framework */; };
+		B15F68E71C4FCD7700804D85 /* EZAudioiOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B15F68E41C4FCD6C00804D85 /* EZAudioiOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B162BE891C2FC7AF00136F28 /* MyActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162BE881C2FC7AF00136F28 /* MyActivity.swift */; };
 		B169C2A21C3D85FD002F6869 /* city.plist in Resources */ = {isa = PBXBuildFile; fileRef = B169C2A11C3D85FD002F6869 /* city.plist */; };
 		B169C2A41C3D8621002F6869 /* university.json in Resources */ = {isa = PBXBuildFile; fileRef = B169C2A31C3D8621002F6869 /* university.json */; };
@@ -228,7 +227,7 @@
 				B120C14D1BF452410099F78A /* RSKImageCropper.framework in Embed Frameworks */,
 				B12CB26D1C47A524003A191F /* QRCode.framework in Embed Frameworks */,
 				B120C1511BF452410099F78A /* GMPhotoPicker.framework in Embed Frameworks */,
-				B15F68DD1C4F5A9100804D85 /* EZAudioiOS.framework in Embed Frameworks */,
+				B15F68E71C4FCD7700804D85 /* EZAudioiOS.framework in Embed Frameworks */,
 				B17B23731C3D086700537241 /* Charts.framework in Embed Frameworks */,
 				B1CC24F21C193E3900953A07 /* WebImage.framework in Embed Frameworks */,
 				B1CC24EC1C1843D900953A07 /* Mantle.framework in Embed Frameworks */,
@@ -360,10 +359,10 @@
 		B12FB2CC1C00FC2A00566266 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		B12FB38A1C042F5300566266 /* WebImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebImage.framework; path = seu/WebImage.framework; sourceTree = "<group>"; };
 		B12FB3921C04849200566266 /* ComposePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposePost.swift; sourceTree = "<group>"; };
-		B15F68DA1C4F5A7500804D85 /* EZAudioiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EZAudioiOS.framework; sourceTree = "<group>"; };
 		B15F68DE1C4F5B8F00804D85 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B15F68E01C4F5B9600804D85 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		B15F68E21C4F5BA500804D85 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		B15F68E41C4FCD6C00804D85 /* EZAudioiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EZAudioiOS.framework; sourceTree = "<group>"; };
 		B162BE881C2FC7AF00136F28 /* MyActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyActivity.swift; sourceTree = "<group>"; };
 		B169C2A11C3D85FD002F6869 /* city.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = city.plist; sourceTree = "<group>"; };
 		B169C2A31C3D8621002F6869 /* university.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = university.json; sourceTree = "<group>"; };
@@ -507,7 +506,6 @@
 				B189503E1C1B036600645482 /* CoreTelephony.framework in Frameworks */,
 				B1CA3C801C4E05690015E69E /* libopencore-amrnb.a in Frameworks */,
 				B189501F1C1AF6DD00645482 /* libz.tbd in Frameworks */,
-				B15F68DC1C4F5A9100804D85 /* EZAudioiOS.framework in Frameworks */,
 				B12CB26B1C47A517003A191F /* QRCode.framework in Frameworks */,
 				B189501D1C1AF6A900645482 /* libMobClickLibrary.a in Frameworks */,
 				B1D2084B1C43E29A008E69A9 /* AMapSearchKit.framework in Frameworks */,
@@ -732,14 +730,13 @@
 				B15F68E21C4F5BA500804D85 /* GLKit.framework */,
 				B15F68E01C4F5B9600804D85 /* Accelerate.framework */,
 				B15F68DE1C4F5B8F00804D85 /* AudioToolbox.framework */,
-				B15F68DA1C4F5A7500804D85 /* EZAudioiOS.framework */,
+				B15F68E41C4FCD6C00804D85 /* EZAudioiOS.framework */,
 				B1CA3C8C1C4E059A0015E69E /* AMR */,
 				B12CB26A1C47A517003A191F /* QRCode.framework */,
 				B12CB2591C478E74003A191F /* QRCodeReader */,
 				B1D2084A1C43E29A008E69A9 /* AMapSearchKit.framework */,
 				B1019F911C420CF200EBEB23 /* BubbleTransition */,
 				B17B23701C3D085D00537241 /* Charts.framework */,
-				B13EF4C71C2BB5FB00262116 /* BubbleTransition */,
 				B1CC24ED1C19346700953A07 /* MBProgressHUD.framework */,
 				B1CC24E91C1843C800953A07 /* Mantle.framework */,
 				B12FB38A1C042F5300566266 /* WebImage.framework */,
@@ -753,13 +750,6 @@
 				B10759A41BEC518C00FEC0A0 /* SnapKit */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B13EF4C71C2BB5FB00262116 /* BubbleTransition */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = BubbleTransition;
 			sourceTree = "<group>";
 		};
 		B169C2AE1C3E7E0A002F6869 /* Data */ = {

@@ -238,6 +238,9 @@ typedef NSRect EZRect;
  */
 + (AudioStreamBasicDescription)stereoFloatNonInterleavedFormatWithSampleRate:(float)sampleRate;
 
+
++ (AudioStreamBasicDescription)stereoSignedIntegerPackedFormatWithSampleRate:(float)sampleRate;
+
 //------------------------------------------------------------------------------
 // @name AudioStreamBasicDescription Helper Functions
 //------------------------------------------------------------------------------

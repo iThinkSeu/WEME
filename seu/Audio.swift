@@ -84,8 +84,9 @@ class AudioRecordVC:UIViewController {
     
     func redo(sender:AnyObject) {
         currentState = .Empty
+        timeLabel.text = ""
         statusLabel.text = "点击按钮开始录音"
-        controlButton.setBackgroundImage(UIImage(named: "audio")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        controlButton.setBackgroundImage(UIImage(named: "audio_record")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
         audioPlot.clear()
         audioPlot.resumeDrawing()
     }
@@ -124,7 +125,7 @@ class AudioRecordVC:UIViewController {
         
         controlButton = UIButton()
         controlButton.translatesAutoresizingMaskIntoConstraints = false
-        controlButton.setBackgroundImage(UIImage(named: "voice")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        controlButton.setBackgroundImage(UIImage(named: "audio_record")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
         controlButton.addTarget(self, action: "record:", forControlEvents: .TouchUpInside)
         back.addSubview(controlButton)
         controlButton.tintColor = theme_color
