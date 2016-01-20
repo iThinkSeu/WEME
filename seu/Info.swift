@@ -121,7 +121,11 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     imagePicker.delegate = self
                     self.presentViewController(imagePicker, animated: true, completion: nil)
                 }
-                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息", "改变封面"])
+                else if index == 3 {
+                    let vc = AudioRecordVC()
+                    self.presentViewController(vc, animated: true, completion: nil)
+                }
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息", "改变封面","制作个性语音卡片"])
             sheet.setButtonTextColor(THEME_COLOR)
             sheet.showInView(navigationController!.view)
         }
@@ -235,6 +239,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     }
     
+      
     func fetchVisitInfo() {
         if let t = token, id = id {
             request(.POST, GET_VISIT_INFO_URL, parameters: ["token": t, "userid":id], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in

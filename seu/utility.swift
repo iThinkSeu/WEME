@@ -10,10 +10,10 @@ import Foundation
 import UIKit
 
 //MARK: - RESTFUL API
-//let BASE_URL = "http:/223.3.119.60:8080/"
-let BASE_URL = "http://www.weme.space:8080/"
+let BASE_URL = "http://218.244.147.240:8080/"
+//let BASE_URL = "http://www.weme.space:8080/"
 
-let BASE_URL_NGINX = "http://www.weme.space/"
+let BASE_URL_NGINX = "http://218.244.147.240/"
 
 let REGISTER_URL = BASE_URL + "register"
 

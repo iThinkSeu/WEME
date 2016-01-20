@@ -24,4 +24,5 @@
 #import "IBActionSheet.h"
 #import "MWPhotoBrowser.h"
 #import <AMapSearchKit/AMapSearchKit.h>
+#import <EZAudioiOS/EZAudioiOS.h>
 #endif /* seu_Bridging_Header_h */
