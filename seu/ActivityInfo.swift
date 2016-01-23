@@ -227,29 +227,8 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
         }
         
     }
-//    
-//    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 5
-//    }
-//    
-//    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 5
-//    }
-    
-//    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        let rect = ("叶枝" as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.size.width, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)
-//        return rect.height + 10
-//    }
+ 
 
-    
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let title = UILabel(frame: CGRectMake(0, 0, view.frame.size.width, 16))
-//        title.text  = sections[section]
-//        title.textColor = UIColor.lightGrayColor()
-//        title.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-//        
-//        return title
-//    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
@@ -466,7 +445,6 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
 
     }
     
-
 }
 
 class ActivityInfoActionTableViewCell:UITableViewCell {

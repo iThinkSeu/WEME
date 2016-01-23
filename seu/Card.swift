@@ -207,16 +207,16 @@ class CardVC:UIViewController {
             cardDefault1.imgView.image = UIImage(named: "spade")
             self.cardView.addSubview(cardDefault1)
             
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
+            UIView.animateWithDuration(1.0, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
                 cardDefault1.frame = CGRectMake(0, 0, self.cardView.frame.size
                     .width, self.cardView.frame.size.height)
                 }, completion: { (finished) -> Void in
-                    self.refreshBackView(cardDefault1)
+                   // self.refreshBackView(cardDefault1)
                     let card1 = self.nextCard()
                     card1.frame = self.cardView.bounds
                     self.currentCard = card1
-                    UIView.transitionFromView(cardDefault1, toView: card1, duration: 0.8, options: .TransitionFlipFromBottom, completion: { (finished) -> Void in
-                        self.refreshBackView(card1)
+                    UIView.transitionFromView(cardDefault1, toView: card1, duration: 0.6, options: .TransitionFlipFromBottom, completion: { (finished) -> Void in
+                        //self.refreshBackView(card1)
                         self.state = .NoneEmpty
                     })
 
@@ -229,14 +229,18 @@ class CardVC:UIViewController {
             cardDefault.imgView.image = UIImage(named: "spade")
             let card = cardView.subviews[0]
             UIView.transitionFromView(card, toView: cardDefault, duration: 0.8, options: [.TransitionFlipFromTop, .CurveEaseInOut]) { (finished) -> Void in
-                self.refreshBackView(cardDefault)
+                //self.refreshBackView(cardDefault)
                 let rect = CGRectMake(self.deckView.frame.origin.x, self.deckView.frame.origin.y, self.cardView.frame.size.width, self.cardView.frame.size.height)
                 let rect1 = self.hostView.convertRect(rect, toView: self.cardView)
                 let cardDefault1 = CardDefaultView(frame:rect1)
                 cardDefault1.imgView.image = UIImage(named: "spade")
                 self.cardView.addSubview(cardDefault1)
+                
+                let rect2 = CGRectMake(self.deckView.frame.origin.x, self.deckView.frame.origin.y + self.deckView.frame.size.height, self.cardView.frame.size.width, self.cardView.frame.size.height)
+                let rect3 = self.hostView.convertRect(rect2, toView: self.cardView)
 
-                UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
+                UIView.animateWithDuration(1.2, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
+                    cardDefault.frame = rect3
                     cardDefault1.frame = CGRectMake(0, 0, self.cardView.frame.size
                         .width, self.cardView.frame.size.height)
                     }, completion: { (finished) -> Void in
@@ -244,8 +248,8 @@ class CardVC:UIViewController {
                         let card1 = self.nextCard()
                         card1.frame = self.cardView.bounds
                         self.currentCard = card1
-                        UIView.transitionFromView(cardDefault1, toView: card1, duration: 0.8, options: [.TransitionFlipFromBottom, .CurveEaseInOut], completion: { (finished) -> Void in
-                            self.refreshBackView(card1)
+                        UIView.transitionFromView(cardDefault1, toView: card1, duration: 0.6, options: [.TransitionFlipFromBottom, .CurveEaseInOut], completion: { (finished) -> Void in
+                            //self.refreshBackView(card1)
                             self.state = .NoneEmpty
                         })
                         
@@ -278,8 +282,13 @@ class CardVC:UIViewController {
     
     func refreshBackView(card:CardContentView) {
         if let img = card.imgView.image {
-            let backImg = Utility.imageWithImage(img, scaledToSize: backView.bounds.size)
-            backView.image = backImg
+            //let backImg = Utility.imageWithImage(img, scaledToSize: backView.bounds.size)
+            UIView.transitionWithView(backView, duration: 1.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { [weak self]() -> Void in
+                if let S = self {
+                    S.backView.image = img
+                }
+                }, completion: nil)
+
         }
         
     }
@@ -304,13 +313,16 @@ class CardVC:UIViewController {
     
     func refreshBackground(image:UIImage) {
  
-        let backImg = Utility.imageWithImage(image, scaledToSize: backView.bounds.size)
-        backView.image = backImg
+        //let backImg = Utility.imageWithImage(image, scaledToSize: backView.bounds.size)
+        UIView.transitionWithView(backView, duration: 1.5, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { [weak self]() -> Void in
+                if let S = self {
+                    S.backView.image = image
+                }
+            }, completion: nil)
     }
     
     func configUI() {
-        let backImg = Utility.imageWithImage(UIImage(named:"spade"), scaledToSize: backView.bounds.size)
-        backView.image = backImg
+        refreshBackground(UIImage(named: "spade")!)
         
         deckView.image = UIImage(named: "spade")?.crop(CGRectMake(0, 0, deckView.bounds.size.width, deckView.bounds.size.height))
         maskPath()
@@ -323,7 +335,7 @@ extension CardVC:CardContentViewDelegate, CardDetailViewDelegate {
         if let cardDetail = detailViewForCurrentCard(){
             cardDetail.delegate = self
             cardDetail.frame = self.cardView.bounds
-            UIView.transitionFromView(currentCard!, toView: cardDetail, duration: 0.8, options: [.TransitionFlipFromRight, .CurveEaseInOut]) { (finished) -> Void in
+            UIView.transitionFromView(currentCard!, toView: cardDetail, duration: 0.6, options: [.TransitionFlipFromRight, .CurveEaseInOut]) { (finished) -> Void in
                 
             }
         }

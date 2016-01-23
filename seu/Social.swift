@@ -130,6 +130,12 @@ class SocialVC:UIViewController {
         //navigationController?.navigationBar.shadowImage = UIImage()
         removeNavBorderLine()
         configUI()
+        
+        if #available(iOS 9, *) {
+            if self.traitCollection.forceTouchCapability == .Available {
+                self.registerForPreviewingWithDelegate(self, sourceView: topicCollectionView)
+            }
+        }
     }
     
     
@@ -404,55 +410,44 @@ class SocialVC:UIViewController {
     
 }
 
+@available(iOS 9.0, *)
+extension SocialVC:UIViewControllerPreviewingDelegate {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        let nav = viewControllerToCommit as! UINavigationController
+        showViewController(nav.viewControllers[0], sender: self)
+    }
+    
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = self.topicCollectionView.indexPathForItemAtPoint(location){
+            previewingContext.sourceRect = topicCollectionView.collectionViewLayout.layoutAttributesForItemAtIndexPath(indexPath)!.frame
+            let vc = TopicVC(topic: topics[indexPath.item].id)
+            let nav = UINavigationController(rootViewController: vc)
+            return nav
+        }
+        
+        return nil
+    }
+    
+}
+
 extension SocialVC:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
-//    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-//        if kind == UICollectionElementKindSectionHeader {
-//            print("called")
-//            let v = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(CollectionSectionHeaderView), forIndexPath: indexPath) as! CollectionSectionHeaderView
-//            if indexPath.section == 0 {
-//                v.titleLabel.text = "图文"
-//            }
-//            else if indexPath.section == 1 {
-//                v.titleLabel.text = "声音"
-//            }
-//            return v
-//        }
-//        else {
-//           return UICollectionReusableView()
-//        }
- //   }
-    
+
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1//2
+        return 1
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-       // if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(TopicCollectionViewCell), forIndexPath: indexPath) as! TopicCollectionViewCell
-            //let name_arr = ["dev_lilei", "dev_liuli", "dev_yeqingshi", "dev_songjiaji", "dev_mashenbin"]
-            //cell.imgView.image = UIImage(named: name_arr[indexPath.item%5])
+        
             let data = topics[indexPath.item]
             cell.imgView.sd_setImageWithURL(NSURL(string: data.imageurl)!)
             cell.titleLabel.text = data.theme
             cell.infoLabel.text = data.footnote
             let num = Int(data.hotIndex)
-            cell.badge.badgeText = num > 999 ? "999+" : data.hotIndex//"\((random()%999) + 1)"
+            cell.badge.badgeText = num > 999 ? "999+" : data.hotIndex
             return cell
-//        }
-//        else {
-//            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(TopicCollectionViewCell), forIndexPath: indexPath) as! TopicCollectionViewCell
-//            //let name_arr = ["dev_lilei", "dev_liuli", "dev_yeqingshi", "dev_songjiaji", "dev_mashenbin"]
-//            //cell.imgView.image = UIImage(named: name_arr[indexPath.item%5])
-//            let data = topics[indexPath.item]
-//            cell.imgView.sd_setImageWithURL(NSURL(string: data.imageurl)!)
-//            cell.titleLabel.text = data.theme
-//            cell.infoLabel.text = data.footnote
-//            let num = Int(data.hotIndex)
-//            cell.badge.badgeText = num > 999 ? "999+" : data.hotIndex//"\((random()%999) + 1)"
-//            return cell
-//
-//        }
         
     }
     

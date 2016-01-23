@@ -371,6 +371,14 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         refreshControl.addTarget(self, action: "refresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshControl)
         configRefreshControl()
+        
+        if #available(iOS 9, *) {
+            if traitCollection.forceTouchCapability == .Available {
+                self.registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
+        
+        
     }
     
     func removeNavBorderLine() {
@@ -658,6 +666,30 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
     
     
 }
+
+@available(iOS 9.0, *)
+extension ActivityVC:UIViewControllerPreviewingDelegate {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        let vc = viewControllerToCommit as! UINavigationController
+        showViewController(vc.viewControllers[0], sender: self)
+    }
+    
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+            let data = self.activities[indexPath.section]
+            let vc = ActivityInfoVC()
+            vc.activityID = data.activityID
+            let nav = UINavigationController(rootViewController: vc)
+            return nav
+        }
+        
+        return nil
+    }
+    
+}
+
 
 extension ActivityVC:UIScrollViewDelegate {
     func scrollViewDidEndDecelerating(scrollView: UIScrollView) {

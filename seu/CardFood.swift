@@ -199,6 +199,9 @@ class CardFoodContentView:CardContentView {
         layer.cornerRadius = 10.0
         layer.masksToBounds = true
         
+        let tap = UITapGestureRecognizer(target: self, action: "nextTap:")
+        addGestureRecognizer(tap)
+        
         backgroundColor = UIColor.whiteColor()
         imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
@@ -338,7 +341,13 @@ class CardFoodContentView:CardContentView {
         gradientLayer.position = CGPointMake(CGRectGetMidX(imgView.bounds), CGRectGetMidY(imgView.bounds))
        
     }
-    
+    func nextTap(sender:UITapGestureRecognizer) {
+        let p = sender.locationInView(self)
+        let rect = CGRectMake(0.7*bounds.size.width, 0.8*bounds.size.height, 0.3*bounds.size.width, 0.2*bounds.size.height)
+        if CGRectContainsPoint(rect, p) {
+            delegate?.didTapNext()
+        }
+    }
     func next(sender:AnyObject) {
         delegate?.didTapNext()
     }
@@ -372,6 +381,9 @@ class CardFoodDetailView:CardDetailView {
         layer.cornerRadius = 10.0
         layer.masksToBounds = true
         
+        let tap = UITapGestureRecognizer(target: self, action: "backTap:")
+        addGestureRecognizer(tap)
+        
         imgView = UIImageView()
         imgView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imgView)
@@ -387,8 +399,8 @@ class CardFoodDetailView:CardDetailView {
         locationBack.translatesAutoresizingMaskIntoConstraints = false
         locationBack.layer.cornerRadius = 2.0
         locationBack.layer.masksToBounds = true
-        let tap = UITapGestureRecognizer(target: self, action: "tapLocation:")
-        locationBack.addGestureRecognizer(tap)
+        let tap1 = UITapGestureRecognizer(target: self, action: "tapLocation:")
+        locationBack.addGestureRecognizer(tap1)
         addSubview(locationBack)
         
         locationBack.snp_makeConstraints { (make) -> Void in
@@ -522,6 +534,16 @@ class CardFoodDetailView:CardDetailView {
     
     func back(sender:AnyObject) {
         delegate?.didTapBackInCardDetailView(self)
+    }
+    
+    func backTap(sender:UITapGestureRecognizer) {
+        let p = sender.locationInView(self)
+        let rect = CGRectMake(0, 0.8*bounds.size.height, 0.3*bounds.size.width, 0.2*bounds.size.height)
+        print(p, rect)
+        if CGRectContainsPoint(rect, p) {
+            print("called")
+            delegate?.didTapBackInCardDetailView(self)
+        }
     }
     
     override init(frame: CGRect) {

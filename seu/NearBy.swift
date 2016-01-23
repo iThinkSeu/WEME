@@ -60,6 +60,12 @@ class NearByVC: UITableViewController,MKMapViewDelegate, AMapSearchDelegate,CLLo
 
     }
     
+    deinit {
+        if nearbyManager.isAutoUploading {
+            nearbyManager.stopAutoUploadNearbyInfo()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "附近"
@@ -78,6 +84,9 @@ class NearByVC: UITableViewController,MKMapViewDelegate, AMapSearchDelegate,CLLo
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         search = AMapSearchAPI()
         search.delegate = self
+        
+   
+
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -285,6 +294,9 @@ class NearByVC: UITableViewController,MKMapViewDelegate, AMapSearchDelegate,CLLo
 
     }
 }
+
+
+
 
 class NearByInfoLoader: NSObject {
     weak var cell:NearByPeopleTableViewCell?

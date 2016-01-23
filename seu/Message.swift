@@ -1531,7 +1531,12 @@ class MessageConversationVC:UITableViewController {
         refreshCont.addTarget(self, action: "pullRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.addSubview(refreshCont)
         loadConversation()
-        
+        if #available(iOS 9, *) {
+            if traitCollection.forceTouchCapability == .Available {
+                self.registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -1646,6 +1651,27 @@ class MessageConversationVC:UITableViewController {
         navigationController?.pushViewController(msgVC, animated: true)
     }
     
+    
+}
+
+@available(iOS 9.0, *)
+extension MessageConversationVC:UIViewControllerPreviewingDelegate {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
+    }
+    
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+            let data = conversations[indexPath.section]
+            let vc = MessageVC()
+            vc.sendID = data["SendId"].stringValue
+            return vc
+        }
+        
+        return nil
+    }
     
 }
 

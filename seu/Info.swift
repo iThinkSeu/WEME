@@ -14,6 +14,12 @@ enum MenuBarState {
     case float(CGFloat)
 }
 
+protocol InfoVCPreviewDelegate:class {
+    func didTapMessage(id:String)
+    func didTapUnfollow(id:String)
+}
+
+
 class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var coverImageView:UIImageView!
@@ -36,6 +42,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var timelineCurrentPage = 1
     
+    weak var delegate:InfoVCPreviewDelegate?
+    
     private let infos = ["姓名", "生日", "学校", "学历", "专业", "家乡", "QQ", "微信"]
     private let sectionRows = [2, 3, 1, 2, 1]
     
@@ -43,6 +51,21 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var imageCurrentPage = 1
     
     var currentMenuBarState:MenuBarState = .float(0)
+    
+    @available(iOS 9, *)
+    override func previewActionItems() -> [UIPreviewActionItem] {
+        let message = UIPreviewAction(title: "私信", style: .Default) { (action, viewController) -> Void in
+            self.delegate?.didTapMessage(self.id)
+        }
+        
+        let unfollow = UIPreviewAction(title: "取消关注", style: .Destructive) { (action, vc) -> Void in
+            self.delegate?.didTapUnfollow(self.id)
+        }
+    
+        
+        return [message, unfollow]
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

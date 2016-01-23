@@ -68,6 +68,11 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
                     }
                     
                 }
+                else {
+                    if let S = self {
+                        S.refreshBackground(UIImage(named: "avatar")!)
+                    }
+                }
             })
             
             card.nameLabel.text = p.name

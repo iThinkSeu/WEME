@@ -369,6 +369,12 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
         
         view.addSubview(refreshCont)
         loadOnePage()
+        
+        if #available(iOS 9, *) {
+            if self.traitCollection.forceTouchCapability == .Available {
+                self.registerForPreviewingWithDelegate(self, sourceView: tableView)
+            }
+        }
     }
     
     func recommendFriendsExit(sender: AnyObject?) {
@@ -597,6 +603,63 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
     
     
     
+}
+
+@available(iOS 9.0, *)
+extension ContactsVC:UIViewControllerPreviewingDelegate {
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        showViewController(viewControllerToCommit, sender: self)
+    }
+    
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        if let indexPath = tableView.indexPathForRowAtPoint(location) {
+            previewingContext.sourceRect = tableView.rectForRowAtIndexPath(indexPath)
+            let data = friendsData[indexPath.row]
+            let vc = InfoVC()
+            vc.id = data["id"].stringValue
+            vc.delegate = self
+            return vc
+        }
+        
+        return nil
+    }
+    
+}
+
+extension ContactsVC:InfoVCPreviewDelegate {
+    func didTapMessage(id: String) {
+        let vc = ComposeMessageVC()
+        vc.recvID = id
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func didTapUnfollow(id: String) {
+        if let token = token {
+            request(.POST, UNFOLLOW_URL, parameters: ["token":token, "id":id], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
+                //debugprint(response)
+                if let d = response.result.value, S = self {
+                    let json = JSON(d)
+                    if json["state"].stringValue == "successful"{
+                        for (idx, f) in S.friendsData.enumerate() {
+                            if f["id"].stringValue == id {
+                               let indexPath = NSIndexPath(forRow: idx, inSection: 1)
+                                S.friendsData.removeAtIndex(indexPath.row)
+                                S.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                                break
+                            }
+                        }
+                       
+                        
+                    }
+                    else {
+                        S.messageAlert("取消关注失败")
+                        return
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension ContactsVC: UISearchResultsUpdating {
