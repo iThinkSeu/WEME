@@ -78,6 +78,14 @@ class EditInfoVC:UITableViewController, UINavigationControllerDelegate, UIImageP
                     }
                     
                 }
+                else if let S = self {
+                    ProfileCache.sharedCache.loadProfileWithCompletionBlock({ [weak S](info) -> Void in
+                        if let SS = S, p = info {
+                            SS.personInfo = p
+                            SS.tableView.reloadData()
+                        }
+                    })
+                }
             }
             
         }
