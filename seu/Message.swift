@@ -1631,8 +1631,7 @@ class MessageConversationVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRectMake(0, 0,tableView.frame.size.width, 10))
-        v.backgroundColor = tableView.backgroundColor
+        let v = UIView(frame: CGRectZero)
         return v
     }
  

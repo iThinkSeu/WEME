@@ -278,12 +278,14 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
             timer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: "moveToNext:", userInfo: nil, repeats: true)
             
         }
+        
     }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         timer?.invalidate()
         timer = nil
+       
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -354,9 +356,11 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         tableView.dataSource = self
         tableView.registerClass(ActivityCell.self, forCellReuseIdentifier: NSStringFromClass(ActivityCell))
         tableView.backgroundColor = BACK_COLOR
-        let edgeInsets = UIEdgeInsetsMake(0, 0, tabBarController?.tabBar.frame.size.height ?? 0 , 0)
+        
+        let edgeInsets = UIEdgeInsetsMake(0, 0, CGRectGetHeight(tabBarController!.tabBar.frame)+10 , 0)
         tableView.contentInset = edgeInsets
         tableView.scrollIndicatorInsets = edgeInsets
+       
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
         navigationController?.navigationBar.barStyle = .Black
@@ -512,7 +516,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         let publishItem = KxMenuItem("发布活动",image: more, target:self, action:"editActivity:")
         publishItem.foreColor = UIColor.whiteColor()
         
-        let qrcode = UIImage(named: "qrcode")?.imageWithRenderingMode(.AlwaysTemplate)
+        let qrcode = UIImage(named: "qrcode_scan")?.imageWithRenderingMode(.AlwaysTemplate)
         let qrcodeItem = KxMenuItem("扫二维码",image: qrcode, target:self, action:"scanQRCode:")
         qrcodeItem.foreColor = UIColor.whiteColor()
         
@@ -641,14 +645,13 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 5))
-        v.backgroundColor = BACK_COLOR
+        let v = UIView(frame:CGRectZero)
         return v
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: section == 0 ? 10 : 5))
-        v.backgroundColor = BACK_COLOR
+        let v = UIView(frame:CGRectZero)
+       
         return v
     }
     

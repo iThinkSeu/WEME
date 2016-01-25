@@ -219,8 +219,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 20))
-        v.backgroundColor =  UIColor.colorFromRGB(0xefeff4)
+        let v = UIView(frame: CGRectZero)
         return v
     }
     

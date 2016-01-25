@@ -318,8 +318,7 @@ class CardFoodEditVC:UITableViewController,UITextViewDelegate, CardFoodEditTable
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRectMake(0, 0, tableView.frame.size.width, 20))
-        v.backgroundColor = BACK_COLOR
+        let v = UIView(frame: CGRectZero)
         return v
     }
     

@@ -336,7 +336,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
         vc.delegate = self
         searchController = UISearchController(searchResultsController: vc)
         searchController?.searchResultsUpdater = self
-        searchController?.searchBar.placeholder = "输入姓名或ID快速查找"
+        searchController?.searchBar.placeholder = "输入姓名快速查找"
         searchController?.searchBar.sizeToFit()
         searchController?.searchBar.tintColor = THEME_COLOR//UIColor.redColor()
         searchController?.searchBar.barTintColor = BACK_COLOR//backColor
@@ -524,6 +524,7 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
             cell.textLabel?.text = "关注我的人"//indexPath.row == 0 ? "好友推荐":"关注我的人"
             cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
             cell.selectionStyle = .None
+            cell.textLabel?.textColor = TEXT_COLOR
             return cell
             
         }
@@ -559,12 +560,15 @@ class ContactsVC:UITableViewController, UINavigationControllerDelegate, UISearch
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 1 ? "我关注的人" : ""
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRectZero)
+        return v
     }
+    
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 {
-            return 44
+            return 20
         }
         return 0
     }

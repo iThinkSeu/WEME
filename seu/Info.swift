@@ -428,6 +428,11 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
        
     }
     
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRectZero)
+        return v
+    }
+    
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if currentIndex == 0 {
             let rect = ("历" as NSString).boundingRectWithSize(CGSizeMake(tableView.frame.width, CGFloat.max), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName:UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)], context: nil)

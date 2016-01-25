@@ -120,14 +120,12 @@ class ActivityLikeVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 5))
-        v.backgroundColor = BACK_COLOR
+        let v = UIView(frame: CGRectZero)
         return v
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: section == 0 ? 10 : 5))
-        v.backgroundColor = BACK_COLOR
+        let v = UIView(frame: CGRectZero)
         return v
     }
     

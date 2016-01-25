@@ -25,11 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = NSUserDefaults.standardUserDefaults();
         if let t = defaults.stringForKey(TOKEN),
            let Id = defaults.stringForKey(ID){
-            //print("Already logined")
-           
             token = t
             myId = Id
-            print(token)
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             let vc = HomeVC()
             window?.rootViewController = vc
@@ -37,11 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         }
         else {
-            //let navigation = UINavigationController(rootViewController: LoginRegisterVC())
-            //navigation.navigationBar.barTintColor = THEME_COLOR
-           // navigation.navigationBar.tintColor = UIColor.whiteColor()
-           // navigation.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
-           // UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
             window?.rootViewController = LoginRegisterVC()
             window?.makeKeyAndVisible();
