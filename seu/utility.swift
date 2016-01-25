@@ -100,7 +100,7 @@ let GET_UNREAD_MESSAGE_URL = BASE_URL + "getmessageunreadnumber"
 let GET_VISIT_INFO_URL = BASE_URL + "visitinfo"
 let VISIT_URL = BASE_URL + "visit"
 
-let PROFILE = "PROFILE_KEY"
+
 
 //MARK: Activity
 let GET_TOP_ACTIVITY_URL = BASE_URL + "activitytopofficial"
@@ -125,10 +125,7 @@ let LIKE_FOOD_URL = BASE_URL + "likefoodcard"
 
 let REPORT_URL = BASE_URL + "publishreport"
 
-let CARD_SETTING_KEY = "CARD_SETTING_KEY"
-//MARK - Cache File
 
-let PROFILE_CACHE_FILE = "profile"
 
 
 let ID = "ID"
@@ -194,9 +191,8 @@ func profileBackgroundURLForID(id:String)->NSURL {
     return NSURL(string: url)!
 }
 
-let BACK_COLOR = UIColor.colorFromRGB(0xf0eff5)//UIColor.colorFromRGB(0xefeff4)
-//UIColor(red: 238/255.0, green: 233/255.0, blue: 233/255.0, alpha: 1.0)
-let THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)//UIColor.colorFromRGB(0x415788)//UIColor.colorFromRGB(0x3e5d9e)//UIColor.blackColor()//UIColor.colorFromRGB(0xFF69B4)//UIColor.blackColor()//UIColor.colorFromRGB(0x104E8B)//UIColor.redColor()
+let BACK_COLOR = UIColor.colorFromRGB(0xf0eff5)
+let THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)
 let THEME_COLOR_BACK = UIColor(red: 197/255.0, green: 197/255.0, blue: 218/255.0, alpha: 1.0)
 let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
 let TEXT_COLOR = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)

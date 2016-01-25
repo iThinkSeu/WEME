@@ -68,14 +68,6 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
-    func loadNameInfoFromFile() {
-        let cacheDir = NSSearchPathForDirectoriesInDomains(.CachesDirectory, .UserDomainMask, true)[0]
-        let profileFile = cacheDir.stringByAppendingString("/\(PROFILE_CACHE_FILE)")
-        if NSFileManager.defaultManager().fileExistsAtPath(profileFile) {
-            
-        }
-    }
-    
     func fetchUnreadMessage() {
         if let t = token {
             request(.POST, GET_UNREAD_MESSAGE_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
@@ -87,8 +79,8 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     
                     S.unreadMessage = json["number"].stringValue
                     S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 1, inSection: 1)], withRowAnimation: .None)
-                    //S.tableView.reloadData()
                 }
+               
             })
         }
     }
@@ -105,12 +97,21 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     do {
                         S.personInfo = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject) as? PersonModel
                         S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
-                        //S.tableView.reloadData()
+                        ProfileCache.sharedCache.saveProfile(S.personInfo)
                     }
                     catch {
                         print(error)
                     }
                    
+                }
+                else if let S = self {
+                     ProfileCache.sharedCache.loadProfileWithCompletionBlock({ [weak S](info) -> Void in
+                        if let p = info , SS = S{
+                            SS.personInfo = p
+                            SS.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .None)
+                        }
+                     })
+                    
                 }
             }
 

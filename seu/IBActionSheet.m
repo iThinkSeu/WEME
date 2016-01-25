@@ -384,7 +384,7 @@ CGRect adjustedScreenBounds()
         
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
         back.center = CGPointMake(pointOfReference.x, CGRectGetHeight(self.frame)-height/2);
-        back.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
+        back.backgroundColor = [UIColor colorWithRed:240/255.0 green:239/255.0 blue:245/255.0 alpha:1.0];
         back.alpha = 0.6;
         [self addSubview:back];
         
@@ -440,7 +440,7 @@ CGRect adjustedScreenBounds()
         CGPoint pointOfReference = CGPointMake(CGRectGetWidth(self.frame) / 2.0, CGRectGetHeight(self.frame)-22);
         UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
         back.center = CGPointMake(pointOfReference.x, CGRectGetHeight(self.frame)-height/2);
-        back.backgroundColor = [UIColor colorWithRed:239/255.0 green:239/255.0 blue:244/255.0 alpha:1.0];
+        back.backgroundColor = [UIColor colorWithRed:240/255.0 green:239/255.0 blue:245/255.0 alpha:1.0];
         back.alpha = 0.6;
         [self addSubview:back];
         

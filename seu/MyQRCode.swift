@@ -75,6 +75,14 @@ class MyQRCodeVC:UIViewController {
                         print(error.localizedDescription)
                     }
                 }
+                else if let S = self {
+                    ProfileCache.sharedCache.loadProfileWithCompletionBlock({ [weak S](info) -> Void in
+                        if let p = info, SS = S {
+                            SS.info = p
+                            SS.configUI()
+                        }
+                    })
+                }
                 
                 
                 

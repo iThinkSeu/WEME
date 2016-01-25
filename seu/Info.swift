@@ -307,10 +307,20 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                         print(error.localizedDescription)
                     }
                 }
+                else if let S = self {
+                    ProfileCache.sharedCache.loadProfileWithCompletionBlock({ [weak S](info) -> Void in
+                        if let p = info, SS = S {
+                            SS.info = p
+                            if SS.currentIndex == 0 {
+                                SS.tableView.reloadData()
+                            }
+                        }
+                    })
+                }
                 
                 
                 
-                })
+            })
         }
         
         

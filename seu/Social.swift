@@ -26,7 +26,7 @@ class SocialVC:UIViewController {
     let refreshCustomizeImageView = UIImageView()
     
     
-    var topics = [Topic]()
+    var topics = [TopicModel]()
     
     //var barBG:UIImage?
     
@@ -63,7 +63,7 @@ class SocialVC:UIViewController {
                         self?.boardScrollView.contentSize = CGSizeMake((self?.view.frame.width)! * CGFloat(board_arr.count+2), SocialVC.BOARD_SCROLLVIEW_HEIGHT)
                   
                         var imgView = UIImageView()//UIImageView(image: imgs[board_arr.count-1])
-                        imgView.sd_setImageWithURL(NSURL(string:board_arr[board_arr.count-1].image)!, placeholderImage: UIImage(named: "profile_background"))
+                        imgView.sd_setImageWithURL(board_arr[board_arr.count-1].imageURL, placeholderImage: UIImage(named: "profile_background"))
                         //imgView.contentMode = UIViewContentMode.ScaleAspectFill
                         imgView.frame = CGRectMake(0, 0, (self?.boardScrollView.frame.width)!, SocialVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
@@ -72,13 +72,13 @@ class SocialVC:UIViewController {
                         for (index, board) in board_arr.enumerate() {
                             let imgView = UIImageView()
                             //imgView.contentMode = UIViewContentMode.ScaleAspectFill
-                            imgView.sd_setImageWithURL(NSURL(string:board.image)!, placeholderImage: UIImage(named: "profile_background"))
+                            imgView.sd_setImageWithURL(board.imageURL, placeholderImage: UIImage(named: "profile_background"))
                             imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(index+1), 0, (self?.boardScrollView.frame.width)!, SocialVC.BOARD_SCROLLVIEW_HEIGHT)
                             self?.boardScrollView.addSubview(imgView)
                         }
 //
                         imgView = UIImageView()
-                        imgView.sd_setImageWithURL(NSURL(string:board_arr[0].image)!, placeholderImage: UIImage(named: "profile_background"))
+                        imgView.sd_setImageWithURL(board_arr[0].imageURL, placeholderImage: UIImage(named: "profile_background"))
                         //imgView.contentMode = UIViewContentMode.ScaleAspectFill
                         imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(board_arr.count+1), 0, (self?.boardScrollView.frame.width)!, SocialVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
@@ -261,7 +261,6 @@ class SocialVC:UIViewController {
         constraint = NSLayoutConstraint(item: _view, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal , toItem:view, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 0)
         view.addConstraint(constraint)
         contentView = UIView()
-        //contentView.backgroundColor = BACK_COLOR
         _view.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -308,7 +307,7 @@ class SocialVC:UIViewController {
         guard pageControl.currentPage < boardViewModel?.boards.value.count else {
             return
         }
-        if let postID = boardViewModel?.boards.value[pageControl.currentPage].postid {
+        if let postID = boardViewModel?.boards.value[pageControl.currentPage].postID{
             let vc = PostVC()
             vc.postID = postID
             navigationController?.pushViewController(vc, animated: true)
@@ -384,22 +383,31 @@ class SocialVC:UIViewController {
                             guard let arr = json["result"].array where arr.count > 0 else {
                                 return
                             }
-                            var topic_arr = [Topic]()
-                            for a in arr {
-                                guard a["id"] != .null && a["theme"] != .null && a["imageurl"] != .null && a["note"] != .null && a["number"] != .null else {
-                                    return
+                            do {
+                                let topics = try MTLJSONAdapter.modelsOfClass(TopicModel.self, fromJSONArray: json["result"].arrayObject) as? [TopicModel]
+                                if let t = topics where t.count > 0 {
+                                    S.topics = t
+                                    TopicCache.sharedCache.saveTopics(t)
+                                    S.topicCollectionView.invalidateIntrinsicContentSize()
+                                    S.topicCollectionView.reloadData()
                                 }
-                                
-                                topic_arr.append(Topic(id: a["id"].stringValue, theme: a["theme"].stringValue, imageurl: a["imageurl"].stringValue, footnote: a["note"].stringValue, hotIndex: a["number"].stringValue))
                             }
-                            
-                            if topic_arr.count > 0 {
-                                S.topics = topic_arr
-                                S.topicCollectionView.invalidateIntrinsicContentSize()
-                                S.topicCollectionView.reloadData()
+                            catch {
+                                print(error)
                             }
                             
                         }
+                    }
+                    
+                    else {
+                        TopicCache.sharedCache.loadTopicsWithCompletionBlock({ [weak S](topic) -> Void in
+                            if let t = topic , SS = S where t.count > 0 {
+                                SS.topics = t
+                                SS.topicCollectionView.invalidateIntrinsicContentSize()
+                                SS.topicCollectionView.reloadData()
+
+                            }
+                        })
                     }
                     S.refreshControl.endRefreshing()
                 }
@@ -421,7 +429,7 @@ extension SocialVC:UIViewControllerPreviewingDelegate {
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         if let indexPath = self.topicCollectionView.indexPathForItemAtPoint(location){
             previewingContext.sourceRect = topicCollectionView.collectionViewLayout.layoutAttributesForItemAtIndexPath(indexPath)!.frame
-            let vc = TopicVC(topic: topics[indexPath.item].id)
+            let vc = TopicVC(topic: topics[indexPath.item].topicID)
             let nav = UINavigationController(rootViewController: vc)
             return nav
         }
@@ -442,9 +450,9 @@ extension SocialVC:UICollectionViewDataSource, UICollectionViewDelegate, UIColle
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(TopicCollectionViewCell), forIndexPath: indexPath) as! TopicCollectionViewCell
         
             let data = topics[indexPath.item]
-            cell.imgView.sd_setImageWithURL(NSURL(string: data.imageurl)!)
+            cell.imgView.sd_setImageWithURL(data.imageURL)
             cell.titleLabel.text = data.theme
-            cell.infoLabel.text = data.footnote
+            cell.infoLabel.text = data.footNote
             let num = Int(data.hotIndex)
             cell.badge.badgeText = num > 999 ? "999+" : data.hotIndex
             return cell
@@ -471,7 +479,7 @@ extension SocialVC:UICollectionViewDataSource, UICollectionViewDelegate, UIColle
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             let data = topics[indexPath.item]
-            let vc = TopicVC(topic: data.id)
+            let vc = TopicVC(topic: data.topicID)
             vc.title = data.theme
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -519,22 +527,10 @@ extension SocialVC:UIScrollViewDelegate {
 }
 
 
-struct Topic {
-    let id:String
-    let theme:String
-    let imageurl:String
-    let footnote:String
-    let hotIndex:String
-}
-
-struct Board {
-    let image: String
-    let postid: String
-}
 
 class BoardViewModel {
  
-    private var boards:Observable<[Board]> = Observable([])
+    private var boards:Observable<[TopicBoardModel]> = Observable([])
     
     func fetchBoardInfo() {
         if let t = token {
@@ -548,20 +544,26 @@ class BoardViewModel {
                                 arr.count > 0 else {
                                 return
                             }
-                            var board_arr = [Board]()
-                            for a in arr {
-                                guard a["postid"] != .null && a["imageurl"] != .null else {
-                                    return
+                            
+                            do {
+                                if let topics = try MTLJSONAdapter.modelsOfClass(TopicBoardModel.self, fromJSONArray: json["result"].arrayObject) as? [TopicBoardModel] where topics.count > 0 {
+                                    S.boards.value = topics
+                                    TopicBoardCache.sharedCache.saveTopics(topics)
                                 }
                                 
-                                board_arr.append(Board(image: a["imageurl"].stringValue, postid: a["postid"].stringValue))
                             }
-                            
-                            if board_arr.count > 0 {
-                                S.boards.value = board_arr
+                            catch {
+                                print(error)
                             }
                         }
                         
+                    }
+                    else {
+                        TopicBoardCache.sharedCache.loadTopicsWithCompletionBlock({ [weak S](topics) -> Void in
+                            if let SS = S, t = topics where t.count > 0{
+                                SS.boards.value = t
+                            }
+                        })
                     }
                 }
             })

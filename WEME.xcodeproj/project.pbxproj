@@ -204,6 +204,11 @@
 		B1FC43601B9FC25700133869 /* seuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC435F1B9FC25700133869 /* seuTests.swift */; };
 		B1FC436B1BA2B9C500133869 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1FC436A1BA2B9C500133869 /* Launch Screen.xib */; };
 		B1FC436D1BA5C53600133869 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FC436C1BA5C53600133869 /* HomeVC.swift */; };
+		B1FFB2A01C5626DC00A79A3B /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1FFB29F1C5626DC00A79A3B /* Cache.swift */; };
+		B1FFB2A31C562BF300A79A3B /* TopicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FFB2A21C562BF300A79A3B /* TopicModel.m */; };
+		B1FFB2A91C56318400A79A3B /* NSValueTransformer+Model.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FFB2A81C56318400A79A3B /* NSValueTransformer+Model.m */; };
+		B1FFB2AC1C56385400A79A3B /* TopicBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FFB2AB1C56385400A79A3B /* TopicBoardModel.m */; };
+		B1FFB2AF1C56490200A79A3B /* ActivityBoardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B1FFB2AE1C56490200A79A3B /* ActivityBoardModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -491,6 +496,15 @@
 		B1FC435F1B9FC25700133869 /* seuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = seuTests.swift; sourceTree = "<group>"; };
 		B1FC436A1BA2B9C500133869 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		B1FC436C1BA5C53600133869 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		B1FFB29F1C5626DC00A79A3B /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		B1FFB2A11C562BF300A79A3B /* TopicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicModel.h; sourceTree = "<group>"; };
+		B1FFB2A21C562BF300A79A3B /* TopicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicModel.m; sourceTree = "<group>"; };
+		B1FFB2A71C56318400A79A3B /* NSValueTransformer+Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSValueTransformer+Model.h"; path = "../NSValueTransformer+Model.h"; sourceTree = "<group>"; };
+		B1FFB2A81C56318400A79A3B /* NSValueTransformer+Model.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSValueTransformer+Model.m"; path = "../NSValueTransformer+Model.m"; sourceTree = "<group>"; };
+		B1FFB2AA1C56385400A79A3B /* TopicBoardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicBoardModel.h; sourceTree = "<group>"; };
+		B1FFB2AB1C56385400A79A3B /* TopicBoardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicBoardModel.m; sourceTree = "<group>"; };
+		B1FFB2AD1C56490200A79A3B /* ActivityBoardModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityBoardModel.h; sourceTree = "<group>"; };
+		B1FFB2AE1C56490200A79A3B /* ActivityBoardModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityBoardModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -777,6 +791,8 @@
 		B16F95311C1834F300429B47 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B1FFB2A71C56318400A79A3B /* NSValueTransformer+Model.h */,
+				B1FFB2A81C56318400A79A3B /* NSValueTransformer+Model.m */,
 				B169C2AB1C3D94D6002F6869 /* SchoolModel.h */,
 				B169C2AC1C3D94D6002F6869 /* SchoolModel.m */,
 				B169C2A81C3D91CE002F6869 /* UniversityModel.h */,
@@ -794,6 +810,12 @@
 				B169C2A61C3D8C27002F6869 /* CityModel.m */,
 				B12CB2701C48C973003A191F /* FoodModel.h */,
 				B12CB2711C48C973003A191F /* FoodModel.m */,
+				B1FFB2A11C562BF300A79A3B /* TopicModel.h */,
+				B1FFB2A21C562BF300A79A3B /* TopicModel.m */,
+				B1FFB2AA1C56385400A79A3B /* TopicBoardModel.h */,
+				B1FFB2AB1C56385400A79A3B /* TopicBoardModel.m */,
+				B1FFB2AD1C56490200A79A3B /* ActivityBoardModel.h */,
+				B1FFB2AE1C56490200A79A3B /* ActivityBoardModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1090,6 +1112,7 @@
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1CA3C8F1C4F4F310015E69E /* Audio.swift */,
 				B1019F841C420BFB00EBEB23 /* MeVC.swift */,
+				B1FFB29F1C5626DC00A79A3B /* Cache.swift */,
 				B10C3F3C1C4CD10A007734C6 /* Info.swift */,
 				B1FC434B1B9FC25700133869 /* LoginRegister.swift */,
 				B1FC436C1BA5C53600133869 /* HomeVC.swift */,
@@ -1297,6 +1320,7 @@
 				B1A4E9661BDA041E00EF0CD1 /* UIViewExtensions.swift in Sources */,
 				B1CA3C8B1C4E05960015E69E /* wavwriter.c in Sources */,
 				B105D47A1C31188F000CA8B0 /* ActivityInfo.swift in Sources */,
+				B1FFB2AF1C56490200A79A3B /* ActivityBoardModel.m in Sources */,
 				B18950321C1B025B00645482 /* WXApiResponseHandler.m in Sources */,
 				B189503C1C1B02CA00645482 /* WXMediaMessage+messageConstruct.m in Sources */,
 				B1019F8E1C420BFB00EBEB23 /* Observable.swift in Sources */,
@@ -1311,6 +1335,7 @@
 				B10759B51BEC518C00FEC0A0 /* ConstraintAttributes.swift in Sources */,
 				B10759BF1BEC518C00FEC0A0 /* SourceLocation.swift in Sources */,
 				B10759B81BEC518C00FEC0A0 /* ConstraintMaker.swift in Sources */,
+				B1FFB2AC1C56385400A79A3B /* TopicBoardModel.m in Sources */,
 				B125DBC91C06EF68002E0F5C /* ReplyPost.swift in Sources */,
 				B1019F8C1C420BFB00EBEB23 /* CAPSPageMenu.swift in Sources */,
 				B1CA3C901C4F4F310015E69E /* Audio.swift in Sources */,
@@ -1334,8 +1359,10 @@
 				B1A4E9631BDA041E00EF0CD1 /* AgrumeCell.swift in Sources */,
 				B12CB2631C478E75003A191F /* QRCodeViewController.swift in Sources */,
 				B12CB2671C478E75003A191F /* ToggleTorchButton.swift in Sources */,
+				B1FFB2A91C56318400A79A3B /* NSValueTransformer+Model.m in Sources */,
 				B12CB2691C4795C4003A191F /* MyQRCode.swift in Sources */,
 				B105CA451C23DC1900E946D8 /* DALabeledCircularProgressView.m in Sources */,
+				B1FFB2A01C5626DC00A79A3B /* Cache.swift in Sources */,
 				B17CF8A61C05E94C0074FF3F /* STEmojiCollectionView.m in Sources */,
 				B162BE891C2FC7AF00136F28 /* MyActivity.swift in Sources */,
 				B1AE746C1BD514EC0014BE12 /* SheetCollectionViewLayout.swift in Sources */,
@@ -1372,6 +1399,7 @@
 				B12CB2661C478E75003A191F /* SwitchCameraButton.swift in Sources */,
 				B1AE74631BD514EC0014BE12 /* ImagePickerSheetController.swift in Sources */,
 				B1D03C2F1BCE59D100DF0B44 /* Error.swift in Sources */,
+				B1FFB2A31C562BF300A79A3B /* TopicModel.m in Sources */,
 				B1019F8B1C420BFB00EBEB23 /* BubbleTransition.swift in Sources */,
 				B1CA3C891C4E05960015E69E /* WavAmrCodec.cpp in Sources */,
 				B1AE746B1BD514EC0014BE12 /* SheetCollectionViewCell.swift in Sources */,

@@ -17,4 +17,7 @@
 #import "UniversityModel.h"
 #import "SchoolModel.h"
 #import "FoodModel.h"
+#import "TopicModel.h"
+#import "TopicBoardModel.h"
+#import "ActivityBoardModel.h"
 #endif /* Model_h */

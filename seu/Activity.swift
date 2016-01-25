@@ -17,9 +17,6 @@ class ActivityCell:UITableViewCell {
     var locationIcon:UIImageView!
     var timeIcon:UIImageView!
     var statusLabel:UILabel!
-//    var remarkIcon:UIImageView!
-//    var remarkLabel:UILabel!
-
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -96,18 +93,6 @@ class ActivityCell:UITableViewCell {
         locationIcon.tintColor = THEME_COLOR_BACK
         contentView.addSubview(locationIcon)
         
-//        remarkIcon = UIImageView(image: UIImage(named: "remark")?.imageWithRenderingMode(.AlwaysTemplate))
-//        remarkIcon.translatesAutoresizingMaskIntoConstraints = false
-//        remarkIcon.tintColor = THEME_COLOR_BACK
-//        contentView.addSubview(remarkIcon)
-
-        
-//        remarkLabel = UILabel()
-//        remarkLabel.translatesAutoresizingMaskIntoConstraints = false
-//        remarkLabel.textColor = UIColor.lightGrayColor()
-//        remarkLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-//        contentView.addSubview(remarkLabel)
-        
         titleLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(hostIcon.snp_right).offset(10)
             make.top.equalTo(contentView.snp_topMargin)
@@ -146,18 +131,6 @@ class ActivityCell:UITableViewCell {
             make.right.equalTo(contentView.snp_rightMargin)
             
         }
-        
-//        remarkIcon.snp_makeConstraints { (make) -> Void in
-//            make.left.equalTo(hostIcon.snp_right).offset(10)
-//            make.centerY.equalTo(remarkLabel.snp_centerY)
-//            make.width.height.equalTo(20)
-//        }
-//        
-//        remarkLabel.snp_makeConstraints { (make) -> Void in
-//            make.left.equalTo(remarkIcon.snp_right).offset(10)
-//            make.right.equalTo(contentView.snp_rightMargin)
-//            make.top.equalTo(locationLabel.snp_bottom).offset(10)
-//        }
 
         
         infoLabel.snp_makeConstraints { (make) -> Void in
@@ -248,12 +221,17 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                 do {
                    let ac = try MTLJSONAdapter.modelsOfClass(ActivityModel.self, fromJSONArray: json["result"].arrayObject) as? [ActivityModel]
                     if let a = ac where a.count > 0 {
+                        if S.page == 1 {
+                            S.activities.removeAll()
+                            S.tableView.reloadData()
+                        }
                         var k = S.activities.count
                         let indexSets = NSMutableIndexSet()
                         for _ in a {
                             indexSets.addIndex(k++)
                         }
                         S.activities.appendContentsOf(a)
+                        ActivityCache.sharedCache.saveActivities(S.activities)
                         S.tableView.insertSections(indexSets, withRowAnimation: .Fade)
                         S.refreshControl.endRefreshing()
                         S.page++
@@ -262,8 +240,17 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                 catch let error as NSError {
                     print(error.localizedDescription)
                 }
-
                 
+            }
+            else if let S = self {
+                ActivityCache.sharedCache.loadActivitiesWithCompletionBlock({ [weak S](activities) -> Void in
+                    if let SS = S, a = activities where a.count > 0 {
+                        SS.activities = a
+                        SS.tableView.reloadData()
+
+                    }
+                })
+               
             }
         })
         }
@@ -290,8 +277,7 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let data = activities[indexPath.section]
-        let vc = ActivityInfoVC()//ActivityDetailVC()//ActivityRegisterVC()
-        //vc.id = data.activityID
+        let vc = ActivityInfoVC()
         vc.activityID = data.activityID
         navigationController?.pushViewController(vc, animated: true)
         
@@ -307,19 +293,19 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                         self?.boardScrollView.contentSize = CGSizeMake((self?.view.frame.width)! * CGFloat(board_arr.count+2), ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         
                         var imgView = UIImageView()
-                        imgView.sd_setImageWithURL(NSURL(string:board_arr[board_arr.count-1].image)!, placeholderImage: UIImage(named: "profile_background"))
+                        imgView.sd_setImageWithURL(board_arr[board_arr.count-1].imageURL, placeholderImage: UIImage(named: "profile_background"))
                         imgView.frame = CGRectMake(0, 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
                         
                         for (index, board) in board_arr.enumerate() {
                             let imgView = UIImageView()
-                            imgView.sd_setImageWithURL(NSURL(string:board.image)!, placeholderImage: UIImage(named: "profile_background"))
+                            imgView.sd_setImageWithURL(board.imageURL, placeholderImage: UIImage(named: "profile_background"))
                             imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(index+1), 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                             self?.boardScrollView.addSubview(imgView)
                         }
                     
                         imgView = UIImageView()
-                        imgView.sd_setImageWithURL(NSURL(string:board_arr[0].image)!, placeholderImage: UIImage(named: "profile_background"))
+                        imgView.sd_setImageWithURL(board_arr[0].imageURL, placeholderImage: UIImage(named: "profile_background"))
                         imgView.frame = CGRectMake((self?.boardScrollView.frame.width)! * CGFloat(board_arr.count+1), 0, (self?.boardScrollView.frame.width)!, ActivityVC.BOARD_SCROLLVIEW_HEIGHT)
                         self?.boardScrollView.addSubview(imgView)
                         
@@ -339,10 +325,8 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.hidden = false
-        
-        // navigationController?.navigationBar.setBackgroundImage(barBG, forBarMetrics: .Default)
         navigationController?.navigationBar.translucent = false
-        navigationController?.navigationBar.barTintColor = THEME_COLOR//UIColor.colorFromRGB(0x104E8B)//UIColor.blackColor()
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.barStyle = .Black
 
@@ -381,7 +365,6 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                 self.registerForPreviewingWithDelegate(self, sourceView: tableView)
             }
         }
-        
         
     }
     
@@ -590,14 +573,24 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                     guard json != .null  && json["state"].stringValue == "successful" && json["result"].array != nil else {
                         return
                     }
-                    
-                    var top = [ActivityBoard]()
-                    for t in json["result"].array! {
-                        top.append(ActivityBoard(image: t["imageurl"].stringValue, activityID: t["activityid"].stringValue))
+                    do {
+                        if let top = try MTLJSONAdapter.modelsOfClass(ActivityBoardModel.self, fromJSONArray: json["result"].arrayObject) as? [ActivityBoardModel] where top.count > 0 {
+                            S.boardViewModel?.boards.value = top
+                            ActivityBoardCache.sharedCache.saveActivities(top)
+                        }
+                        
                     }
-                    if top.count > 0 {
-                        S.boardViewModel?.boards.value = top
+                    catch {
+                        print(error)
                     }
+
+                }
+                else if let S = self {
+                    ActivityBoardCache.sharedCache.loadActivitiesWithCompletionBlock({ [weak S](activity) -> Void in
+                        if let SS = S, a = activity where a.count > 0{
+                            SS.boardViewModel?.boards.value = a
+                        }
+                    })
                 }
             })
         }
@@ -732,11 +725,8 @@ extension ActivityVC:UIScrollViewDelegate {
     
 }
 
-struct ActivityBoard {
-    let image:String
-    let activityID:String
-}
+
 class ActivityBoardViewModel {
-    private var boards:Observable<[ActivityBoard]>  = Observable([])
+    private var boards:Observable<[ActivityBoardModel]>  = Observable([])
     
 }
