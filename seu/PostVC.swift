@@ -67,6 +67,8 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var input:STInputBar!
     var tapGesture:UITapGestureRecognizer!
     var alldone = false
+    
+    var sheet:IBActionSheet?
     //var pageArray = [Int]()
     
     override func viewDidLoad() {
@@ -134,9 +136,9 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func share(sender:AnyObject) {
-        let sheet = IBActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享到微信会话", "分享到微信朋友圈"])
-        sheet.showInView((navigationController!.view))
-        sheet.setButtonTextColor(THEME_COLOR)
+        sheet = IBActionSheet(title: nil, delegate: self, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享到微信会话", "分享到微信朋友圈"])
+        sheet?.showInView((navigationController!.view))
+        sheet?.setButtonTextColor(THEME_COLOR)
 
     }
     
@@ -211,6 +213,11 @@ class PostVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         navigationController?.navigationBar.translucent = false
         navigationController?.navigationBar.barStyle = .Black
         navigationController?.navigationBar.alpha = 1
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        sheet?.removeFromView()
     }
     
     
@@ -733,7 +740,7 @@ extension PostVC : PostArticleTableViewCellDelegate {
     
     func didTapMore() {
         //MARK: -tapMore
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
                 alertText.tag = 0
@@ -741,8 +748,8 @@ extension PostVC : PostArticleTableViewCellDelegate {
                 alertText.showInView(self.navigationController!.view)
             }
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
         
     }
 }
@@ -843,7 +850,7 @@ extension PostVC:CommentFooterViewDelegate {
         guard footer.tag > 0 && footer.tag <= comments.count else {
             return
         }
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
                 alertText.tag = footer.tag
@@ -852,8 +859,8 @@ extension PostVC:CommentFooterViewDelegate {
             }
 
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
     }
 }
 
@@ -937,10 +944,6 @@ extension PostImageManager:UICollectionViewDataSource, UICollectionViewDelegate,
 }
 
 class PostLikeImageManager:NSObject {
-    //static let sharedManager = PostLikeImageManager()
-   // private var images = [UIImage(named: "dev_liuli")!, UIImage(named: "dev_lilei")!, UIImage(named: "dev_yeqingshi")!, UIImage(named: "dev_songjiaji")!, UIImage(named: "dev_mashenbin")!, UIImage(named: "dev_liuli")!]
-    //[UIImage]()
-    
     private(set) var likeIDs = [String]() {
         didSet {
             cell?.likeCollectionView.reloadData()
@@ -948,7 +951,7 @@ class PostLikeImageManager:NSObject {
     }
     weak var cell:PostArticleTableViewCell?
     
-    static let count = max(1, Int(SCREEN_WIDTH/40)-3)
+    static let count = max(1, Int(SCREEN_WIDTH/40)-1)
 }
 
 extension PostLikeImageManager:UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -981,6 +984,10 @@ extension PostLikeImageManager:UICollectionViewDataSource, UICollectionViewDeleg
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSize(width: 30 , height: 30)
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {

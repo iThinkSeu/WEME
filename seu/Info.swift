@@ -44,6 +44,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     weak var delegate:InfoVCPreviewDelegate?
     
+    var sheet:IBActionSheet?
+    
     private let infos = ["姓名", "生日", "学校", "学历", "专业", "家乡", "QQ", "微信"]
     private let sectionRows = [2, 3, 1, 2, 1]
     
@@ -101,7 +103,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         //statusBarView?.alpha = 0
         navigationController?.navigationBar.alpha = 1.0
         statusBarView?.backgroundColor = UIColor.clearColor()
-        
+        sheet?.removeFromView()
     }
     
     func editInfo(sender:NSNotification) {
@@ -113,7 +115,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func action(sender:AnyObject) {
         if let ID = myId where ID != id {
-            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
                 if index == 0 {
                     let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
                     alertText.delegate = self
@@ -126,11 +128,11 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     self.navigationController?.pushViewController(nav, animated: true)
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报", "私信"])
-            sheet.setButtonTextColor(THEME_COLOR)
-            sheet.showInView(navigationController!.view)
+            sheet?.setButtonTextColor(THEME_COLOR)
+            sheet?.showInView(navigationController!.view)
         }
         else {
-            let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
                 if index == 0 {
                     self.navigationController?.pushViewController(MyQRCodeVC(), animated: true)
                 }
@@ -149,8 +151,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     self.presentViewController(vc, animated: true, completion: nil)
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息", "改变封面","制作个性语音卡片"])
-            sheet.setButtonTextColor(THEME_COLOR)
-            sheet.showInView(navigationController!.view)
+            sheet?.setButtonTextColor(THEME_COLOR)
+            sheet?.showInView(navigationController!.view)
         }
         
     }

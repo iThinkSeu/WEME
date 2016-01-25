@@ -239,7 +239,7 @@ class CardVC:UIViewController {
                 let rect2 = CGRectMake(self.deckView.frame.origin.x, self.deckView.frame.origin.y + self.deckView.frame.size.height, self.cardView.frame.size.width, self.cardView.frame.size.height)
                 let rect3 = self.hostView.convertRect(rect2, toView: self.cardView)
 
-                UIView.animateWithDuration(1.2, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
+                UIView.animateWithDuration(1 , delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: .CurveEaseIn, animations: { () -> Void in
                     cardDefault.frame = rect3
                     cardDefault1.frame = CGRectMake(0, 0, self.cardView.frame.size
                         .width, self.cardView.frame.size.height)

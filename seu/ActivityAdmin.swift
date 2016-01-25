@@ -24,6 +24,8 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     let sloganLabel = DLLabel()
     var visualView:UIVisualEffectView?
     
+     var sheet:IBActionSheet?
+    
     static let TOPIC_IMAGE_WIDTH = SCREEN_WIDTH
     static let TOPIC_IMAGE_HEIGHT = SCREEN_WIDTH * 1/2
     let imgBG = UIImageView(frame: CGRectMake(0, -ActivityInfoVC.TOPIC_IMAGE_HEIGHT, ActivityInfoVC.TOPIC_IMAGE_WIDTH, ActivityInfoVC.TOPIC_IMAGE_HEIGHT))
@@ -97,6 +99,7 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         visualView?.removeFromSuperview()
+        sheet?.removeFromView()
     }
     
     
@@ -265,7 +268,7 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func action(sender:AnyObject) {
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 if QRCodeReader.supportsMetadataObjectTypes() {
                     self.reader.modalPresentationStyle = .FormSheet
@@ -288,8 +291,8 @@ class ActivityAdminVC:UIViewController, UITableViewDataSource, UITableViewDelega
 
             }
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["扫描二维码验证参与活动用户"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
         
     }
     

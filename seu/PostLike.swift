@@ -29,7 +29,7 @@ class PostLikeVC:UITableViewController {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
         navigationController?.navigationBar.barStyle = .Black
 
     }
@@ -62,7 +62,7 @@ class PostLikeVC:UITableViewController {
         else if data.gender == "女" {
             cell.gender.image = UIImage(named: "female")
         }
-       
+        cell.selectionStyle = .None
         return cell
     }
     

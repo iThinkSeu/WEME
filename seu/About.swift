@@ -60,6 +60,8 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
     var titleLabel:UILabel!
     var actionRight:UIButton!
     
+    var sheet:IBActionSheet?
+    
     private var cardView:UIScrollView!
     
     private var backView:UIImageView!
@@ -142,6 +144,7 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .Fade)
         navigationController?.navigationBar.hidden = false
+        sheet?.removeFromView()
     }
     
     func setupUI() {
@@ -343,7 +346,7 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
     
     func tapRight(sender:AnyObject) {
         if WXApi.isWXAppInstalled() {
-            let sheet = IBActionSheet(title: nil, callback: { [weak self](sheet, index) -> Void in
+            sheet = IBActionSheet(title: nil, callback: { [weak self](sheet, index) -> Void in
                 if let S = self {
                     if index == 0 {
                         S.shareToWeChat(0)
@@ -360,8 +363,8 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
                     }
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["分享WEME到微信会话", "分享WEME到微信朋友圈", "联系我们"])
-            sheet.setButtonTextColor(THEME_COLOR)
-            sheet.showInView(self.navigationController!.view)
+            sheet?.setButtonTextColor(THEME_COLOR)
+            sheet?.showInView(self.navigationController!.view)
         }
         else {
             let sheet = IBActionSheet(title: nil, callback: { [weak self](sheet, index) -> Void in
@@ -374,8 +377,8 @@ class AboutVC:UIViewController, UIScrollViewDelegate {
                     }
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["联系我们"])
-            sheet.setButtonTextColor(THEME_COLOR)
-            sheet.showInView(self.navigationController!.view)
+            sheet?.setButtonTextColor(THEME_COLOR)
+            sheet?.showInView(self.navigationController!.view)
 
         }
         

@@ -21,6 +21,8 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     private var activity:ActivityModel?
     
+    var sheet:IBActionSheet?
+    
     let sloganLabel = DLLabel()
     var visualView:UIVisualEffectView?
     
@@ -89,6 +91,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         visualView?.removeFromSuperview()
+        sheet?.removeFromView()
     }
 
     
@@ -177,6 +180,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
 
 
     }
+    
     
     
     func fetchActivityInfo() {
@@ -297,7 +301,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     
     func action(sender:AnyObject) {
         
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
                 alertText.showInView(self.navigationController!.view)
@@ -313,11 +317,12 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报","活动二维码","更多活动信息"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
         
     }
-
+    
+    
     
     
     func register(sender:AnyObject) {

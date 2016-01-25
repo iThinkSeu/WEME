@@ -11,6 +11,8 @@ import UIKit
 class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
     var recommendPeople = [PersonModel]()
     var currentIndex = 0
+    
+    var sheet:IBActionSheet?
     var currentPeople:PersonModel? {
         didSet {
             if currentPeople == nil {
@@ -26,6 +28,11 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
         super.viewDidLoad()
         currentPeople = nil
         fetchRecommendPeople()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        sheet?.removeFromView()
     }
     
     func fetchRecommendPeople() {
@@ -155,7 +162,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
     }
     
     override func tapRight(sender: AnyObject) {
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 if let p = self.currentPeople {
                     self.followUser(p.ID)
@@ -169,8 +176,8 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
                 }
             }
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["关注", "私信"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
     }
 }
 

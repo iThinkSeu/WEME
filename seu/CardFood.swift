@@ -17,6 +17,7 @@ class CardFoodVC:CardVC,  CardFoodContentViewDelegate, CardFoodDetailViewDelegat
     var currentCard:CardFoodContentView?
     var locationManager:CLLocationManager!
     var currentCoordinate:CLLocationCoordinate2D?
+    var sheet:IBActionSheet?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,11 @@ class CardFoodVC:CardVC,  CardFoodContentViewDelegate, CardFoodDetailViewDelegat
         locationManager.distanceFilter = CLLocationDistance(1000)
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         fetchRecommendFood()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        sheet?.removeFromView()
     }
     
     func checkAuthorizationStatus() {
@@ -164,7 +170,7 @@ class CardFoodVC:CardVC,  CardFoodContentViewDelegate, CardFoodDetailViewDelegat
     }
     
     override func tapRight(sender: AnyObject) {
-        let sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
                 let nav = UINavigationController(rootViewController: CardFoodEditVC())
                 //self.navigationController?.pushViewController(nav, animated: true)
@@ -172,8 +178,8 @@ class CardFoodVC:CardVC,  CardFoodContentViewDelegate, CardFoodDetailViewDelegat
             }
          
             }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["编辑一张美食卡片，分享吧"])
-        sheet.setButtonTextColor(THEME_COLOR)
-        sheet.showInView(navigationController!.view)
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
 
     }
 }

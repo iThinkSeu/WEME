@@ -67,7 +67,7 @@ typedef void (^IBActionCallback)(IBActionSheet *actionSheet, NSInteger buttonInd
 @interface IBActionSheet : UIView {
     
 }
-
+- (void)removeFromView;
 - (void)showInView:(UIView *)theView;
 - (NSInteger)addButtonWithTitle:(NSString *)title;
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;

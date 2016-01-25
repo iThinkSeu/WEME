@@ -63,6 +63,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
        return WXApi.handleOpenURL(url, delegate: WXApiManager.sharedManager())
     }
+    
+    @available(iOS 9.0, *)
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        if shortcutItem.type == "weme.qrcode" {
+            if let vc = window?.rootViewController as? HomeVC {
+                vc.selectedIndex = 2
+                let qr = MyQRCodeVC()
+                (vc.viewControllers?[2] as? UINavigationController)?.pushViewController(qr, animated: true)
+            }
+        }
+        else if shortcutItem.type == "weme.scan" {
+            if let vc = window?.rootViewController as? HomeVC {
+                vc.selectedIndex = 0
+                let builder = QRCodeViewControllerBuilder { builder in
+                    builder.reader          = QRCodeReader(metadataObjectTypes: [AVMetadataObjectTypeQRCode])
+                    builder.showTorchButton = true
+                }
+                
+                let reader = QRCodeReaderViewController(builder: builder)
+                let vc = (vc.viewControllers?[0] as? UINavigationController)?.viewControllers[0] as? ActivityVC
+                reader.delegate = vc
+                vc?.presentViewController(reader, animated: true, completion: nil)
+    
+            }
+        }
+    }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
