@@ -31,4 +31,5 @@
 @property (nonatomic, copy)NSURL *voiceURL;
 @property (nonatomic, copy) NSString *birthFlag;
 @property (nonatomic, copy)NSString *followFlag;
+@property (nonatomic, copy)NSString *constellation;
 @end

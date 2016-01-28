@@ -34,7 +34,8 @@
              @"activityImageThumbnails":@"thumbnail",
              @"voiceURL":@"voice",
              @"birthFlag":@"birthflag",
-             @"followFlag":@"followflag"
+             @"followFlag":@"followflag",
+             @"constellation":@"constellation"
              };
 }
 

@@ -317,7 +317,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     do {
                         let p = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject!) as! PersonModel
                         S.info = p
-                        S.headerView.moreInfoLabel.text = "射手座"
+                        S.headerView.moreInfoLabel.text = p.constellation
                         S.headerView.gender.image = p.gender == "男" ? UIImage(named: "male") : (p.gender == "女" ? UIImage(named: "female") : nil)
                         if S.currentIndex == 0 {
                             S.tableView.reloadData()
@@ -429,12 +429,52 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     hud.mode = .CustomView
                     hud.customView = UIImageView(image: UIImage(named: "checkmark"))
                     hud.hide(true, afterDelay: 1)
+                    if S.currentIndex == 0 {
+                        S.fetchInfo()
+                    }
                 }
             }
             
         }
         
     }
+    
+    func unfollow(sender: AnyObject) {
+        let alert = UIAlertController(title: "提示", message: "确定取消关注么？", preferredStyle:.Alert)
+        alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: { (action) -> Void in
+            if let token = token, id = self.info?.ID {
+                request(.POST, UNFOLLOW_URL, parameters: ["token":token, "id":id], encoding: .JSON).responseJSON{ [weak self](response) -> Void in
+                    //debugprint(response)
+                    if let d = response.result.value, S = self {
+                        let json = JSON(d)
+                        if json["state"].stringValue == "successful"{
+                            let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
+                            hud.labelText = "取消关注成功"
+                            hud.mode = .CustomView
+                            hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                            hud.hide(true, afterDelay: 1)
+                            
+                            if S.currentIndex == 0 {
+                                S.fetchInfo()
+                            }
+                        }
+                        else {
+                            S.messageAlert("取消关注失败")
+                            return
+                        }
+                    }
+                }
+            }
+
+        }))
+        alert.addAction(UIAlertAction(title: "取消", style: .Cancel, handler: { (action) -> Void in
+            
+        }))
+        alert.view.tintColor = THEME_COLOR
+        presentViewController(alert, animated: true, completion: nil)
+
+    }
+
 
     
     func configUI() {
@@ -582,14 +622,16 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                 }
                 
                 if let p = info?.followFlag where p == "1" {
-                    addFriendButton.setTitle("已关注\(gg)", forState: .Normal)
+                    addFriendButton.addTarget(self, action: "unfollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                    addFriendButton.setTitle("已关注\(gg), 取消关注", forState: .Normal)
                 }
                 else if let p = info?.followFlag where p == "2" {
                     addFriendButton.setTitle("\(gg)已关注你, 去关注\(gg)吧", forState: .Normal)
                     addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
                 }
                 else if let p = info?.followFlag where p == "3" {
-                    addFriendButton.setTitle("已互相关注", forState: .Normal)
+                    addFriendButton.addTarget(self, action: "unfollow:", forControlEvents: UIControlEvents.TouchUpInside)
+                    addFriendButton.setTitle("已互相关注, 取消关注", forState: .Normal)
                 }
                 else {
                     addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -922,7 +964,7 @@ class PersonalHeaderView:UIView {
         
         moreInfoLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(snp_left)
-            make.top.equalTo(infoLabel.snp_bottom).offset(5)
+            make.centerY.equalTo(gender.snp_centerY)
             make.width.equalTo(snp_width).multipliedBy(0.5)
         }
         
@@ -930,7 +972,7 @@ class PersonalHeaderView:UIView {
             make.left.equalTo(moreInfoLabel.snp_right).offset(10)
             make.width.equalTo(16)
             make.height.equalTo(18)
-            make.centerY.equalTo(moreInfoLabel.snp_centerY)
+            make.top.equalTo(infoLabel.snp_bottom).offset(5)
             
         }
 
