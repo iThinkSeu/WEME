@@ -9,12 +9,17 @@
 import UIKit
 
 class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate {
+    enum AudioState {
+        case Play
+        case Stop
+    }
     var recommendPeople = [PersonModel]()
     var currentIndex = 0
     var audioPlot:EZAudioPlotGL!
     var player:EZAudioPlayer!
     var sheet:IBActionSheet?
     var infoLabel:UILabel!
+    var currentAudioState:AudioState = .Play
     
     var currentPeople:PersonModel? {
         didSet {
@@ -26,6 +31,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
             }
         }
     }
+    var currentCard:CardPeopleContentView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +88,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
         infoLabel.text = ""
         player.pause()
         audioPlot.clear()
+        currentAudioState = .Play
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.audioPlot.clear()
         }
@@ -95,27 +102,34 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
         }
     }
     
+    func audioPlayer(audioPlayer: EZAudioPlayer!, updatedPosition framePosition: Int64, inAudioFile audioFile: EZAudioFile!) {
+        dispatch_async(dispatch_get_main_queue()) { [weak self]() -> Void in
+            if let S = self {
+                S.infoLabel.text = "\(audioPlayer.formattedCurrentTime)/\(audioPlayer.formattedDuration)"
+            }
+        }
+    }
+    
     func audioPlayer(audioPlayer: EZAudioPlayer!, reachedEndOfAudioFile audioFile: EZAudioFile!) {
             dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
                 if let S = self {
                     S.audioPlot.clear()
                     S.player.pause()
+                    S.infoLabel.text = ""
+                    if let card = S.currentCard {
+                        S.toggleState(card)
+                    }
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         S.audioPlot.clear()
+                        S.infoLabel.text = ""
                     })
                     
                 }
             })
-            
         
     }
+    
 
-
-    func fileURL()->NSURL {
-        let document = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, .UserDomainMask, true)[0]
-        let audioFile = "voice.m4a"
-        return NSURL(fileURLWithPath: "\(document)/\(audioFile)")
-    }
 
     
     override func viewWillDisappear(animated: Bool) {
@@ -205,6 +219,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
             }
             
             card.peopleCardDelegate = self
+            currentCard = card
             return card
         }
         else {
@@ -229,9 +244,48 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
       
     }
     
+    func toggleState(card:CardPeopleContentView) {
+        let rotate = CAKeyframeAnimation(keyPath: "transform.rotation.y")
+        rotate.values = [0.0, -M_PI / 2.0, -M_PI]
+        rotate.duration = 0.6
+        rotate.timingFunctions = [CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut), CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)]
+        CATransaction.setCompletionBlock { [weak self]() -> Void in
+            if let S = self, card = self?.currentCard{
+                if case .Play = S.currentAudioState {
+                    card.voiceButton.tintColor = TEXT_COLOR
+                }
+                else {
+                    card.voiceButton.tintColor = UIColor.redColor()
+                }
+                
+            }
+
+        }
+        card.voiceButton.layer.addAnimation(rotate, forKey: "rotation")
+        CATransaction.commit()
+        card.voiceButton.transform = CGAffineTransformIdentity
+        switch currentAudioState {
+        case .Play:
+            //card.voiceButton.tintColor = UIColor.redColor()
+            currentAudioState = .Stop
+        case .Stop:
+            player.pause()
+            audioPlot.clear()
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.audioPlot.clear()
+            })
+            infoLabel.text = ""
+            //card.voiceButton.tintColor = TEXT_COLOR
+            currentAudioState = .Play
+        }
+      
+    }
+    
     func didTapVoiceAtCard(card: CardPeopleContentView) {
-        //player.playAudioFile(EZAudioFile(URL: fileURL()))
-        infoLabel.text = "加载中..."
+        toggleState(card)
+        if case .Stop = currentAudioState {
+            infoLabel.text = "加载中..."
+        }
         if let p = currentPeople where p.voiceURL != nil {
             download(.GET, p.voiceURL.absoluteString, destination: { (url, response) -> NSURL in
                 debugPrint(response)
@@ -245,7 +299,9 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
                     if let pp = S.currentPeople where pp.ID == p.ID {
                         let directory = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask)[0]
                         let fileurl = directory.URLByAppendingPathComponent("voice_\(p.ID)")
-                        S.player.playAudioFile(EZAudioFile(URL: fileurl))
+                        if case .Stop = S.currentAudioState {
+                            S.player.playAudioFile(EZAudioFile(URL: fileurl))
+                        }
                     }
                 }
                 else {

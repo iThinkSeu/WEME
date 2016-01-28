@@ -46,7 +46,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var sheet:IBActionSheet?
     
-    private let infos = ["姓名", "生日", "学校", "学历", "专业", "家乡", "QQ", "微信"]
+    private let infos = ["姓名", "年龄", "学校", "学历", "专业", "家乡", "QQ", "微信"]
     private let sectionRows = [2, 3, 1, 2, 1]
     
     private var images = [UserImageModel]()
@@ -113,6 +113,22 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tapCover(sender:AnyObject) {
+        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+            if index == 0 {
+                let imagePicker = UIImagePickerController()
+                imagePicker.navigationBar.barStyle = .Black
+                imagePicker.sourceType = .PhotoLibrary
+                imagePicker.delegate = self
+                self.presentViewController(imagePicker, animated: true, completion: nil)
+            }
+      
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["改变背景照"])
+        sheet?.setButtonTextColor(THEME_COLOR)
+        sheet?.showInView(navigationController!.view)
+
+    }
+    
     func action(sender:AnyObject) {
         if let ID = myId where ID != id {
             sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
@@ -150,7 +166,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     let vc = AudioRecordVC()
                     self.presentViewController(vc, animated: true, completion: nil)
                 }
-                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息", "改变封面","制作个性语音卡片"])
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["我的二维码","修改个人信息", "改变背景照","录制个人语音"])
             sheet?.setButtonTextColor(THEME_COLOR)
             sheet?.showInView(navigationController!.view)
         }
@@ -243,6 +259,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         view.backgroundColor = BACK_COLOR
         coverImageView = UIImageView(frame:CGRectMake(0, -SCREEN_WIDTH + SCREEN_WIDTH * 2 / 3, SCREEN_WIDTH, SCREEN_WIDTH ))
         view.addSubview(coverImageView)
+      
+        
         tableView = UITableView(frame: view.frame)
         tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell))
         tableView.registerClass(InfoTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(InfoTableViewCell))
@@ -274,7 +292,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                         return
                     }
                     
-                    S.headerView.infoLabel.text = "今日访问 \((json["result"]["today"]).stringValue) 总访问 \(json["result"]["total"].stringValue)"
+                    S.headerView.infoLabel.text = "今日访问 \((json["result"]["today"]).stringValue)  总访问 \(json["result"]["total"].stringValue)"
                     
                 }
                 
@@ -299,6 +317,8 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     do {
                         let p = try MTLJSONAdapter.modelOfClass(PersonModel.self, fromJSONDictionary: json.dictionaryObject!) as! PersonModel
                         S.info = p
+                        S.headerView.moreInfoLabel.text = "射手座"
+                        S.headerView.gender.image = p.gender == "男" ? UIImage(named: "male") : (p.gender == "女" ? UIImage(named: "female") : nil)
                         if S.currentIndex == 0 {
                             S.tableView.reloadData()
                         }
@@ -405,7 +425,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     }
                     
                     let hud = MBProgressHUD.showHUDAddedTo(S.view, animated: true)
-                    hud.labelText = "添加好友成功"
+                    hud.labelText = "添加关注成功"
                     hud.mode = .CustomView
                     hud.customView = UIImageView(image: UIImage(named: "checkmark"))
                     hud.hide(true, afterDelay: 1)
@@ -509,7 +529,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                         cell.detailLabel.text = info?.name ?? ""
                     }
                     else if indexPath.row == 1 {
-                        cell.detailLabel.text = info?.birthday ?? ""
+                        cell.detailLabel.text = info?.birthFlag ?? ""
                     }
                 
                     else  if indexPath.row == 2 {
@@ -551,10 +571,34 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     make.left.equalTo(cell.contentView.snp_leftMargin)
                     make.right.equalTo(cell.contentView.snp_rightMargin)
                 })
-                addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
+                var gg = ""
+                if let g = info?.gender {
+                    if g == "男" {
+                        gg = "他"
+                    }
+                    else if g == "女" {
+                        gg = "她"
+                    }
+                }
+                
+                if let p = info?.followFlag where p == "1" {
+                    addFriendButton.setTitle("已关注\(gg)", forState: .Normal)
+                }
+                else if let p = info?.followFlag where p == "2" {
+                    addFriendButton.setTitle("\(gg)已关注你, 去关注\(gg)吧", forState: .Normal)
+                    addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
+                }
+                else if let p = info?.followFlag where p == "3" {
+                    addFriendButton.setTitle("已互相关注", forState: .Normal)
+                }
+                else {
+                    addFriendButton.addTarget(self, action: "addFriend:", forControlEvents: UIControlEvents.TouchUpInside)
+                    addFriendButton.setTitle("添加关注", forState: .Normal)
+                }
+             
                 addFriendButton.layer.cornerRadius = 4.0
                 addFriendButton.layer.masksToBounds = true
-                addFriendButton.setTitle("添加关注", forState: .Normal)
+            
                 addFriendButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 addFriendButton.titleLabel?.font = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
                 addFriendButton.backgroundColor = THEME_COLOR
@@ -812,23 +856,34 @@ extension InfoVC:PersonalHeaderViewDelegate {
         let showImg = Agrume(imageURL: avatarURLForID(id))
         showImg.showFrom(self)
     }
+    
+    func didTapCover() {
+        self.tapCover(self.headerView)
+    }
 }
 
 protocol PersonalHeaderViewDelegate:class {
     func didTapAvatar()
+    func didTapCover()
 }
 class PersonalHeaderView:UIView {
     
     var avatar:UIImageView!
     var infoLabel:DLLabel!
+    var moreInfoLabel:DLLabel!
+    var gender:UIImageView!
+    
     weak var delegate:PersonalHeaderViewDelegate?
     func initialize() {
+        let tap = UITapGestureRecognizer(target: self, action: "tapCover:")
+        addGestureRecognizer(tap)
+        
         backgroundColor = UIColor.clearColor()
         avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.userInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: "tapAvatar:")
-        avatar.addGestureRecognizer(tap)
+        let tap1 = UITapGestureRecognizer(target: self, action: "tapAvatar:")
+        avatar.addGestureRecognizer(tap1)
         addSubview(avatar)
         
         infoLabel = DLLabel()
@@ -837,6 +892,17 @@ class PersonalHeaderView:UIView {
         infoLabel.textColor = UIColor.whiteColor()
         infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
         infoLabel.textAlignment = .Center
+        
+        moreInfoLabel = DLLabel()
+        moreInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(moreInfoLabel)
+        moreInfoLabel.textColor = UIColor.whiteColor()
+        moreInfoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
+        moreInfoLabel.textAlignment = .Right
+        
+        gender = UIImageView()
+        gender.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(gender)
         
         avatar.snp_makeConstraints { (make) -> Void in
             make.width.height.equalTo(84)
@@ -853,6 +919,20 @@ class PersonalHeaderView:UIView {
             make.right.equalTo(snp_right)
             make.top.equalTo(avatar.snp_bottom).offset(5)
         }
+        
+        moreInfoLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(snp_left)
+            make.top.equalTo(infoLabel.snp_bottom).offset(5)
+            make.width.equalTo(snp_width).multipliedBy(0.5)
+        }
+        
+        gender.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(moreInfoLabel.snp_right).offset(10)
+            make.width.equalTo(16)
+            make.height.equalTo(18)
+            make.centerY.equalTo(moreInfoLabel.snp_centerY)
+            
+        }
 
  
     }
@@ -860,7 +940,10 @@ class PersonalHeaderView:UIView {
     func tapAvatar(sender:AnyObject?) {
         delegate?.didTapAvatar()
     }
-
+    
+    func tapCover(sender:AnyObject) {
+        delegate?.didTapCover()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

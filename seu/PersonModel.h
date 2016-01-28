@@ -29,4 +29,6 @@
 @property (nonatomic, strong)NSArray *activityImages;
 @property (nonatomic, strong)NSArray *activityImageThumbnails;
 @property (nonatomic, copy)NSURL *voiceURL;
+@property (nonatomic, copy) NSString *birthFlag;
+@property (nonatomic, copy)NSString *followFlag;
 @end

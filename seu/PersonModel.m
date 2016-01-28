@@ -7,6 +7,7 @@
 //
 
 #import "PersonModel.h"
+#import "NSValueTransformer+Model.h"
 
 @implementation PersonModel
 
@@ -31,8 +32,34 @@
              @"activityStatus":@"flag",
              @"activityImages":@"image",
              @"activityImageThumbnails":@"thumbnail",
-             @"voiceURL":@"voice"
+             @"voiceURL":@"voice",
+             @"birthFlag":@"birthflag",
+             @"followFlag":@"followflag"
              };
+}
+
++ (NSValueTransformer *)birthFlagJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+        NSString *v = @"";
+        if ([value isKindOfClass:[NSNumber class]]) {
+            v = [NSString stringWithFormat:@"%@", value];
+        }
+        v = value;
+        if ([v isEqualToString:@"-1"]) {
+            v = @"比你大";
+        }
+        else if ([v isEqualToString:@"0"]) {
+            v = @"同一天生日";
+        }
+        else if ([v isEqualToString:@"1"]) {
+            v = @"比你小";
+        }
+        return v;
+    }];
+}
+
++ (NSValueTransformer *)followFlagJSONTransformer {
+    return [NSValueTransformer valueTransformerForName:NumberORStringToStringValueTransformer];
 }
 
 + (NSValueTransformer *)voiceURLJSONTransformer {

@@ -26,6 +26,7 @@ class AudioRecordVC:UIViewController {
     var microphone:EZMicrophone!
     var controlButton:UIButton!
     var statusLabel:UILabel!
+    var infoLabel:UILabel!
     
     var currentState:AudioState = .Empty
     var cancelButton:UIButton!
@@ -187,6 +188,21 @@ class AudioRecordVC:UIViewController {
             make.width.height.equalTo(back.snp_width).multipliedBy(0.2)
         }
         
+        infoLabel = UILabel()
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.textAlignment = .Center
+        back.addSubview(infoLabel)
+        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        infoLabel.textColor = TEXT_COLOR
+        infoLabel.numberOfLines = 0
+        infoLabel.lineBreakMode = .ByWordWrapping
+        infoLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(back.snp_left)
+            make.right.equalTo(back.snp_right)
+            make.top.equalTo(back.snp_top)
+        }
+        infoLabel.text = "录一段语音介绍自己吧，让更多人了解你，你可以在发现中查看其它WEME用户的录音哦"
+        
         statusLabel = UILabel()
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.textAlignment = .Center
@@ -304,7 +320,13 @@ extension AudioRecordVC: EZMicrophoneDelegate, EZAudioPlayerDelegate, EZRecorder
     func microphone(microphone: EZMicrophone!, hasAudioReceived buffer: UnsafeMutablePointer<UnsafeMutablePointer<Float>>, withBufferSize bufferSize: UInt32, withNumberOfChannels numberOfChannels: UInt32) {
         dispatch_async(dispatch_get_main_queue()) { [weak self]() -> Void in
             if let S = self {
-                S.audioPlot.updateBuffer(buffer[0], withBufferSize: bufferSize)
+                switch S.currentState {
+                case .Recording, .Playing:
+                    S.audioPlot.updateBuffer(buffer[0], withBufferSize: bufferSize)
+                default:
+                    break
+                }
+                
             }
         }
     }
