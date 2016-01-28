@@ -197,6 +197,9 @@ extension Request {
             if let downloadTaskDidFinishDownloadingToURL = downloadTaskDidFinishDownloadingToURL {
                 do {
                     let destination = downloadTaskDidFinishDownloadingToURL(session, downloadTask, location)
+                    if let p = destination.path where  NSFileManager.defaultManager().fileExistsAtPath(p) {
+                       try NSFileManager.defaultManager().removeItemAtPath(p)
+                    }
                     try NSFileManager.defaultManager().moveItemAtURL(location, toURL: destination)
                 } catch {
                     self.error = error as NSError

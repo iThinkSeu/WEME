@@ -464,7 +464,7 @@
 		B1CA3C8F1C4F4F310015E69E /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		B1CC24E91C1843C800953A07 /* Mantle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mantle.framework; sourceTree = "<group>"; };
 		B1CC24ED1C19346700953A07 /* MBProgressHUD.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MBProgressHUD.framework; sourceTree = "<group>"; };
-		B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "seu-Bridging-Header.h"; sourceTree = "<group>"; };
+		B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "seu-Bridging-Header.h"; path = "seu/seu-Bridging-Header.h"; sourceTree = "<group>"; };
 		B1D03BFA1BCE557A00DF0B44 /* utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = utility.swift; path = seu/utility.swift; sourceTree = "<group>"; };
 		B1D03C1D1BCE59D100DF0B44 /* Alamofire.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alamofire.h; sourceTree = "<group>"; };
 		B1D03C1E1BCE59D100DF0B44 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
@@ -970,6 +970,7 @@
 		B19F9A351BD8AB340008CA12 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */,
 				B1019F811C420BFB00EBEB23 /* AlertTextView.swift */,
 				B1019F851C420BFB00EBEB23 /* Observable.swift */,
 				B1019F881C420BFB00EBEB23 /* utility-objc.m */,
@@ -1105,7 +1106,6 @@
 				B18950221C1AFF0200645482 /* SNS */,
 				B12FB2CA1C00FB5C00566266 /* RefreshContents.bundle */,
 				B19F9A351BD8AB340008CA12 /* Utility */,
-				B1D03BE21BCBF80B00DF0B44 /* seu-Bridging-Header.h */,
 				B12FB2BB1BFAF86C00566266 /* social */,
 				B169C2AF1C3F4861002F6869 /* Discover */,
 				B16F95311C1834F300429B47 /* Model */,

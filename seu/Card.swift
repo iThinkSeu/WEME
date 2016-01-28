@@ -17,8 +17,10 @@ enum CardState {
 
 class CardVC:UIViewController {
     var actionLeft:UIButton!
-    var actionMid:UIButton!
+    var midView:UIView!
     var actionRight:UIButton!
+    
+    var topView:UIView!
     
     private var cardView:UIView!
     
@@ -46,7 +48,6 @@ class CardVC:UIViewController {
         view.setNeedsLayout()
         view.layoutIfNeeded()
         configUI()
-        actionMid.hidden = true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -96,17 +97,11 @@ class CardVC:UIViewController {
         }
         
         
-        actionMid = UIButton(type:.System)
-        actionMid.translatesAutoresizingMaskIntoConstraints = false
-        hostView.addSubview(actionMid)
-        actionMid.setImage(UIImage(named: "food_search")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        actionMid.addTarget(self, action: "tapMid:", forControlEvents: .TouchUpInside)
-        actionMid.tintColor = UIColor.whiteColor()
-        actionMid.snp_makeConstraints { (make) -> Void in
-            make.centerX.equalTo(hostView.snp_centerX)
-            make.height.width.equalTo(24)
-            make.top.equalTo(hostView.snp_topMargin).offset(10)
-        }
+        midView = UIView()
+        midView.translatesAutoresizingMaskIntoConstraints = false
+        hostView.addSubview(midView)
+        midView.backgroundColor = UIColor.clearColor()
+       
         
         actionLeft = UIButton(type: .System)
         actionLeft.translatesAutoresizingMaskIntoConstraints = false
@@ -115,7 +110,7 @@ class CardVC:UIViewController {
         actionLeft.addTarget(self, action: "tapLeft:", forControlEvents: .TouchUpInside)
         actionLeft.tintColor = UIColor.whiteColor()
         actionLeft.snp_makeConstraints { (make) -> Void in
-            make.centerY.equalTo(actionMid.snp_centerY)
+            make.centerY.equalTo(midView.snp_centerY)
             make.centerX.equalTo(hostView.snp_centerX).multipliedBy(0.2)
             make.height.width.equalTo(24)
         }
@@ -127,9 +122,16 @@ class CardVC:UIViewController {
         actionRight.addTarget(self, action: "tapRight:", forControlEvents: .TouchUpInside)
         actionRight.tintColor = UIColor.whiteColor()
         actionRight.snp_makeConstraints { (make) -> Void in
-            make.centerY.equalTo(actionMid.snp_centerY)
+            make.centerY.equalTo(midView.snp_centerY)
             make.centerX.equalTo(hostView.snp_centerX).multipliedBy(1.8)
             make.height.width.equalTo(24)
+        }
+        
+        midView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(actionLeft.snp_right)
+            make.right.equalTo(actionRight.snp_left)
+            make.height.equalTo(24)
+            make.top.equalTo(hostView.snp_topMargin).offset(10)
         }
         
         deckView = UIImageView()
@@ -143,6 +145,7 @@ class CardVC:UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: "tapDeck:")
         deckView.addGestureRecognizer(tap)
         hostView.addSubview(deckView)
+        
         
         cardView = UIView()
         cardView.translatesAutoresizingMaskIntoConstraints = false
@@ -165,6 +168,17 @@ class CardVC:UIViewController {
             make.bottom.equalTo(hostView.snp_bottom).offset(10)
         }
         
+        topView = UIView()
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        hostView.addSubview(topView)
+        topView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(hostView.snp_left)
+            make.right.equalTo(hostView.snp_right)
+            make.top.equalTo(actionLeft.snp_bottom)
+            make.bottom.equalTo(cardView.snp_top)
+        }
+
+        
         drawCardLabel = UILabel()
         drawCardLabel.translatesAutoresizingMaskIntoConstraints = false
         deckView.addSubview(drawCardLabel)
@@ -185,16 +199,11 @@ class CardVC:UIViewController {
     }
     
     func tapLeft(sender:AnyObject) {
-        print("tap left")
         navigationController?.popViewControllerAnimated(true)
     }
     
-    func tapMid(sender:AnyObject) {
-        print("tap mid")
-    }
     
     func tapRight(sender:AnyObject) {
-        print("tap right")
     }
     
     func tapDeck(sender:AnyObject) {

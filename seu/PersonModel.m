@@ -30,10 +30,20 @@
              @"lookcount":@"lookcount",
              @"activityStatus":@"flag",
              @"activityImages":@"image",
-             @"activityImageThumbnails":@"thumbnail"
+             @"activityImageThumbnails":@"thumbnail",
+             @"voiceURL":@"voice"
              };
 }
 
++ (NSValueTransformer *)voiceURLJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString* value, BOOL *success, NSError *__autoreleasing *error) {
+        NSURL *url = [NSURL URLWithString:value];
+        if (url == nil || [value isEqualToString: @""]) {
+            return [NSNull null];
+        }
+        else return url;
+    }];
+}
 
 + (NSValueTransformer *) activityImagesJSONTransformer {
     NSValueTransformer *transformer = [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];

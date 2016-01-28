@@ -28,4 +28,5 @@
 @property (nonatomic, assign)BOOL activityStatus;
 @property (nonatomic, strong)NSArray *activityImages;
 @property (nonatomic, strong)NSArray *activityImageThumbnails;
+@property (nonatomic, copy)NSURL *voiceURL;
 @end

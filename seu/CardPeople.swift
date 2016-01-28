@@ -8,11 +8,14 @@
 
 import UIKit
 
-class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
+class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate {
     var recommendPeople = [PersonModel]()
     var currentIndex = 0
-    
+    var audioPlot:EZAudioPlotGL!
+    var player:EZAudioPlayer!
     var sheet:IBActionSheet?
+    var infoLabel:UILabel!
+    
     var currentPeople:PersonModel? {
         didSet {
             if currentPeople == nil {
@@ -28,7 +31,92 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
         super.viewDidLoad()
         currentPeople = nil
         fetchRecommendPeople()
+        setupAudio()
     }
+    
+    func setupAudio() {
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(AVAudioSessionCategoryPlayback)
+            try session.setActive(true)
+        }
+        catch {
+            print(error)
+        }
+        
+        audioPlot = EZAudioPlotGL(frame: CGRectZero)
+        audioPlot.backgroundColor = UIColor.clearColor()
+        audioPlot.plotType = EZPlotType.Buffer
+        audioPlot.shouldFill = true
+        audioPlot.shouldMirror = true
+        
+        audioPlot.translatesAutoresizingMaskIntoConstraints = false
+        topView.addSubview(audioPlot)
+        audioPlot.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(topView.snp_leftMargin)
+            make.right.equalTo(topView.snp_rightMargin)
+            make.top.equalTo(topView.snp_top)
+            make.bottom.equalTo(topView.snp_bottom)
+        }
+        
+        infoLabel = UILabel()
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.textColor = UIColor.whiteColor()
+        infoLabel.textAlignment = .Center
+        infoLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        midView.addSubview(infoLabel)
+        infoLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(midView.snp_left)
+            make.right.equalTo(midView.snp_right)
+            make.top.equalTo(midView.snp_top)
+            make.bottom.equalTo(midView.snp_bottom)
+        }
+        player = EZAudioPlayer(delegate: self)
+        
+       
+
+    }
+    
+    override func tapDeck(sender: AnyObject) {
+        super.tapDeck(sender)
+        infoLabel.text = ""
+        player.pause()
+        audioPlot.clear()
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.audioPlot.clear()
+        }
+    }
+    
+    func audioPlayer(audioPlayer: EZAudioPlayer!, playedAudio buffer: UnsafeMutablePointer<UnsafeMutablePointer<Float>>, withBufferSize bufferSize: UInt32, withNumberOfChannels numberOfChannels: UInt32, inAudioFile audioFile: EZAudioFile!) {
+        dispatch_async(dispatch_get_main_queue()) { [weak self]() -> Void in
+            if let S = self {
+                S.audioPlot.updateBuffer(buffer[0], withBufferSize: bufferSize)
+            }
+        }
+    }
+    
+    func audioPlayer(audioPlayer: EZAudioPlayer!, reachedEndOfAudioFile audioFile: EZAudioFile!) {
+            dispatch_async(dispatch_get_main_queue(), { [weak self]() -> Void in
+                if let S = self {
+                    S.audioPlot.clear()
+                    S.player.pause()
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        S.audioPlot.clear()
+                    })
+                    
+                }
+            })
+            
+        
+    }
+
+
+    func fileURL()->NSURL {
+        let document = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, .UserDomainMask, true)[0]
+        let audioFile = "voice.m4a"
+        return NSURL(fileURLWithPath: "\(document)/\(audioFile)")
+    }
+
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -38,6 +126,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
     func fetchRecommendPeople() {
         if let t = token {
             request(.POST, GET_RECOMMENDED_FRIENDS_URL, parameters: ["token":t], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
+                debugPrint(response)
                 if let d = response.result.value, S = self {
                     let json = JSON(d)
                     guard json["state"].stringValue == "successful" else {
@@ -63,6 +152,10 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
         if recommendPeople.count > 0 {
             let card = CardPeopleContentView()
             let p = recommendPeople[currentIndex % recommendPeople.count]
+            print(p)
+            if p.voiceURL == nil {
+                print("invalid url")
+            }
             currentIndex = (++currentIndex) % recommendPeople.count
             if currentIndex == 0 {
                 fetchRecommendPeople()
@@ -93,6 +186,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
             card.schoolLabel.text = p.school
             card.degreeLabel.text = p.degree
             card.locationLabel.text = p.hometown
+            card.voiceButton.alpha = p.voiceURL == nil ? 0 : 1.0
            // card.likeLabel.text = "0"
             
             let placeholder = ["生日(未知)", "学校(未知)", "学历(未知)", "家乡(未知)"]
@@ -133,6 +227,32 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         }
       
+    }
+    
+    func didTapVoiceAtCard(card: CardPeopleContentView) {
+        //player.playAudioFile(EZAudioFile(URL: fileURL()))
+        infoLabel.text = "加载中..."
+        if let p = currentPeople where p.voiceURL != nil {
+            download(.GET, p.voiceURL.absoluteString, destination: { (url, response) -> NSURL in
+                debugPrint(response)
+                let directory = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask)[0]
+                return directory.URLByAppendingPathComponent("voice_\(p.ID)")
+            }).response(completionHandler: { [weak self](_, _, data, error) -> Void in
+                if let S = self {
+                   S.infoLabel.text = ""
+                }
+                if let S = self where error == nil {
+                    if let pp = S.currentPeople where pp.ID == p.ID {
+                        let directory = NSFileManager.defaultManager().URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask)[0]
+                        let fileurl = directory.URLByAppendingPathComponent("voice_\(p.ID)")
+                        S.player.playAudioFile(EZAudioFile(URL: fileurl))
+                    }
+                }
+                else {
+                    print(error)
+                }
+            })
+        }
     }
     
     func followUser(id:String) {
@@ -183,6 +303,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate {
 
 protocol CardPeopleContentViewDelegate:class {
     func didTapAvatarAtCard(card:CardPeopleContentView)
+    func didTapVoiceAtCard(card:CardPeopleContentView)
 }
 
 class CardPeopleContentView:CardContentView {
@@ -197,6 +318,7 @@ class CardPeopleContentView:CardContentView {
     var gradientLayer:CAGradientLayer!
     var likeButton:UIButton!
     var likeLabel:UILabel!
+    var voiceButton:UIButton!
     
     weak var peopleCardDelegate:CardPeopleContentViewDelegate?
     
@@ -309,6 +431,18 @@ class CardPeopleContentView:CardContentView {
         locationLabel.textAlignment = .Right
         addSubview(locationLabel)
 
+        voiceButton = UIButton()
+        voiceButton.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(voiceButton)
+        voiceButton.setBackgroundImage(UIImage(named: "voice")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        voiceButton.tintColor = TEXT_COLOR
+        voiceButton.addTarget(self, action: "voiceTap:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+        voiceButton.snp_makeConstraints { (make) -> Void in
+            make.centerX.equalTo(snp_centerX)
+            make.bottom.equalTo(snp_bottom).offset(-20)
+            make.width.height.equalTo(30)
+        }
         
         imgView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(snp_top)
@@ -361,5 +495,12 @@ class CardPeopleContentView:CardContentView {
         
         
     }
+    
+    func voiceTap(sender:AnyObject) {
+        peopleCardDelegate?.didTapVoiceAtCard(self)
+    }
 
 }
+
+
+

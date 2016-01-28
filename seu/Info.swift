@@ -125,7 +125,7 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                     let vc = ComposeMessageVC()
                     vc.recvID = self.id
                     let nav = UINavigationController(rootViewController: vc)
-                    self.navigationController?.pushViewController(nav, animated: true)
+                    self.presentViewController(nav, animated: true, completion: nil)
                 }
                 }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报", "私信"])
             sheet?.setButtonTextColor(THEME_COLOR)

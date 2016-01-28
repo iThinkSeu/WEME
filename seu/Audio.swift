@@ -79,7 +79,51 @@ class AudioRecordVC:UIViewController {
         self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     func done(sender:AnyObject) {
-        
+        if NSFileManager.defaultManager().fileExistsAtPath(fileURL().path!) {
+            if let t = token, id = myId{
+                upload(.POST, UPLOAD_AVATAR_URL, multipartFormData: { multipartFormData in
+                    let dd = "{\"token\":\"\(t)\", \"type\":\"-12\"}"
+                    let jsonData = dd.dataUsingEncoding(NSUTF8StringEncoding)
+                    multipartFormData.appendBodyPart(data:jsonData!, name:"json")
+                    multipartFormData.appendBodyPart(fileURL: self.fileURL(), name: "avatar", fileName: "voice.m4a", mimeType: "audio/mp4")
+                    
+                    }, encodingCompletion: { encodingResult in
+                        switch encodingResult {
+                        case .Success(let upload, _ , _):
+                            upload.responseJSON { response in
+                                if let d = response.result.value {
+                                    let j = JSON(d)
+                                    if j["state"].stringValue  == "successful" {
+                                       let hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+                                        hud.mode = .CustomView
+                                        hud.customView = UIImageView(image: UIImage(named: "checkmark"))
+                                        hud.labelText = "上传录音成功"
+                                        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_SEC))
+                                        dispatch_after(delayTime, dispatch_get_main_queue()) { () -> Void in
+                                            self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                                        }
+                                    }
+                                    else {
+                                        self.messageAlert("上载录音失败")
+                                    }
+                                }
+                                else if let _ = response.result.error {
+                                    self.messageAlert("上载录音失败")
+                                    
+                                }
+                            }
+                            
+                        case .Failure:
+                            break
+                            
+                        }
+                    
+                    }
+            
+                )
+            }
+          
+        }
     }
     
     func redo(sender:AnyObject) {
