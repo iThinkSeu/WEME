@@ -7,7 +7,7 @@
 //
 #import <Mantle/Mantle.h>
 
-@interface TimelineModel : MTLModel
+@interface TimelineModel : MTLModel<MTLJSONSerializing>
 @property (nonnull, nonatomic, copy)NSString *title;
 @property (nonnull, nonatomic, copy)NSString *body;
 @property (nonnull, nonatomic, strong)NSDate *time;

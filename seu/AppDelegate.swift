@@ -27,14 +27,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            let Id = defaults.stringForKey(ID){
             token = t
             myId = Id
-            UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
+            UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-400, 0), forBarMetrics: UIBarMetrics.Default)
             let vc = HomeVC()
             window?.rootViewController = vc
             window?.makeKeyAndVisible();
             
         }
         else {
-            UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-200, 0), forBarMetrics: UIBarMetrics.Default)
+            UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-400, 0), forBarMetrics: UIBarMetrics.Default)
             window?.rootViewController = LoginRegisterVC()
             window?.makeKeyAndVisible();
         }

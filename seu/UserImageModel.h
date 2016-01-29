@@ -8,7 +8,7 @@
 
 #import <Mantle/Mantle.h>
 
-@interface UserImageModel : MTLModel
+@interface UserImageModel : MTLModel<MTLJSONSerializing>
 @property (nullable, nonatomic, strong) NSURL *image;
 @property (nullable,nonatomic, strong) NSURL *thumbnail;
 @property (nonnull,nonatomic, copy) NSString *postid;

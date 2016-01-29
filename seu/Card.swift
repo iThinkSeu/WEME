@@ -157,7 +157,7 @@ class CardVC:UIViewController {
             make.centerX.equalTo(hostView.snp_centerX)
             make.centerY.equalTo(hostView.snp_centerY)
             make.width.equalTo(hostView.snp_width).multipliedBy(0.7)
-            make.height.equalTo(cardView.snp_width).multipliedBy(1.5)
+            make.height.equalTo(cardView.snp_width).offset(120)
         }
         
     

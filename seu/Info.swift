@@ -114,18 +114,20 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tapCover(sender:AnyObject) {
-        sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
-            if index == 0 {
-                let imagePicker = UIImagePickerController()
-                imagePicker.navigationBar.barStyle = .Black
-                imagePicker.sourceType = .PhotoLibrary
-                imagePicker.delegate = self
-                self.presentViewController(imagePicker, animated: true, completion: nil)
-            }
-      
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["改变背景照"])
-        sheet?.setButtonTextColor(THEME_COLOR)
-        sheet?.showInView(navigationController!.view)
+        if let id = myId, pid = info?.ID where id == pid {
+            sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
+                if index == 0 {
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.navigationBar.barStyle = .Black
+                    imagePicker.sourceType = .PhotoLibrary
+                    imagePicker.delegate = self
+                    self.presentViewController(imagePicker, animated: true, completion: nil)
+                }
+          
+                }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["改变背景照"])
+            sheet?.setButtonTextColor(THEME_COLOR)
+            sheet?.showInView(navigationController!.view)
+        }
 
     }
     
@@ -569,7 +571,14 @@ class InfoVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                         cell.detailLabel.text = info?.name ?? ""
                     }
                     else if indexPath.row == 1 {
-                        cell.detailLabel.text = info?.birthFlag ?? ""
+                        if let id = myId, pid = info?.ID where id == pid {
+                            cell.infoLabel.text = "生日"
+                            cell.detailLabel.text = info?.birthday ?? ""
+                        }
+                        else {
+                           cell.detailLabel.text = info?.birthFlag ?? ""
+                        }
+                        
                     }
                 
                     else  if indexPath.row == 2 {
