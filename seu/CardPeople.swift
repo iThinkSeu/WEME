@@ -203,7 +203,7 @@ class CardPeopleVC:CardVC, CardPeopleContentViewDelegate, EZAudioPlayerDelegate 
             card.voiceButton.alpha = p.voiceURL == nil ? 0 : 1.0
            // card.likeLabel.text = "0"
             
-            let placeholder = ["生日(未知)", "学校(未知)", "学历(未知)", "家乡(未知)"]
+            let placeholder = ["年龄(未知)", "学校(未知)", "学历(未知)", "家乡(未知)"]
             let arr = [card.birthdayLabel,  card.schoolLabel, card.degreeLabel, card.locationLabel]
             for (index, label) in arr.enumerate() {
                 if let text = label.text{

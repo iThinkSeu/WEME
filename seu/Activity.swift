@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreSpotlight
+import MobileCoreServices
 
 class ActivityCell:UITableViewCell {
     var titleLabel:UILabel!
@@ -208,6 +210,29 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
         
     }
     
+    lazy var indexQueue:dispatch_queue_t = {
+        let queue = dispatch_queue_create("weme.activity.index", DISPATCH_QUEUE_SERIAL)
+        return queue
+    }()
+    
+    @available(iOS 9, *)
+    func indexActivity(activities:[ActivityModel]) {
+        for ac in activities {
+            dispatch_async(indexQueue) { () -> Void in
+                let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeData as String )
+                attributeSet.title = ac.title
+                attributeSet.contentDescription = "\(ac.location)\n\(ac.time)"
+                attributeSet.thumbnailData = NSData(contentsOfURL: thumbnailAvatarURLForID(ac.authorID))
+                let item = CSSearchableItem(uniqueIdentifier:"weme://activity/\(ac.activityID)", domainIdentifier: "weme.activity", attributeSet: attributeSet)
+                
+                CSSearchableIndex.defaultSearchableIndex().indexSearchableItems([item], completionHandler: { (error) -> Void in
+                    //print(error)
+                })
+
+            }
+        }
+    }
+    
     func fetchActivityInfo() {
         if let t = token {
         request(.POST, GET_ACTIVITY_INFO_URL, parameters: ["token":t, "page":"\(page)"], encoding: .JSON).responseJSON(completionHandler: { [weak self](response) -> Void in
@@ -221,6 +246,9 @@ class ActivityVC:UIViewController, UITableViewDataSource, UITableViewDelegate, A
                 do {
                    let ac = try MTLJSONAdapter.modelsOfClass(ActivityModel.self, fromJSONArray: json["result"].arrayObject) as? [ActivityModel]
                     if let a = ac where a.count > 0 {
+                        if #available(iOS 9, *) {
+                            S.indexActivity(a)
+                        }
                         if S.page == 1 {
                             S.activities.removeAll()
                             S.tableView.reloadData()

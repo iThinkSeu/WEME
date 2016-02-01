@@ -1081,7 +1081,7 @@ class MessageMultiImageCell:UITableViewCell {
 
 class MessageVC :UITableViewController {
 
-    private var sendID:String?
+    var sendID:String?
     
     private var page = 1
 
@@ -1126,6 +1126,17 @@ class MessageVC :UITableViewController {
             })
         }
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.hidden = true
+        navigationController?.navigationBar.translucent = false
+        navigationController?.navigationBar.barTintColor = THEME_COLOR
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.alpha = 1.0
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

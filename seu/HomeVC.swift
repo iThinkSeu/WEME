@@ -51,7 +51,7 @@ class HomeVC: UITabBarController {
         let navHand = UINavigationController(rootViewController: ActivityVC())
         let navSocial = UINavigationController(rootViewController: SocialVC())
         let Me =  UINavigationController(rootViewController: ProfileVC())
-        //let discover = UINavigationController(rootViewController: DiscoverVC())
+        let discover = UINavigationController(rootViewController: DiscoverVC())
 
         
         setViewControllers([navHand, navSocial, Me], animated: true)
@@ -72,7 +72,7 @@ class HomeVC: UITabBarController {
         
         Me.tabBarItem = UITabBarItem(title: "我", image: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "me")?.imageWithRenderingMode(.AlwaysTemplate))
 
-       // discover.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
+        discover.tabBarItem = UITabBarItem(title: "发现", image: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysOriginal), selectedImage: UIImage(named: "discovery")?.imageWithRenderingMode(.AlwaysTemplate))
 
         
     }

@@ -157,6 +157,7 @@
 		B1A4E9631BDA041E00EF0CD1 /* AgrumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E95E1BDA041E00EF0CD1 /* AgrumeCell.swift */; };
 		B1A4E9641BDA041E00EF0CD1 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E95F1BDA041E00EF0CD1 /* ImageDownloader.swift */; };
 		B1A4E9661BDA041E00EF0CD1 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E9611BDA041E00EF0CD1 /* UIViewExtensions.swift */; };
+		B1ACF27A1C5B906100909E96 /* discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ACF2791C5B906100909E96 /* discovery.swift */; };
 		B1AE74611BD514EC0014BE12 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74501BD514EC0014BE12 /* AnimationController.swift */; };
 		B1AE74621BD514EC0014BE12 /* ImagePickerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74511BD514EC0014BE12 /* ImagePickerAction.swift */; };
 		B1AE74631BD514EC0014BE12 /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74531BD514EC0014BE12 /* ImagePickerSheetController.swift */; };
@@ -439,6 +440,7 @@
 		B1A4E95E1BDA041E00EF0CD1 /* AgrumeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgrumeCell.swift; sourceTree = "<group>"; };
 		B1A4E95F1BDA041E00EF0CD1 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		B1A4E9611BDA041E00EF0CD1 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		B1ACF2791C5B906100909E96 /* discovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = discovery.swift; sourceTree = "<group>"; };
 		B1AE74501BD514EC0014BE12 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		B1AE74511BD514EC0014BE12 /* ImagePickerAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerAction.swift; sourceTree = "<group>"; };
 		B1AE74521BD514EC0014BE12 /* ImagePickerSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
@@ -1111,6 +1113,7 @@
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1CA3C8F1C4F4F310015E69E /* Audio.swift */,
+				B1ACF2791C5B906100909E96 /* discovery.swift */,
 				B1019F841C420BFB00EBEB23 /* MeVC.swift */,
 				B1FFB29F1C5626DC00A79A3B /* Cache.swift */,
 				B10C3F3C1C4CD10A007734C6 /* Info.swift */,
@@ -1204,6 +1207,11 @@
 					B1FC43431B9FC25700133869 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = M387AQ7F3J;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					B1FC43581B9FC25700133869 = {
 						CreatedOnToolsVersion = 6.4;
@@ -1370,6 +1378,7 @@
 				B105CA491C2A4FE900E946D8 /* About.swift in Sources */,
 				B12FB2BF1C009D1C00566266 /* FloatingActionView.swift in Sources */,
 				B1D03C351BCE59D100DF0B44 /* Response.swift in Sources */,
+				B1ACF27A1C5B906100909E96 /* discovery.swift in Sources */,
 				B1019F8F1C420BFB00EBEB23 /* SwiftyJSON.swift in Sources */,
 				B10759C01BEC518C00FEC0A0 /* View+SnapKit.swift in Sources */,
 				B1019F951C43B65F00EBEB23 /* LocationVC.swift in Sources */,
@@ -1526,7 +1535,8 @@
 				PRODUCT_NAME = WEME;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Distribution;
 		};
@@ -1664,7 +1674,8 @@
 				PRODUCT_NAME = WEME;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1701,7 +1712,8 @@
 				PRODUCT_NAME = WEME;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreSpotlight
 
 var token:String?
 var myId:String?
@@ -16,9 +17,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-   
+    func handleNotification(notification:[NSObject : AnyObject]) {
+        switch UIApplication.sharedApplication().applicationState {
+        case .Background, .Inactive:
+            let json = JSON(notification)
+            if json["type"].stringValue == "follow" {
+                let userid = json["userid"].stringValue
+                if let vc = window?.rootViewController as? HomeVC {
+                    vc.selectedIndex = 2
+                    let info = InfoVC()
+                    info.id = userid
+                    (vc.viewControllers?[2] as? UINavigationController)?.pushViewController(info, animated: true)
+                }
+            }
+            else if json["type"].stringValue == "message" {
+                let userid = json["userid"].stringValue
+                if let vc = window?.rootViewController as? HomeVC {
+                    vc.selectedIndex = 2
+                    let msg = MessageVC()
+                    msg.sendID = userid
+                    (vc.viewControllers?[2] as? UINavigationController)?.pushViewController(msg, animated: true)
+                }
+
+            }
+
+        default:
+            break
+        }
+       
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         window  = UIWindow(frame: UIScreen.mainScreen().bounds)
         window?.tintAdjustmentMode = .Normal
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
@@ -30,7 +59,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffsetMake(-400, 0), forBarMetrics: UIBarMetrics.Default)
             let vc = HomeVC()
             window?.rootViewController = vc
-            window?.makeKeyAndVisible();
+            window?.makeKeyAndVisible()
+            
+            
+            let setting = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+            UIApplication.sharedApplication().registerUserNotificationSettings(setting)
+            UIApplication.sharedApplication().registerForRemoteNotifications()
+            
+            if let notification = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [NSObject:AnyObject] {
+                self.handleNotification(notification)
+            }
+            
             
         }
         else {
@@ -81,29 +120,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    
+    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+        if #available(iOS 9.0, *) {
+            if userActivity.activityType == CSSearchableItemActionType {
+                if let identifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+                    if let url = NSURL(string: identifier) where url.scheme == "weme"{
+                        if let h = url.host where h == "activity",
+                            let com = url.pathComponents where com.count == 2 {
+                                if let vc = window?.rootViewController as? HomeVC {
+                                    vc.selectedIndex = 0
+                                    let vc = vc.viewControllers?[0] as? UINavigationController
+                                    let ac = ActivityInfoVC()
+                                    ac.activityID = com[1]
+                                    vc?.pushViewController(ac, animated: true)
+                                }
+                        }
+                        
+                    }
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+        return true
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        var deviceToken = String(format: "%@", deviceToken)
+        deviceToken = deviceToken.stringByReplacingOccurrencesOfString(" ", withString: "")
+        deviceToken = deviceToken.stringByReplacingOccurrencesOfString("<", withString: "")
+        deviceToken = deviceToken.stringByReplacingOccurrencesOfString(">", withString: "")
+        print(deviceToken)
+        if let t = token {
+            request(.POST, UPLOAD_DEVICE_TOKEN_URL, parameters: ["token":t, "devicetoken":deviceToken], encoding: .JSON).responseJSON(completionHandler: { (response) -> Void in
+                if let d = response.result.value {
+                    let json = JSON(d)
+                    guard json["state"].stringValue == "successful" else {
+                        print(json["reason"].stringValue)
+                        return
+                    }
+                }
+            })
+        }
+        
     }
-
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        print(error)
     }
+    
 
-    func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        handleNotification(userInfo)
     }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    }
-
-
 }
 

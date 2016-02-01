@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 //MARK: - RESTFUL API
+let DOMAIN_BASE_URL = "http://www.weme.space:8080/"
 let BASE_URL = "http://218.244.147.240:8080/"
 //let BASE_URL = "http://www.weme.space:8080/"
 
@@ -125,7 +126,9 @@ let LIKE_FOOD_URL = BASE_URL + "likefoodcard"
 
 let REPORT_URL = BASE_URL + "publishreport"
 
+//MARK: PUSH
 
+let UPLOAD_DEVICE_TOKEN_URL = BASE_URL + "uploadiosdevicetoken"
 
 
 let ID = "ID"
@@ -139,7 +142,7 @@ let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
 let APP_INFO_URL = "http://itunes.apple.com/cn/lookup?id=1052455890"
 
 func sharePostURLStringForPostID(id:String) -> String{
-    return BASE_URL + "post_share/\(id)"
+    return DOMAIN_BASE_URL + "post_share/\(id)"
 }
 
 func thumbnailAvatarURL() -> NSURL? {
