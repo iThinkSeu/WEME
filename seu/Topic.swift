@@ -991,7 +991,7 @@ extension TopicImageCollectionViewController:UICollectionViewDataSource, UIColle
     }
     
 }
-
+typealias CommonImageCollectionViewCell = TopicImageCollectionViewCell
 class TopicImageCollectionViewCell: UICollectionViewCell {
     static let SIZE = (SCREEN_WIDTH-50)/5
     

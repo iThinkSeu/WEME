@@ -28,7 +28,7 @@ class ComposeMessageVC:UIViewController {
     
     var recvID:String?
     
-    private var textView:UITextView!
+    var textView:UITextView!
     
     
     private var imageCollectionViewHeightConstraint:NSLayoutConstraint!
@@ -267,7 +267,7 @@ class ComposeMessageVC:UIViewController {
                 if let StrongSelf = self {
                     if let d = response.result.value {
                         let json = JSON(d)
-                        if json["state"] == "successful" {
+                        if json["state"].stringValue == "successful" {
                             let id = json["id"].stringValue
                             if (StrongSelf.images.count > 0) {
                                 for k in 1...StrongSelf.images.count {

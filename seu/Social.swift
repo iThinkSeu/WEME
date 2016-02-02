@@ -455,6 +455,7 @@ extension SocialVC:UICollectionViewDataSource, UICollectionViewDelegate, UIColle
             cell.infoLabel.text = data.footNote
             let num = Int(data.hotIndex)
             cell.badge.badgeText = num > 999 ? "999+" : data.hotIndex
+            cell.badge.setNeedsDisplay()
             return cell
         
     }

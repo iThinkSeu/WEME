@@ -20,4 +20,5 @@
 #import "TopicModel.h"
 #import "TopicBoardModel.h"
 #import "ActivityBoardModel.h"
+#import "CommentModel.h"
 #endif /* Model_h */

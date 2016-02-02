@@ -13,9 +13,9 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
     var activityID:String!
     private var tableView:UITableView!
     
-    private let sections = ["主办方","活动详情", "人数", "时间", "地点", "备注", "报名"]
+    private let sections = ["主办方", "活动评论", "活动详情", "人数", "时间", "地点", "备注", "报名"]
     
-    private var content:[String] = [" ", " ", " ", " ", " "]
+    private var content:[String] = ["活动评论，去留言吧"," ", " ", " ", " ", " "]
     
     private var poster:UIImageView!
     
@@ -148,7 +148,7 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             imgBG.sd_setImageWithURL(a.poster, placeholderImage: UIImage(named: "profile_background"))
             sloganLabel.text = a.advertise
             title = a.title
-            content = [a.detail, a.capacity, a.time, a.location, a.remark]
+            content = ["活动评论，去留言吧", a.detail, a.capacity, a.time, a.location, a.remark]
             tableView.reloadData()
         }
     }
@@ -285,6 +285,12 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
             cell.textContentLabel.text = content[indexPath.section-1]
             cell.selectionStyle  = .None
             cell.titleInfoLabel.text = sections[indexPath.section]
+            if indexPath.section == 1 {
+                cell.detailButton.alpha = 1.0
+            }
+            else {
+                cell.detailButton.alpha = 0
+            }
             return cell
         }
     }
@@ -297,14 +303,26 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
+        else if indexPath.section == 1 {
+            if let ac = self.activity {
+                let vc = ActivityCommentVC()
+                vc.activity = ac
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+
+        }
     }
     
     func action(sender:AnyObject) {
         
         sheet = IBActionSheet(title: nil, callback: { (sheet, index) -> Void in
             if index == 0 {
-                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
-                alertText.showInView(self.navigationController!.view)
+                if let ac = self.activity {
+                    let vc = ActivityCommentVC()
+                    vc.activity = ac
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+                
             }
             else if index == 1 {
                 let vc = ActivityQRCodeVC()
@@ -312,11 +330,17 @@ class ActivityInfoVC:UIViewController, UITableViewDataSource, UITableViewDelegat
                 self.navigationController?.pushViewController(vc, animated: true)
             }
             else if index == 2 {
+         
                 let vc = ActivityStatVC()
                 vc.activityID = self.activityID
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["举报","活动二维码","更多活动信息"])
+            else if index == 3 {
+                let alertText = AlertTextView(title: "举报", placeHolder: "犀利的写下你的举报内容吧╮(╯▽╰)╭")
+                alertText.showInView(self.navigationController!.view)
+
+            }
+            }, cancelButtonTitle: "取消", destructiveButtonTitle: nil, otherButtonTitlesArray: ["活动评论","活动二维码","更多活动信息", "举报",])
         sheet?.setButtonTextColor(THEME_COLOR)
         sheet?.showInView(navigationController!.view)
         
@@ -650,6 +674,7 @@ class ActivityInfoTableViewCell:UITableViewCell {
     var titleInfoLabel:UILabel!
     var textContentLabel:UILabel!
     var backView:UIView!
+    var detailButton:UIImageView!
     
     func initialize() {
         
@@ -666,6 +691,12 @@ class ActivityInfoTableViewCell:UITableViewCell {
         backView.translatesAutoresizingMaskIntoConstraints = false
         backView.backgroundColor = UIColor.whiteColor()
         contentView.addSubview(backView)
+        
+        detailButton = UIImageView(image: UIImage(named: "forward")?.imageWithRenderingMode(.AlwaysTemplate))
+        detailButton.translatesAutoresizingMaskIntoConstraints = false
+        detailButton.tintColor = THEME_COLOR_BACK
+        backView.addSubview(detailButton)
+        
         
         backView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_left)
@@ -696,9 +727,16 @@ class ActivityInfoTableViewCell:UITableViewCell {
             titleInfoLabel.setContentHuggingPriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)
         }
         
+        detailButton.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(backView.snp_rightMargin)
+            make.centerY.equalTo(backView.snp_centerY)
+            make.height.width.equalTo(16)
+            
+        }
+
         textContentLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(contentView.snp_leftMargin)
-            make.right.equalTo(contentView.snp_rightMargin)
+            make.right.equalTo(detailButton.snp_left)
             make.top.equalTo(backView.snp_top)
             make.bottom.equalTo(contentView.snp_bottom)
             textContentLabel.setContentCompressionResistancePriority(UILayoutPriorityDefaultHigh, forAxis: .Vertical)

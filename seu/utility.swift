@@ -130,6 +130,10 @@ let REPORT_URL = BASE_URL + "publishreport"
 
 let UPLOAD_DEVICE_TOKEN_URL = BASE_URL + "uploadiosdevicetoken"
 
+let COMMENT_TO_ACTIVITY_URL = BASE_URL + "commenttoactivity"
+let GET_ACTIVITY_COMMENT_URL = BASE_URL + "getactivitycomment"
+let LIKE_ACTIVITY_COMMENT_URL = BASE_URL + "likecommentact"
+
 
 let ID = "ID"
 let TOKEN = "TOKEN"

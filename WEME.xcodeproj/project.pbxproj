@@ -150,6 +150,8 @@
 		B18950421C1B03BA00645482 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B18950411C1B03BA00645482 /* libsqlite3.0.tbd */; };
 		B18950491C1C08D000645482 /* IBActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = B18950481C1C08D000645482 /* IBActionSheet.m */; };
 		B18950501C1D754500645482 /* PersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B189504F1C1D754500645482 /* PersonModel.m */; };
+		B196D1241C60ED1E009DCF59 /* ActivityCommentComposeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196D1231C60ED1E009DCF59 /* ActivityCommentComposeVC.swift */; };
+		B196D1271C60F59D009DCF59 /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B196D1261C60F59D009DCF59 /* CommentModel.m */; };
 		B19A9ABA1BF072F000EE58DB /* BadgeStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A9AB71BF072F000EE58DB /* BadgeStyle.m */; };
 		B19A9ABB1BF072F000EE58DB /* CustomBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = B19A9AB91BF072F000EE58DB /* CustomBadge.m */; };
 		B19F9A371BD8FC9C0008CA12 /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19F9A361BD8FC9C0008CA12 /* Contacts.swift */; };
@@ -158,6 +160,7 @@
 		B1A4E9641BDA041E00EF0CD1 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E95F1BDA041E00EF0CD1 /* ImageDownloader.swift */; };
 		B1A4E9661BDA041E00EF0CD1 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A4E9611BDA041E00EF0CD1 /* UIViewExtensions.swift */; };
 		B1ACF27A1C5B906100909E96 /* discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ACF2791C5B906100909E96 /* discovery.swift */; };
+		B1ACF27C1C60D46A00909E96 /* ActivityComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ACF27B1C60D46A00909E96 /* ActivityComment.swift */; };
 		B1AE74611BD514EC0014BE12 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74501BD514EC0014BE12 /* AnimationController.swift */; };
 		B1AE74621BD514EC0014BE12 /* ImagePickerAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74511BD514EC0014BE12 /* ImagePickerAction.swift */; };
 		B1AE74631BD514EC0014BE12 /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1AE74531BD514EC0014BE12 /* ImagePickerSheetController.swift */; };
@@ -430,6 +433,9 @@
 		B18950481C1C08D000645482 /* IBActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IBActionSheet.m; sourceTree = "<group>"; };
 		B189504E1C1D754500645482 /* PersonModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonModel.h; sourceTree = "<group>"; };
 		B189504F1C1D754500645482 /* PersonModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonModel.m; sourceTree = "<group>"; };
+		B196D1231C60ED1E009DCF59 /* ActivityCommentComposeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCommentComposeVC.swift; sourceTree = "<group>"; };
+		B196D1251C60F59D009DCF59 /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
+		B196D1261C60F59D009DCF59 /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		B19A9AB61BF072F000EE58DB /* BadgeStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeStyle.h; sourceTree = "<group>"; };
 		B19A9AB71BF072F000EE58DB /* BadgeStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeStyle.m; sourceTree = "<group>"; };
 		B19A9AB81BF072F000EE58DB /* CustomBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomBadge.h; sourceTree = "<group>"; };
@@ -441,6 +447,7 @@
 		B1A4E95F1BDA041E00EF0CD1 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		B1A4E9611BDA041E00EF0CD1 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		B1ACF2791C5B906100909E96 /* discovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = discovery.swift; sourceTree = "<group>"; };
+		B1ACF27B1C60D46A00909E96 /* ActivityComment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityComment.swift; sourceTree = "<group>"; };
 		B1AE74501BD514EC0014BE12 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		B1AE74511BD514EC0014BE12 /* ImagePickerAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerAction.swift; sourceTree = "<group>"; };
 		B1AE74521BD514EC0014BE12 /* ImagePickerSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerSheetController.h; sourceTree = "<group>"; };
@@ -560,6 +567,8 @@
 				B17B23741C3D092C00537241 /* ActivityStat.swift */,
 				B17B236D1C3A65E600537241 /* ActivityAdmin.swift */,
 				B12CB26E1C48C2B8003A191F /* ActivityQRCode.swift */,
+				B1ACF27B1C60D46A00909E96 /* ActivityComment.swift */,
+				B196D1231C60ED1E009DCF59 /* ActivityCommentComposeVC.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -818,6 +827,8 @@
 				B1FFB2AB1C56385400A79A3B /* TopicBoardModel.m */,
 				B1FFB2AD1C56490200A79A3B /* ActivityBoardModel.h */,
 				B1FFB2AE1C56490200A79A3B /* ActivityBoardModel.m */,
+				B196D1251C60F59D009DCF59 /* CommentModel.h */,
+				B196D1261C60F59D009DCF59 /* CommentModel.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1337,6 +1348,7 @@
 				B107599E1BEB1D5700FEC0A0 /* Message.swift in Sources */,
 				B17CF8921C05E93B0074FF3F /* STInputBar.m in Sources */,
 				B16B6B881C3A53290081922F /* ActivityImageUploader.swift in Sources */,
+				B1ACF27C1C60D46A00909E96 /* ActivityComment.swift in Sources */,
 				B12CB2641C478E75003A191F /* QRCodeViewControllerBuilder.swift in Sources */,
 				B1AE746A1BD514EC0014BE12 /* SheetActionCollectionViewCell.swift in Sources */,
 				B10759B61BEC518C00FEC0A0 /* ConstraintDescription.swift in Sources */,
@@ -1362,6 +1374,7 @@
 				B169C2AD1C3D94D6002F6869 /* SchoolModel.m in Sources */,
 				B1CA3C8A1C4E05960015E69E /* wavreader.c in Sources */,
 				B1019F8A1C420BFB00EBEB23 /* AlertTextView.swift in Sources */,
+				B196D1241C60ED1E009DCF59 /* ActivityCommentComposeVC.swift in Sources */,
 				B10759B91BEC518C00FEC0A0 /* ConstraintRelation.swift in Sources */,
 				B105CA3C1C23DB1600E946D8 /* MWTapDetectingView.m in Sources */,
 				B1A4E9631BDA041E00EF0CD1 /* AgrumeCell.swift in Sources */,
@@ -1416,6 +1429,7 @@
 				B1D03C381BCE59D100DF0B44 /* ServerTrustPolicy.swift in Sources */,
 				B105CA3B1C23DB1600E946D8 /* MWTapDetectingImageView.m in Sources */,
 				B1A4E9621BDA041E00EF0CD1 /* Agrume.swift in Sources */,
+				B196D1271C60F59D009DCF59 /* CommentModel.m in Sources */,
 				B1AE74611BD514EC0014BE12 /* AnimationController.swift in Sources */,
 				B10759BB1BEC518C00FEC0A0 /* EdgeInsets.swift in Sources */,
 				B17CF8A51C05E94C0074FF3F /* STEmoji.m in Sources */,

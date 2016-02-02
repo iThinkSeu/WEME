@@ -149,7 +149,7 @@ class QRCardView:UIView {
         
         nameLabel = UILabel()
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.font = UIFont.boldSystemFontOfSize(21)
+        nameLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         nameLabel.textColor = UIColor.blackColor()
         addSubview(nameLabel)
         

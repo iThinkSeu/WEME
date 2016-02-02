@@ -582,7 +582,7 @@ class RegisterUserVC:UITableViewController {
                         S.rightButton.enabled = true
                         S.rightButton.title = "跳过"
                         S.succeed = true
-                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 3, inSection: 0)], withRowAnimation: .None)
+                        S.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 4, inSection: 0)], withRowAnimation: .None)
                     }
                     else {
                         S.messageAlert(json["reason"].stringValue)
