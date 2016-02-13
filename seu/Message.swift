@@ -1638,12 +1638,20 @@ class MessageConversationVC:UITableViewController {
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 10
+        return section == conversations.count - 1 ? 10 : 5
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 10 : 5
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let v = UIView(frame: CGRectZero)
         return v
+    }
+    
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView(frame: CGRectZero)
     }
  
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

@@ -12,9 +12,9 @@ import UIKit
 class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     var tableView:UITableView!
     
-    let items1 = ["好友", "私信", "活动"]
+    let items1 = ["好友", "私信", "活动", "附近"]
     let items2 = ["附近", "发现", "美食"]//, "心声", "发现"]
-    let imgs1 = ["follow", "message", "time"]
+    let imgs1 = ["follow", "message", "time", "location"]
     let imgs2 = [ "location", "discovery","discover_food"]//, "audio", "discovery"]
     var more = ["设置"]
     
@@ -119,7 +119,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -163,22 +163,22 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
             return cell
                 
         }
-        else if indexPath.section == 2 {
-            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
-            
-            cell.icon.image = UIImage(named: imgs2[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
-            cell.icon.tintColor = THEME_COLOR_BACK
-            cell.itemLabel.text = items2[indexPath.row]
-            if indexPath.row == items2.count - 1 {
-                cell.seperator.hidden = true
-            }
-            cell.accessoryType = .DisclosureIndicator
-            cell.selectionStyle = .None
-            cell.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
-            
-            return cell
-
-        }
+//        else if indexPath.section == 2 {
+//            let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
+//            
+//            cell.icon.image = UIImage(named: imgs2[indexPath.row])?.imageWithRenderingMode(.AlwaysTemplate)
+//            cell.icon.tintColor = THEME_COLOR_BACK
+//            cell.itemLabel.text = items2[indexPath.row]
+//            if indexPath.row == items2.count - 1 {
+//                cell.seperator.hidden = true
+//            }
+//            cell.accessoryType = .DisclosureIndicator
+//            cell.selectionStyle = .None
+//            cell.separatorInset = UIEdgeInsetsMake(0, 50, 0, 0)
+//            
+//            return cell
+//
+//        }
         else {
              let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(MeItemTableViewCell), forIndexPath: indexPath) as! MeItemTableViewCell
               cell.icon.image = UIImage(named: "setting")?.imageWithRenderingMode(.AlwaysTemplate)
@@ -199,9 +199,9 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else if section == 1{
             return items1.count
         }
-        else if section == 2{
-            return items2.count
-        }
+//        else if section == 2{
+//            return items2.count
+//        }
         else {
             return 1
         }
@@ -216,7 +216,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section < 3 ? 20 : 1
+        return section < 2 ? 20 : 1
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -234,7 +234,7 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
                 navigationController?.pushViewController(vc, animated: true)
             }
         }
-        else if indexPath.section == 3 {
+        else if indexPath.section == 2 {
             navigationController?.pushViewController(SettingVC(), animated: true)
         }
         else if indexPath.section == 1 && indexPath.row == 0 {
@@ -246,15 +246,15 @@ class ProfileVC:UIViewController, UITableViewDataSource, UITableViewDelegate {
         else if indexPath.section == 1 && indexPath.row == 2 {
             navigationController?.pushViewController(MyActivityVC(), animated: true)
         }
-        else if indexPath.section == 2 && indexPath.row == 0{
+        else if indexPath.section == 1 && indexPath.row == 3{
             navigationController?.pushViewController(NearByVC(), animated: true)
         }
-        else if indexPath.section == 2 && indexPath.row == 1 {
-            navigationController?.pushViewController(CardPeopleVC(), animated: true)
-        }
-        else if indexPath.section == 2 && indexPath.row == 2 {
-            navigationController?.pushViewController(CardFoodVC(), animated: true)
-        }
+//        else if indexPath.section == 2 && indexPath.row == 1 {
+//            navigationController?.pushViewController(CardPeopleVC(), animated: true)
+//        }
+//        else if indexPath.section == 2 && indexPath.row == 2 {
+//            navigationController?.pushViewController(CardFoodVC(), animated: true)
+//        }
     }
     
 }

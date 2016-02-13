@@ -199,7 +199,9 @@ func profileBackgroundURLForID(id:String)->NSURL {
 }
 
 let BACK_COLOR = UIColor.colorFromRGB(0xf0eff5)
-let THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)
+let ICON_THEME_COLOR = UIColor.colorFromRGB(0x3e5d9e)
+let THEME_COLOR = UIColor.colorFromRGB(0x1f2c35)//UIColor.colorFromRGB(0x3e5d9e)
+let THEME_FOREGROUND_COLOR = UIColor.whiteColor()//UIColor.colorFromRGB(0xdcbb6e)
 let THEME_COLOR_BACK = UIColor(red: 197/255.0, green: 197/255.0, blue: 218/255.0, alpha: 1.0)
 let SECONDAY_COLOR =   UIColor(red: 255/255.0, green: 127/255.0, blue: 36/255.0, alpha: 1.0)
 let TEXT_COLOR = UIColor(red: 81/255.0, green: 87/255.0, blue: 113/255.0, alpha: 1.0)

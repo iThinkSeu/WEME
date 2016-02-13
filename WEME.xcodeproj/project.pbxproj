@@ -88,6 +88,7 @@
 		B125DBC51C06C46B002E0F5C /* PostLike.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125DBC41C06C46B002E0F5C /* PostLike.swift */; };
 		B125DBC91C06EF68002E0F5C /* ReplyPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = B125DBC81C06EF68002E0F5C /* ReplyPost.swift */; };
 		B1279AC81C17E8D000E14D08 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = B1279AC71C17E8D000E14D08 /* KxMenu.m */; };
+		B12886EF1C6F0EA300555CA0 /* Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12886EE1C6F0EA300555CA0 /* Find.swift */; };
 		B12CB2611C478E75003A191F /* QRCodeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25A1C478E74003A191F /* QRCodeReader.swift */; };
 		B12CB2621C478E75003A191F /* QRCodeReaderResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */; };
 		B12CB2631C478E75003A191F /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B12CB25C1C478E74003A191F /* QRCodeViewController.swift */; };
@@ -347,6 +348,7 @@
 		B125DBC81C06EF68002E0F5C /* ReplyPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyPost.swift; sourceTree = "<group>"; };
 		B1279AC61C17E8D000E14D08 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		B1279AC71C17E8D000E14D08 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
+		B12886EE1C6F0EA300555CA0 /* Find.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Find.swift; sourceTree = "<group>"; };
 		B12CB25A1C478E74003A191F /* QRCodeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReader.swift; sourceTree = "<group>"; };
 		B12CB25B1C478E74003A191F /* QRCodeReaderResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeReaderResult.swift; sourceTree = "<group>"; };
 		B12CB25C1C478E74003A191F /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
@@ -1124,6 +1126,7 @@
 				B16F95311C1834F300429B47 /* Model */,
 				B1FC43491B9FC25700133869 /* AppDelegate.swift */,
 				B1CA3C8F1C4F4F310015E69E /* Audio.swift */,
+				B12886EE1C6F0EA300555CA0 /* Find.swift */,
 				B1ACF2791C5B906100909E96 /* discovery.swift */,
 				B1019F841C420BFB00EBEB23 /* MeVC.swift */,
 				B1FFB29F1C5626DC00A79A3B /* Cache.swift */,
@@ -1368,6 +1371,7 @@
 				B1D03C3B1BCE59D100DF0B44 /* Validation.swift in Sources */,
 				B1FC436D1BA5C53600133869 /* HomeVC.swift in Sources */,
 				B19A9ABB1BF072F000EE58DB /* CustomBadge.m in Sources */,
+				B12886EF1C6F0EA300555CA0 /* Find.swift in Sources */,
 				B10759B71BEC518C00FEC0A0 /* ConstraintItem.swift in Sources */,
 				B1D03C371BCE59D100DF0B44 /* Result.swift in Sources */,
 				B17B23751C3D092C00537241 /* ActivityStat.swift in Sources */,
@@ -1550,7 +1554,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
 		};
@@ -1689,7 +1693,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1727,7 +1731,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "seu/seu-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

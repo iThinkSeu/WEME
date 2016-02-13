@@ -51,18 +51,18 @@ class HomeVC: UITabBarController {
         let navHand = UINavigationController(rootViewController: ActivityVC())
         let navSocial = UINavigationController(rootViewController: SocialVC())
         let Me =  UINavigationController(rootViewController: ProfileVC())
-        let discover = UINavigationController(rootViewController: DiscoverVC())
+        let discover = UINavigationController(rootViewController: FindVC())
 
         
-        setViewControllers([navHand, navSocial, Me], animated: true)
+        setViewControllers([navHand, navSocial,discover, Me], animated: true)
         UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR_BACK], forState: UIControlState.Normal)
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:THEME_COLOR], forState: UIControlState.Selected)
-        tabBar.tintColor = THEME_COLOR
+        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName:ICON_THEME_COLOR], forState: UIControlState.Selected)
+        tabBar.tintColor = ICON_THEME_COLOR
         tabBar.backgroundColor = UIColor.whiteColor()
         UINavigationBar.appearance().barTintColor =  THEME_COLOR
-        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().tintColor = THEME_FOREGROUND_COLOR//UIColor.whiteColor()
         UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : THEME_FOREGROUND_COLOR]
         selectedIndex = 0
         
         
